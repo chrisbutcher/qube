@@ -1,3 +1,13 @@
+require 'bundler/inline'
+
+gemfile do
+  source 'https://rubygems.org'
+  gem 'json', require: true
+	gem 'pry'
+	gem 'pry-byebug'
+	gem 'fast_blank'
+end
+
 require 'json'
 
 file = File.open("faq.txt", "r")
@@ -5,27 +15,29 @@ contents = file.read
 file.close
 
 contents_lines = contents.split("\n")
-puts contents_lines[663]
-puts contents_lines[49060]
+puzzle_lines = contents_lines[663..49057]
 
-# contents_lines = contents_lines[663]
+puzzle_lines.reject! { |line| line.blank? }
+puzzle_lines.reject! { |line| /^\s\s\s/ =~ line }
+puzzle_lines.reject! { |line| /^-+\r/ =~ line }
 
-puzzle_starting_points = contents.to_enum(:scan, /-+\n\d/m).map { Regexp.last_match }
+puzzles = []
+current_puzzle = []
 
-extracted_puzzles = puzzle_starting_points.each_with_index.map do |puzzle_starting_point, i|
-	current_puzzle = puzzle_starting_point
-	next_puzzle = puzzle_starting_points[1 + 1]
+puzzle_lines.each do |puzzle_line|
+	start_of_puzzle = /Rotations/ =~ puzzle_line || /-=-+/ =~ puzzle_line
 
-	unless next_puzzle
-		puts 'skipping last puzzle'
-		next
+	if start_of_puzzle
+		if current_puzzle.size > 0
+			puzzles << current_puzzle
+			current_puzzle = []
+		else
+			current_puzzle = []
+		end
 	end
 
-	start_of_current_puzzle = current_puzzle.offset(0).first
-	end_of_current_puzzle = next_puzzle.offset(0).first - 1
-	extracted_puzzle = contents[start_of_current_puzzle..end_of_current_puzzle]
-
-	extracted_puzzle
+	current_puzzle << puzzle_line
 end
 
-puts extracted_puzzles.size
+binding.pry
+puts 'hi'
