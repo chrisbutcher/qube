@@ -657,10 +657,10 @@ PlayerSettings:
       daydreamIconForeground: {fileID: 0}
       daydreamIconBackground: {fileID: 0}
   cloudServicesEnabled:
-    Collab: 1
+    Collab: 0
     UNet: 1
   facebookSdkVersion: 7.9.4
-  apiCompatibilityLevel: 3
+  apiCompatibilityLevel: 2
   cloudProjectId: 4168480a-fb42-40da-b51b-be0f50e6dc01
   projectName: qube
   organizationId: bambu85
