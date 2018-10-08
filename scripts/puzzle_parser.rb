@@ -88,6 +88,7 @@ puzzles_by_dimensions = puzzles.each_with_object({}) do |puzzle, memo|
 	memo[key] << puzzle
 end
 
-File.write('puzzles.json', puzzles_by_dimensions.to_json)
+output_file_path = '../Assets/StreamingAssets/puzzles.json'
+File.write(output_file_path, puzzles_by_dimensions.to_json)
 
-puts 'Parsed and wrote puzzles to puzzles.json !'
+puts "Parsed and wrote puzzles to #{output_file_path} !"
