@@ -10,10 +10,6 @@ end
 
 require 'json'
 
-# Puzzle = Struct.new(:rows, :width, :height, :typical_rotations_needed)
-# Row = Struct.new(:cubes)
-# Cube = Struct.new(:type)
-
 file = File.open("faq.txt", "r")
 contents = file.read
 file.close
@@ -61,28 +57,28 @@ end
 
 puzzles = puzzle_array.map do |inner_puzzle_array|
 	description_line = inner_puzzle_array[0]
+	description = description_line.match(/^(.*?)\s+rotations/).captures.first
 
 	width, height = description_line.match(/(\d+)x(\d+)/).captures
 
-	rotations_solved_in = description_line.match(/(\d+)\/(\d+|\?)/).captures
-	guide_solved_in = rotations_solved_in[0]
-	typical_rotations_needed = rotations_solved_in[1]
-
+	guide_solved_in, typical_rotations_needed = description_line.match(/(\d+)\/(\d+|\?)/).captures
 	typical_rotations_needed = guide_solved_in if typical_rotations_needed == '?'
 
 	rows = rest_of_puzzle = inner_puzzle_array[1..-1].reverse.map do |puzz_line|
 		cubes = puzz_line.to_enum(:scan, /\[([_*xX])\]+/).map { Regexp.last_match }.map do |cube_type|
-			{ type: cube_type.captures.first }
+			{ type: cube_type.captures.first } # Cube
 		end
 
-		{ row: cubes }
+		{ row: cubes } # Row
 	end
 
-	{
+	# Puzzle
+	{ 
 		rows: rows,
 		width: width,
 		height: height,
-		typical_rotations_needed: typical_rotations_needed
+		typical_rotations_needed: typical_rotations_needed,
+		description: description
 	}
 end
 
@@ -92,7 +88,6 @@ puzzles_by_dimensions = puzzles.each_with_object({}) do |puzzle, memo|
 	memo[key] << puzzle
 end
 
-# File.write('puzzles.json', JSON.pretty_generate(puzzles_by_dimensions))
 File.write('puzzles.json', puzzles_by_dimensions.to_json)
 
 puts 'Parsed and wrote puzzles to puzzles.json !'
