@@ -17,8 +17,6 @@ public class Loader : MonoBehaviour {
   }
 
   void Start() {
-    var puzzleLoader = new PuzzleLoader();
-    puzzleLoader.LoadPuzzle(4, 2);
   }
 
   void Update() {

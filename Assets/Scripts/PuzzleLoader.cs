@@ -9,23 +9,105 @@ using Newtonsoft.Json.Linq;
 
 public class PuzzleLoader {
 
-  public bool LoadPuzzle(int width, int height) {
-    const string FILENAME = "puzzles.json";
+  public struct InternalCube {
+    public Vector3 position;
+    public CubeType.Type type;
 
+    public InternalCube(Vector3 p, CubeType.Type t) {
+      position = p;
+      type = t;
+    }
+  }
+
+  public struct InternalPuzzle {
+    public List<InternalCube> cubes;
+    public int typicalRotationsNeeded;
+
+    public InternalPuzzle(List<InternalCube> c, int trn) {
+      cubes = c;
+      typicalRotationsNeeded = trn;
+    }
+  }
+
+  const string FILENAME = "puzzles.json";
+
+  private static Dictionary<string, List<InternalPuzzle>> loadedPuzzles = new Dictionary<string, List<InternalPuzzle>>();
+
+  public InternalPuzzle LoadPuzzle(int width, int height) {
+    if (loadedPuzzles.Count == 0) {
+      LoadAndParsePuzzles();
+    }
+
+    var key = string.Format("{0}x{1}", width, height);
+    var puzzlesOfSize = loadedPuzzles[key];
+
+    var randomIndex = (int)Random.Range(0, puzzlesOfSize.Count);
+    var puzzle = puzzlesOfSize[randomIndex];
+
+    return puzzle;
+  }
+
+  private void LoadAndParsePuzzles() {
     string filePath = Path.Combine(Application.streamingAssetsPath, FILENAME);
 
     if (File.Exists(filePath)) {
-      Debug.Log("File exists!");
-
       var fileContents = File.ReadAllText(filePath);
-      JObject puzzles = JObject.Parse(fileContents); // TODO: Just keep this object around? Singleton?
-      Debug.Log(puzzles.Count);
+      var jsonPuzzlesBySizes = (JObject)JObject.Parse(fileContents);
 
-      var key = string.Format("{0}x{1}", width, height);
-      var puzzlesOfSize = (JArray)puzzles[key];
-      Debug.Log(puzzlesOfSize.Count);
+      foreach (var jsonPuzzlesBySize in jsonPuzzlesBySizes) {
+        var sizeKey = jsonPuzzlesBySize.Key;
+        var jsonPuzzles = (JArray)jsonPuzzlesBySize.Value;
+
+        foreach (JObject jsonPuzzle in jsonPuzzles) {
+          List<InternalCube> cubes = null;
+
+          int typicalRotationsNeeded = int.Parse((string)jsonPuzzle["typical_rotations_needed"]);
+          int width = int.Parse((string)jsonPuzzle["width"]);
+          int height = int.Parse((string)jsonPuzzle["height"]);
+
+          var jsonPuzzleRows = (JArray)jsonPuzzle["rows"];
+
+          float puzzleDepth = 0f;
+
+          foreach (JObject puzzleRow in jsonPuzzleRows) {
+            var jsonCubes = (JArray)puzzleRow["row"];
+
+            float puzzlePosition = 0f;
+            foreach (JObject jsonCube in jsonCubes) {
+              var jsonCubeType = (string)jsonCube["type"];
+
+              CubeType.Type type;
+
+              if (jsonCubeType == "*") {
+                type = CubeType.Type.Advantage;
+              } else if (jsonCubeType == "x") {
+                type = CubeType.Type.Forbidden;
+              } else {
+                type = CubeType.Type.Normal;
+              }
+
+              InternalCube cube = new InternalCube(new Vector3(puzzlePosition, 0f, -puzzleDepth), type);
+
+              if (cubes == null) {
+                cubes = new List<InternalCube>(width * height);
+              }
+              cubes.Add(cube);
+
+              puzzlePosition += 1f;
+            }
+
+            puzzleDepth += 1f;
+          }
+
+          InternalPuzzle puzzle = new InternalPuzzle(cubes, typicalRotationsNeeded);
+
+          if (!loadedPuzzles.ContainsKey(sizeKey)) {
+            loadedPuzzles.Add(sizeKey, new List<InternalPuzzle>(jsonPuzzles.Count));
+          }
+
+          loadedPuzzles[sizeKey].Add(puzzle);
+        }
+      }
     }
-
-    return false;
   }
 }

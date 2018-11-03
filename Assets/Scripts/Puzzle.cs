@@ -16,6 +16,14 @@ public class Puzzle : MonoBehaviour {
   };
   Queue<State> stateQueue = new Queue<State>();
 
+  public void DestroyAll() {
+    foreach (var p in puzzleCubes) {
+      Destroy(p);
+    }
+
+    puzzleCubes.Clear();
+  }
+
   void OnEnable() {
     BoardManager.OnCubeDetonation += HandleCubeDetonation;
   }
@@ -72,14 +80,12 @@ public class Puzzle : MonoBehaviour {
     }
   }
 
-  public void Build(GameObject cubePrefab, List<Util.CubePositionAndType> positionsAndTypes) {
-    int index = 0;
-    foreach (var positionAndType in positionsAndTypes) {
+  public void Build(GameObject cubePrefab, PuzzleLoader.InternalPuzzle internalPuzzle) {
+    foreach (var positionAndType in internalPuzzle.cubes) {
       GameObject cube = (GameObject)Instantiate(cubePrefab, positionAndType.position, Quaternion.identity);
       cube.GetComponent<CubeType>().CurrentType = positionAndType.type;
 
       puzzleCubes.Add(cube);
-      index++;
     }
   }
 

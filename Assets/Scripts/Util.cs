@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+
 public class Util {
   public static Vector3 FloorVec3(Vector3 original) {
     return new Vector3(Mathf.Ceil(original.x), Mathf.Ceil(original.y), Mathf.Ceil(original.z));
@@ -20,4 +21,9 @@ public class Util {
       this.type = type;
     }
   }
+
+  // public int RandomNumber(int from, int to) {
+  //   Random r = new Random();
+  //   return r.Next(from, to);
+  // }
 }

@@ -14,6 +14,8 @@ public class BoardManager : MonoBehaviour {
   const int FLOOR_WIDTH = 4;
   const int FLOOR_LENGTH = 10;
 
+  private PuzzleLoader puzzleLoader;
+
   // TODO track which player destroyed which cube
   public List<GameObject> CubesAwaitingDestruction = new List<GameObject>();
 
@@ -28,21 +30,31 @@ public class BoardManager : MonoBehaviour {
   }
 
   void Start() {
-    var puzzle = gameObject.AddComponent<Puzzle>();
+    puzzleLoader = new PuzzleLoader();
 
-    puzzle.Build(
-      CubePrefab, new List<Util.CubePositionAndType> {
-        new Util.CubePositionAndType(new Vector3(0, 0, 0), CubeType.Type.Forbidden),
-        new Util.CubePositionAndType(new Vector3(1, 0, 0), CubeType.Type.Normal),
-        new Util.CubePositionAndType(new Vector3(2, 0, 0), CubeType.Type.Advantage),
-        new Util.CubePositionAndType(new Vector3(3, 0, 0), CubeType.Type.Normal),
-      }
-    );
-
-    puzzles.Enqueue(puzzle);
+    PushNewPuzzle();
   }
 
   void Update() {
+    if (Input.GetKeyDown(KeyCode.O)) {
+      ClearBoard();
+      PushNewPuzzle();
+    }
+  }
+
+  void PushNewPuzzle() {
+    var internalPuzzle = puzzleLoader.LoadPuzzle(4, 2);
+    var puzzle = gameObject.AddComponent<Puzzle>();
+    puzzle.Build(CubePrefab, internalPuzzle);
+    puzzles.Enqueue(puzzle);
+  }
+
+  void ClearBoard() {
+    foreach (var p in puzzles) {
+      p.DestroyAll();
+    }
+
+    puzzles.Clear();
   }
 
   public void ActivateNextPuzzle() {

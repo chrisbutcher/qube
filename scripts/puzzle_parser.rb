@@ -64,7 +64,7 @@ puzzles = puzzle_array.map do |inner_puzzle_array|
 	guide_solved_in, typical_rotations_needed = description_line.match(/(\d+)\/(\d+|\?)/).captures
 	typical_rotations_needed = guide_solved_in if typical_rotations_needed == '?'
 
-	rows = rest_of_puzzle = inner_puzzle_array[1..-1].reverse.map do |puzz_line|
+	rows = rest_of_puzzle = inner_puzzle_array[1..-1].map do |puzz_line|
 		cubes = puzz_line.to_enum(:scan, /\[([_*xX])\]+/).map { Regexp.last_match }.map do |cube_type|
 			{ type: cube_type.captures.first } # Cube
 		end
@@ -73,7 +73,7 @@ puzzles = puzzle_array.map do |inner_puzzle_array|
 	end
 
 	# Puzzle
-	{ 
+	{
 		rows: rows,
 		width: width,
 		height: height,
