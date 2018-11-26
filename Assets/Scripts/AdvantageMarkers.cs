@@ -25,7 +25,7 @@ public class AdvantageMarkers : MonoBehaviour {
           var newAdvantageMarkerPosition = new Vector3(
             destroyedAdvantageCubePosition.x + x,
             PlayerMarker.DEFAULT_MARKER_HEIGHT,
-          destroyedAdvantageCubePosition.z + z
+            destroyedAdvantageCubePosition.z + z
           );
 
           if (GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(newAdvantageMarkerPosition)) {
@@ -45,9 +45,14 @@ public class AdvantageMarkers : MonoBehaviour {
 
   void Update() {
     if (Input.GetKeyDown(KeyCode.Z)) {
-      if (AdvantageMarkersList.Count > 0) {
-        for (int i = 0; i < AdvantageMarkersList.Count; i++) {
-          var advantageMarker = AdvantageMarkersList[i];
+
+      // NOTE: Copy list of advantage markers, so we don't mutate while iterating it via HandleCubeDetonation.
+      var advantageMarkersListToIterate = new List<GameObject>(AdvantageMarkersList);
+      AdvantageMarkersList.Clear();
+
+      if (advantageMarkersListToIterate.Count > 0) {
+        for (int i = 0; i < advantageMarkersListToIterate.Count; i++) {
+          var advantageMarker = advantageMarkersListToIterate[i];
 
           if (OnAdvantageMarkerDetonation != null) {
             // Note: See -- PROTECTING QUBES -- section of FAQ.
@@ -56,11 +61,11 @@ public class AdvantageMarkers : MonoBehaviour {
             }
           }
 
-          AdvantageMarkersList[i] = null;
+          advantageMarkersListToIterate[i] = null;
           Destroy(advantageMarker);
         }
 
-        AdvantageMarkersList.Clear();
+        advantageMarkersListToIterate.Clear();
       }
     }
   }
