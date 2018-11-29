@@ -30,8 +30,7 @@ public class AdvantageMarkers : MonoBehaviour {
 
           if (GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(newAdvantageMarkerPosition)) {
             var advantageMarker = (GameObject)Instantiate(MarkerPrefab, newAdvantageMarkerPosition, Quaternion.identity);
-            var advantageMarkerMaterials = advantageMarker.GetComponent<Renderer>().materials;
-            advantageMarkerMaterials[0].color = Color.green;
+            ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green);
 
             AdvantageMarkersList.Add(advantageMarker);
           }
@@ -66,6 +65,18 @@ public class AdvantageMarkers : MonoBehaviour {
         }
 
         advantageMarkersListToIterate.Clear();
+      }
+    }
+  }
+
+  void ChangeColorOfGameObjectAndAllChildren(GameObject obj, Color newColor) {
+    var advantageMarkerMaterials = obj.GetComponent<Renderer>().materials;
+    advantageMarkerMaterials[0].color = newColor;
+
+    var renderers = obj.GetComponentsInChildren<Renderer>();
+    foreach (var r in renderers) {
+      foreach (var m in r.materials) {
+        m.color = newColor;
       }
     }
   }

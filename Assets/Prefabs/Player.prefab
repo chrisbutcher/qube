@@ -99,7 +99,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ff9ce468f17424264bce6c21b8cc62a7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  MarkerPrefab: {fileID: 1746183640350050, guid: 9212f91cc107da44ab0456aba4cd13cc,
+  MarkerPrefab: {fileID: 1547924944560570, guid: 9212f91cc107da44ab0456aba4cd13cc,
     type: 2}
   AdvantageMarkersList: []
 --- !u!114 &114632367772500328
@@ -128,7 +128,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: cb36a5114eadc114a949709afa9af502, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  PlayerMarkerPrefab: {fileID: 1746183640350050, guid: 9212f91cc107da44ab0456aba4cd13cc,
+  PlayerMarkerPrefab: {fileID: 1547924944560570, guid: 9212f91cc107da44ab0456aba4cd13cc,
     type: 2}
   CurrentPlayerMarker: {fileID: 0}
 --- !u!136 &136978887516811256
