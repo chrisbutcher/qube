@@ -14,8 +14,7 @@ public class FollowPlayer : MonoBehaviour {
   private FloorManager floorManager;
 
   void Awake() {
-    // follow = GameObject.FindWithTag("Player").transform;
-    // floorManager = GameState.State.FloorManager;
+    floorManager = GameManager.instance.boardManager.floorManager;
   }
 
   void Start() {
@@ -24,12 +23,12 @@ public class FollowPlayer : MonoBehaviour {
   }
 
   void LateUpdate() {
-    var followPercentageAcrossFloor = 0f; //floorManager.SideToSidePositionOnFloor(follow);
+    var followPercentageAcrossFloor = floorManager.SideToSidePositionOnFloor(follow);
     UpdateCameraPosition(Smooth, followPercentageAcrossFloor);
   }
 
   void UpdateCameraPosition(float smooth, float followPercentageAcrossFloor) {
-    var turnVector = Vector3.forward + Vector3.right * followPercentageAcrossFloor;
+    var turnVector = Vector3.forward + Vector3.right * (followPercentageAcrossFloor / 2);
     targetPosition = follow.position + Vector3.up * DistanceUp - turnVector * DistanceAway;
 
     if (ShowDebugVectors) {

@@ -4,7 +4,7 @@ using UnityEngine;
 using System.Linq;
 
 public class FloorManager : MonoBehaviour {
-  const float FLOOR_HEIGHT = -1f;
+  const float FLOOR_HEIGHT = -GameConsts.CubeSize;
 
   Stack<FloorStack> floorStacks;
 
@@ -77,5 +77,14 @@ public class FloorManager : MonoBehaviour {
     }
 
     return false;
+  }
+
+  public float SideToSidePositionOnFloor(Transform transform) {
+    var firstFloorStack = floorStacks.Peek();
+
+    var normalizedPosition = transform.position.x + (GameConsts.CubeSize / 2);
+    var sideToSidePercentage = normalizedPosition / firstFloorStack.Width();
+
+    return Mathf.Lerp(1f, -1f, sideToSidePercentage);
   }
 }

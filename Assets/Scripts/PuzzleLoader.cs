@@ -29,8 +29,8 @@ public class PuzzleLoader {
     }
   }
 
-  // const string FILENAME = "puzzles.json";
-  const string FILENAME = "puzzles_test.json";
+  const string FILENAME = "puzzles.json";
+  // const string FILENAME = "puzzles_test.json";
 
   private static Dictionary<string, List<InternalPuzzle>> loadedPuzzles = new Dictionary<string, List<InternalPuzzle>>();
 
@@ -94,10 +94,10 @@ public class PuzzleLoader {
               }
               cubes.Add(cube);
 
-              puzzlePosition += 1f;
+              puzzlePosition += GameConsts.CubeSize;
             }
 
-            puzzleDepth += 1f;
+            puzzleDepth += GameConsts.CubeSize;
           }
 
           InternalPuzzle puzzle = new InternalPuzzle(cubes, typicalRotationsNeeded);

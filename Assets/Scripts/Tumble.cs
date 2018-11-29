@@ -46,14 +46,14 @@ public class Tumble : MonoBehaviour {
     if (Input.GetKeyUp(KeyCode.D))
       direction = Vector3.right;
 
-    TumbleInDirection(direction, 1f);
+    TumbleInDirection(direction, GameConsts.CubeSize);
   }
 
   IEnumerator DoTumble(Vector3 direction, float duration) {
     isMoving = true;
 
     var rotationAxis = Vector3.Cross(Vector3.up, direction);
-    var pivot = (transform.position + Vector3.down * 0.5f) + direction * 0.5f;
+    var pivot = (transform.position + Vector3.down * (GameConsts.CubeSize / 2)) + direction * (GameConsts.CubeSize / 2);
 
     var startRotation = transform.rotation;
     var endRotation = Quaternion.AngleAxis(90.0f, rotationAxis) * startRotation;

@@ -7,6 +7,8 @@ public class FloorStack : MonoBehaviour {
 
   List<GameObject> cubes = new List<GameObject>();
 
+  private int width;
+
   void Start() {
   }
 
@@ -14,11 +16,12 @@ public class FloorStack : MonoBehaviour {
   }
 
   // TODO rename this Add, and let callers simply ask to have a new stack of floor cubes added (eventually animated)
-  public void Build(GameObject floorCubePrefab, Vector3 position, int width) {
+  public void Build(GameObject floorCubePrefab, Vector3 position, int floorStackWidth) {
     for (int y = 0; y < FLOOR_STACK_HEIGHT; y++) {
-      for (int x = 0; x < width; x++) {
+      for (int x = 0; x < floorStackWidth; x++) {
         GameObject cube = (GameObject)Instantiate(floorCubePrefab, position + new Vector3(x, -y, 0f), Quaternion.identity);
         cubes.Add(cube);
+        width = floorStackWidth;
       }
     }
   }
@@ -49,5 +52,9 @@ public class FloorStack : MonoBehaviour {
       rb.useGravity = true;
       rb.constraints = RigidbodyConstraints.None;
     }
+  }
+
+  public float Width() {
+    return (float)width;
   }
 }

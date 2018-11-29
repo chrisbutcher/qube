@@ -11,7 +11,7 @@ public class Puzzle : MonoBehaviour {
   public enum State { Roll, RollPaused, DetonationPaused };
   Dictionary<State, float> StateDelays = new Dictionary<State, float>() {
     {State.Roll, 1f},
-    {State.RollPaused, 0.46f},
+    {State.RollPaused, 0.46f}, // TODO Constantize?
     {State.DetonationPaused, 2.16f},
   };
   Queue<State> stateQueue = new Queue<State>();
