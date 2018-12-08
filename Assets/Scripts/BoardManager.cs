@@ -16,11 +16,6 @@ public class BoardManager : MonoBehaviour {
 
   private PuzzleLoader puzzleLoader;
 
-  // TODO track which player destroyed which cube
-  // public List<GameObject> CubesAwaitingDestruction = new List<GameObject>();
-
-  // public static event SharedEvents.CubeScored OnCubeScored;
-
   void Awake() {
     floorManager = gameObject.AddComponent<FloorManager>();
 
@@ -71,21 +66,4 @@ public class BoardManager : MonoBehaviour {
       CurrentPuzzle.CleanUpDestroyedCubes();
     }
   }
-
-  // public void DestroyAnyStationaryDestructionAwaitingCubes() {
-  //   for (int i = 0; i < CubesAwaitingDestruction.Count; i++) {
-  //     var cubeToDestroy = CubesAwaitingDestruction[i];
-
-  //     if (!cubeToDestroy.GetComponent<Tumble>().isMoving) {
-  //       OnCubeScored(cubeToDestroy);
-
-  //       cubeToDestroy.SetActive(false);
-  //       Destroy(cubeToDestroy);
-  //       CubesAwaitingDestruction[i] = null;
-  //     }
-  //   }
-
-  //   CubesAwaitingDestruction.RemoveAll(cube => cube == null);
-  //   CleanUpDestroyedCubes();
-  // }
 }

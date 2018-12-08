@@ -4,7 +4,7 @@ using System;
 using UnityEngine;
 
 public class MarkerDetonationSubscribed : MonoBehaviour {
-  public static event SharedEvents.DestroyScoredCube OnCubeDestroy;
+  public static event SharedEvents.DestroyMarkedCubes OnMarkedCubesDestroy;
 
   void OnEnable() {
     PlayerMarker.OnMarkerDetonation += HandleMarkerDetonation;
@@ -22,8 +22,8 @@ public class MarkerDetonationSubscribed : MonoBehaviour {
     if (Util.Vec3sEqualXandZ(positionDetonatedIsMovingTo, detonatedMarker.transform.position)) {
       GetComponent<Destroyable>().MarkedForDestruction = true;
 
-      if (OnCubeDestroy != null) {
-        OnCubeDestroy();
+      if (OnMarkedCubesDestroy != null) {
+        OnMarkedCubesDestroy();
       }
     }
   }

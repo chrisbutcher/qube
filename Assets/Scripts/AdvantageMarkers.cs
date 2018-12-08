@@ -16,9 +16,9 @@ public class AdvantageMarkers : MonoBehaviour {
     Destroyable.OnCubeScored -= HandleCubeScored;
   }
 
-  void HandleCubeScored(GameObject destroyedCube) {
-    if (destroyedCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
-      var destroyedAdvantageCubePosition = destroyedCube.transform.position;
+  void HandleCubeScored(GameObject scoredCube) {
+    if (scoredCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
+      var destroyedAdvantageCubePosition = scoredCube.transform.position;
 
       for (float x = -1; x < 2; x++) {
         for (float z = -1; z < 2; z++) {

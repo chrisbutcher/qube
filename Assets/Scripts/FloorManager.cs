@@ -28,8 +28,8 @@ public class FloorManager : MonoBehaviour {
     Tumble.OnCubeFell -= HandleCubeFell;
   }
 
-  void HandleCubeScored(GameObject destroyedCube) {
-    var cubeType = destroyedCube.GetComponent<CubeType>().CurrentType;
+  void HandleCubeScored(GameObject scoredCube) {
+    var cubeType = scoredCube.GetComponent<CubeType>().CurrentType;
 
     if (cubeType == CubeType.Type.Forbidden) {
       DropLast();
