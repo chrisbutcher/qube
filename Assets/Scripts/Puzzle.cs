@@ -24,12 +24,14 @@ public class Puzzle : MonoBehaviour {
     puzzleCubes.Clear();
   }
 
+  public static event SharedEvents.DestroyScoredCube OnCubeDestroy;
+
   void OnEnable() {
-    BoardManager.OnCubeDetonation += HandleCubeDetonation;
+    Destroyable.OnCubeScored += HandleCubeScored;
   }
 
   void OnDisable() {
-    BoardManager.OnCubeDetonation -= HandleCubeDetonation;
+    Destroyable.OnCubeScored -= HandleCubeScored;
   }
 
   void Awake() {
@@ -39,7 +41,7 @@ public class Puzzle : MonoBehaviour {
   void Start() {
   }
 
-  void HandleCubeDetonation(GameObject destroyedCube) {
+  void HandleCubeScored(GameObject destroyedCube) {
     if (stateQueue.Count > 0) {
       if (stateQueue.Peek() != State.DetonationPaused) {
         stateQueue.Enqueue(State.DetonationPaused);
@@ -56,7 +58,9 @@ public class Puzzle : MonoBehaviour {
         sleepingFor -= Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
       } else {
         if (AllCubesStationary()) {
-          GameManager.instance.boardManager.DestroyAnyStationaryDestructionAwaitingCubes();
+          if (OnCubeDestroy != null) {
+            OnCubeDestroy();
+          }
 
           sleepingFor = 0f;
 

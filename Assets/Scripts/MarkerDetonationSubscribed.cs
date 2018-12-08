@@ -4,22 +4,27 @@ using System;
 using UnityEngine;
 
 public class MarkerDetonationSubscribed : MonoBehaviour {
+  public static event SharedEvents.DestroyScoredCube OnCubeDestroy;
+
   void OnEnable() {
-    PlayerMarker.OnMarkerDetonation += HandleDetonation;
-    AdvantageMarkers.OnAdvantageMarkerDetonation += HandleDetonation;
+    PlayerMarker.OnMarkerDetonation += HandleMarkerDetonation;
+    AdvantageMarkers.OnAdvantageMarkerDetonation += HandleMarkerDetonation;
   }
 
   void OnDisable() {
-    PlayerMarker.OnMarkerDetonation -= HandleDetonation;
-    AdvantageMarkers.OnAdvantageMarkerDetonation -= HandleDetonation;
+    PlayerMarker.OnMarkerDetonation -= HandleMarkerDetonation;
+    AdvantageMarkers.OnAdvantageMarkerDetonation -= HandleMarkerDetonation;
   }
 
-  void HandleDetonation(GameObject detonatedMarker) {
+  void HandleMarkerDetonation(GameObject detonatedMarker) {
     var positionDetonatedIsMovingTo = GetComponent<Tumble>().PositionMovingTo;
 
     if (Util.Vec3sEqualXandZ(positionDetonatedIsMovingTo, detonatedMarker.transform.position)) {
-      GameManager.instance.boardManager.CubesAwaitingDestruction.Add(gameObject);
-      GameManager.instance.boardManager.DestroyAnyStationaryDestructionAwaitingCubes();
+      GetComponent<Destroyable>().MarkedForDestruction = true;
+
+      if (OnCubeDestroy != null) {
+        OnCubeDestroy();
+      }
     }
   }
 }

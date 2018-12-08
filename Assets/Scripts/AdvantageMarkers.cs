@@ -9,14 +9,14 @@ public class AdvantageMarkers : MonoBehaviour {
   public static event SharedEvents.MarkerDetonationEvent OnAdvantageMarkerDetonation;
 
   void OnEnable() {
-    BoardManager.OnCubeDetonation += HandleCubeDetonation;
+    Destroyable.OnCubeScored += HandleCubeScored;
   }
 
   void OnDisable() {
-    BoardManager.OnCubeDetonation -= HandleCubeDetonation;
+    Destroyable.OnCubeScored -= HandleCubeScored;
   }
 
-  void HandleCubeDetonation(GameObject destroyedCube) {
+  void HandleCubeScored(GameObject destroyedCube) {
     if (destroyedCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
       var destroyedAdvantageCubePosition = destroyedCube.transform.position;
 
@@ -45,7 +45,7 @@ public class AdvantageMarkers : MonoBehaviour {
   void Update() {
     if (Input.GetKeyDown(KeyCode.Z)) {
 
-      // NOTE: Copy list of advantage markers, so we don't mutate while iterating it via HandleCubeDetonation.
+      // NOTE: Copy list of advantage markers, so we don't mutate while iterating it via HandleCubeScored.
       var advantageMarkersListToIterate = new List<GameObject>(AdvantageMarkersList);
       AdvantageMarkersList.Clear();
 

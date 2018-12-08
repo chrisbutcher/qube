@@ -19,16 +19,16 @@ public class FloorManager : MonoBehaviour {
   }
 
   void OnEnable() {
-    BoardManager.OnCubeDetonation += HandleCubeDetonation;
+    Destroyable.OnCubeScored += HandleCubeScored;
     Tumble.OnCubeFell += HandleCubeFell;
   }
 
   void OnDisable() {
-    BoardManager.OnCubeDetonation -= HandleCubeDetonation;
+    Destroyable.OnCubeScored -= HandleCubeScored;
     Tumble.OnCubeFell -= HandleCubeFell;
   }
 
-  void HandleCubeDetonation(GameObject destroyedCube) {
+  void HandleCubeScored(GameObject destroyedCube) {
     var cubeType = destroyedCube.GetComponent<CubeType>().CurrentType;
 
     if (cubeType == CubeType.Type.Forbidden) {
