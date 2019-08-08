@@ -39,9 +39,6 @@ public class AdvantageMarkers : MonoBehaviour {
     }
   }
 
-  void Start() {
-  }
-
   void Update() {
     if (Input.GetKeyDown(KeyCode.Z)) {
 

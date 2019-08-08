@@ -24,30 +24,42 @@ public class Destroyable : MonoBehaviour {
       if (OnCubeDestructionPause != null) {
         OnCubeDestructionPause();
       }
-      StartCoroutine(Fade());
+      StartCoroutine(SquashCubeAndScore());
     }
   }
 
-  IEnumerator Fade() {
+  IEnumerator SquashCubeAndScore() {
     float time = 1f;
     float elapsedTime = 0;
-    float initialYPos = this.gameObject.transform.position.y;
+
+    // Creating a new transform, initialized with worldspace defaults ...
+    Transform newParent = new GameObject().transform;
+
+    // ... and assigning it to the destroyed cube's parent transform.
+    //
+    // This is so that we can apply scale / position changes to it, that apply to the child cube the same way, regardless of how the child cube is oriented.
+    // In this case, squashing it "downward" after it's possibly rotated 0, 90, 180, 270 or 360 degress.
+    //
+
+    float initialYPos = newParent.position.y;
 
     while (elapsedTime < time) {
-      this.gameObject.transform.localScale = new Vector3(
+      newParent.localScale = new Vector3(
         1f,
         Mathf.SmoothStep(1.0f, 0.0f, (elapsedTime / time)),
         1f
       );
 
-      this.gameObject.transform.position = new Vector3(
-        this.gameObject.transform.position.x,
-        Mathf.SmoothStep(initialYPos, -0.5f, (elapsedTime / time)),
-        this.gameObject.transform.position.z
+      newParent.position = new Vector3(
+        newParent.position.x,
+        Mathf.SmoothStep(initialYPos, -0.50f, (elapsedTime / time)),
+        newParent.position.z
       );
 
       elapsedTime += Time.deltaTime;
+
       yield return null;
+      this.gameObject.transform.SetParent(newParent);
     }
 
     OnCubeScored(this.gameObject);
@@ -56,11 +68,5 @@ public class Destroyable : MonoBehaviour {
     Destroy(this.gameObject);
 
     GameManager.instance.boardManager.CleanUpDestroyedCubes();
-  }
-
-  void Start() {
-  }
-
-  void Update() {
   }
 }

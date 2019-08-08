@@ -8,7 +8,6 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
 public class PuzzleLoader {
-
   public struct InternalCube {
     public Vector3 position;
     public CubeType.Type type;

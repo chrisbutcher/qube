@@ -10,21 +10,12 @@ public class GameManager : MonoBehaviour {
   public List<GameObject> Players;
 
   void Awake() {
-    if (instance == null) {
-      instance = this;
-    } else if (instance != this) {
-      Destroy(gameObject);
-    }
-
-    DontDestroyOnLoad(gameObject);
+    SingletonSetup();
 
     boardManager = GetComponent<BoardManager>();
 
     var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(0f, 0f, -3), Quaternion.identity);
     Players.Add(player);
-  }
-
-  void Start() {
   }
 
   void Update() {
@@ -35,5 +26,14 @@ public class GameManager : MonoBehaviour {
 
   public float TumbleSpeedMultiplier() {
     return Input.GetKey(KeyCode.LeftShift) ? 4f : 1f;
+  }
+
+  void SingletonSetup() {
+    if (instance == null) {
+      instance = this;
+    } else if (instance != this) {
+      Destroy(gameObject);
+    }
+    DontDestroyOnLoad(gameObject);
   }
 }

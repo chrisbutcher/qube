@@ -12,12 +12,6 @@ public class FloorManager : MonoBehaviour {
     floorStacks = new Stack<FloorStack>();
   }
 
-  void Start() {
-  }
-
-  void Update() {
-  }
-
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
     Tumble.OnCubeFell += HandleCubeFell;

@@ -9,6 +9,7 @@ public class BoardManager : MonoBehaviour {
 
   Queue<Puzzle> puzzles = new Queue<Puzzle>();
   Puzzle CurrentPuzzle;
+
   public FloorManager floorManager;
 
   const int FLOOR_WIDTH = 4;
@@ -22,17 +23,17 @@ public class BoardManager : MonoBehaviour {
     for (int i = 0; i < FLOOR_LENGTH; i++) {
       floorManager.Add(FloorCubePrefab, FLOOR_WIDTH);
     }
+
+    puzzleLoader = new PuzzleLoader();
   }
 
   void Start() {
-    puzzleLoader = new PuzzleLoader();
-
     PushNewPuzzle();
   }
 
   void Update() {
     if (Input.GetKeyDown(KeyCode.O)) {
-      ClearBoard();
+      RemoveAllPuzzles();
       PushNewPuzzle();
     }
   }
@@ -40,11 +41,12 @@ public class BoardManager : MonoBehaviour {
   void PushNewPuzzle() {
     var internalPuzzle = puzzleLoader.LoadPuzzle(4, 2);
     var puzzle = gameObject.AddComponent<Puzzle>();
+
     puzzle.Build(CubePrefab, internalPuzzle);
     puzzles.Enqueue(puzzle);
   }
 
-  void ClearBoard() {
+  void RemoveAllPuzzles() {
     foreach (var p in puzzles) {
       p.DestroyAll();
     }
@@ -54,7 +56,8 @@ public class BoardManager : MonoBehaviour {
 
   public void ActivateNextPuzzle() {
     if (puzzles.Count > 0) {
-      var CurrentPuzzle = puzzles.Dequeue();
+      CurrentPuzzle = puzzles.Dequeue();
+
       if (CurrentPuzzle != null) {
         CurrentPuzzle.Activate();
       }

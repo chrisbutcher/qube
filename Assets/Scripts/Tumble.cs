@@ -25,12 +25,6 @@ public class Tumble : MonoBehaviour {
     }
   }
 
-  public void TumbleInDirection(Vector3 direction, float duration) {
-    if (direction != Vector3.zero && !isMoving && gameObject.activeInHierarchy) {
-      StartCoroutine(DoTumble(direction, duration));
-    }
-  }
-
   void HandleInput() {
     var direction = Vector3.zero;
 
@@ -46,7 +40,13 @@ public class Tumble : MonoBehaviour {
     if (Input.GetKeyUp(KeyCode.D))
       direction = Vector3.right;
 
-    TumbleInDirection(direction, GameConsts.CubeSize);
+    TumbleInDirection(direction, GameConsts.TumbleDuration);
+  }
+
+  public void TumbleInDirection(Vector3 direction, float duration) {
+    if (direction != Vector3.zero && !isMoving && gameObject.activeInHierarchy) {
+      StartCoroutine(DoTumble(direction, duration));
+    }
   }
 
   IEnumerator DoTumble(Vector3 direction, float duration) {
