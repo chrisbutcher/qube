@@ -10,6 +10,9 @@ public class Tumble : MonoBehaviour {
   private Rigidbody rb;
 
   public static event SharedEvents.CubeFell OnCubeFell;
+  public static event SharedEvents.PlayerSquashed OnPlayerSquashed;
+
+  private float tumbleProgress;
 
   void Start() {
     PositionMovingTo = transform.position;
@@ -62,11 +65,11 @@ public class Tumble : MonoBehaviour {
     PositionMovingTo = transform.position + direction;
 
     var rotationSpeed = 90.0f / duration;
-    var progress = 0.0f;
+    tumbleProgress = 0.0f;
 
-    while (progress < duration) {
+    while (tumbleProgress < duration) {
       var timeDelta = Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
-      progress += timeDelta;
+      tumbleProgress += timeDelta;
       transform.RotateAround(pivot, rotationAxis, rotationSpeed * timeDelta);
       yield return null;
     }
@@ -77,6 +80,17 @@ public class Tumble : MonoBehaviour {
     isMoving = false;
 
     StartFallingIfOffEdge();
+  }
+
+  void OnTriggerEnter(Collider collider) {
+    // Debug.Log("OnTriggerEnter");
+    // Debug.Log(collider.tag);
+
+    // TODO: Add one more condition here. To ensure that center of player is actually within grid space of tumbling cube, not just that they are in contact.
+    if (collider.tag == "Player" && tumbleProgress > GameConsts.TumbleDuration / 2f) {
+      // collider.gameObject.GetComponent<PlayerMovement>().enabled = false;
+      OnPlayerSquashed(collider.gameObject);
+    }
   }
 
   void StartFallingIfOffEdge() {

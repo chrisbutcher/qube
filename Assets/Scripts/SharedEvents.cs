@@ -8,4 +8,5 @@ public class SharedEvents {
   public delegate void CubeDestructionPause();
   public delegate void DestroyMarkedCubes();
   public delegate void CubeFell(GameObject fallenCube);
+  public delegate void PlayerSquashed(GameObject player);
 }
