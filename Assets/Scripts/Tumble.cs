@@ -91,10 +91,12 @@ public class Tumble : MonoBehaviour {
   void EnablePhysics() {
     rb.detectCollisions = true;
     rb.useGravity = true;
+    rb.isKinematic = false;
   }
 
   void DisablePhysics() {
-    rb.detectCollisions = false;
+    // rb.detectCollisions = false;
     rb.useGravity = false;
+    rb.isKinematic = true;
   }
 }

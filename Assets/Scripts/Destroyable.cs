@@ -29,7 +29,7 @@ public class Destroyable : MonoBehaviour {
   }
 
   IEnumerator SquashCubeAndScore() {
-    float time = 1f;
+    float time = .7f;
     float elapsedTime = 0;
 
     // Creating a new transform, initialized with worldspace defaults ...
