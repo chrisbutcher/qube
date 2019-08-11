@@ -20,7 +20,7 @@ public class PlayerMarker : MonoBehaviour {
       if (!CurrentPlayerMarker.activeInHierarchy) {
         CurrentPlayerMarker.SetActive(true);
 
-        var quantizedPlayerPosition = GetComponent<PlayerMovement>().QuantizedPlayerPosition;
+        var quantizedPlayerPosition = GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
 
         CurrentPlayerMarker.transform.position = new Vector3(
           quantizedPlayerPosition.x,

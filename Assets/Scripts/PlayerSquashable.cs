@@ -12,7 +12,7 @@ public class PlayerSquashable : MonoBehaviour {
   }
 
   void HandlePlayerSquashed(GameObject player) {
-    player.GetComponent<PlayerMovement>().enabled = false;
+    player.GetComponent<RigidBodyPlayerMovement>().enabled = false;
     player.GetComponent<CharacterController>().enabled = false;
     player.GetComponent<CapsuleCollider>().enabled = false;
 

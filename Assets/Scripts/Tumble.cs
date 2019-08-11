@@ -83,13 +83,15 @@ public class Tumble : MonoBehaviour {
   }
 
   void OnTriggerEnter(Collider collider) {
-    // Debug.Log("OnTriggerEnter");
-    // Debug.Log(collider.tag);
-
-    // TODO: Add one more condition here. To ensure that center of player is actually within grid space of tumbling cube, not just that they are in contact.
     if (collider.tag == "Player" && tumbleProgress > GameConsts.TumbleDuration / 2f) {
-      // collider.gameObject.GetComponent<PlayerMovement>().enabled = false;
-      OnPlayerSquashed(collider.gameObject);
+      var player = collider.gameObject;
+
+      var quantizedPlayerPosition = player.GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
+      var quantizedCubePosition = Util.FloorVec3(PositionMovingTo);
+
+      if (Util.Vec3sEqualXandZ(quantizedPlayerPosition, quantizedCubePosition)) {
+        OnPlayerSquashed(player);
+      }
     }
   }
 

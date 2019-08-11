@@ -11,14 +11,13 @@ GameObject:
   - component: {fileID: 4248564804019304}
   - component: {fileID: 33291781700071418}
   - component: {fileID: 23173186146850568}
-  - component: {fileID: 143180736861951426}
   - component: {fileID: 136978887516811256}
   - component: {fileID: 2410058343262657591}
-  - component: {fileID: 114632367772500328}
+  - component: {fileID: 4160746484860945409}
   - component: {fileID: 114711780387095222}
   - component: {fileID: 114357343650714300}
   - component: {fileID: 4547506369795109363}
-  m_Layer: 0
+  m_Layer: 11
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -85,24 +84,6 @@ MeshRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
---- !u!143 &143180736861951426
-CharacterController:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1336510127863680}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 0
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Height: 1.9999999
-  m_Radius: 0.3
-  m_SlopeLimit: 45
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!136 &136978887516811256
 CapsuleCollider:
   m_ObjectHideFlags: 0
@@ -111,7 +92,7 @@ CapsuleCollider:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1336510127863680}
   m_Material: {fileID: 0}
-  m_IsTrigger: 1
+  m_IsTrigger: 0
   m_Enabled: 1
   m_Radius: 0.6
   m_Height: 2
@@ -125,15 +106,15 @@ Rigidbody:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1336510127863680}
   serializedVersion: 2
-  m_Mass: 0.0000001
+  m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
-  m_Interpolate: 0
+  m_Interpolate: 1
   m_Constraints: 116
   m_CollisionDetection: 0
---- !u!114 &114632367772500328
+--- !u!114 &4160746484860945409
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -142,13 +123,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1336510127863680}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 8f265f5c06c8b489a829f34e09b4e9c2, type: 3}
+  m_Script: {fileID: 11500000, guid: a8ce78b8f2be9ed49b28b318c54dc8d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  Speed: 5
   QuantizedPlayerPosition: {x: 0, y: 0, z: 0}
-  speed: 6
-  jumpSpeed: 8
-  gravity: 20
 --- !u!114 &114711780387095222
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -186,7 +165,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1336510127863680}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 40e5964b1075879408a8003afeb33372, type: 3}
   m_Name: 
