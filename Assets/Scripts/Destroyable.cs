@@ -39,7 +39,6 @@ public class Destroyable : MonoBehaviour {
     //
     // This is so that we can apply scale / position changes to it, that apply to the child cube the same way, regardless of how the child cube is oriented.
     // In this case, squashing it "downward" after it's possibly rotated 0, 90, 180, 270 or 360 degress.
-    //
 
     float initialYPos = newParent.position.y;
 

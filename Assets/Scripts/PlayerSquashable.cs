@@ -13,24 +13,29 @@ public class PlayerSquashable : MonoBehaviour {
 
   void HandlePlayerSquashed(GameObject player) {
     player.GetComponent<RigidBodyPlayerMovement>().enabled = false;
-    player.GetComponent<CharacterController>().enabled = false;
     player.GetComponent<CapsuleCollider>().enabled = false;
 
-    // FIXME: Broken at the moment...
-    // StartCoroutine(AnimateSquash(player));
+    StartCoroutine(AnimateSquash(player));
   }
 
   IEnumerator AnimateSquash(GameObject player) {
-    float time = .7f;
+    float time = .4f;
     float elapsedTime = 0;
 
     var initialScale = player.transform.localScale;
+    var initialPosition = player.transform.position;
 
     while (elapsedTime < time) {
       player.transform.localScale = new Vector3(
         initialScale.x,
         Mathf.SmoothStep(initialScale.y, 0.0f, (elapsedTime / time)),
-        initialScale.y
+        initialScale.z
+      );
+
+      player.transform.position = new Vector3(
+        initialPosition.x,
+        Mathf.SmoothStep(initialPosition.y, GameConsts.PlayerSquashDownwardDistance, (elapsedTime / time)),
+        initialPosition.z
       );
 
       elapsedTime += Time.deltaTime;

@@ -13,7 +13,7 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
   private Rigidbody rb;
 
   void Awake() {
-    setQuantizedPlayerPosition();
+    // setQuantizedPlayerPosition();
     rb = GetComponent<Rigidbody>();
   }
 
@@ -45,7 +45,7 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
   }
 
   private Vector3 getPlayerPositionWithOffset() {
-    return transform.position - PLAYER_OFFSET;
+    return rb.position - PLAYER_OFFSET;
   }
 
   private void setQuantizedPlayerPosition() {

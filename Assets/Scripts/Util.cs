@@ -21,9 +21,4 @@ public class Util {
       this.type = type;
     }
   }
-
-  // public int RandomNumber(int from, int to) {
-  //   Random r = new Random();
-  //   return r.Next(from, to);
-  // }
 }

@@ -71,6 +71,7 @@ public class Tumble : MonoBehaviour {
       var timeDelta = Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
       tumbleProgress += timeDelta;
       transform.RotateAround(pivot, rotationAxis, rotationSpeed * timeDelta);
+
       yield return null;
     }
 
@@ -82,8 +83,10 @@ public class Tumble : MonoBehaviour {
     StartFallingIfOffEdge();
   }
 
-  void OnTriggerEnter(Collider collider) {
-    if (collider.tag == "Player" && tumbleProgress > GameConsts.TumbleDuration / 2f) {
+  void OnCollisionEnter(Collision collision) {
+    var collider = collision.collider;
+
+    if (collider.tag == "Player" && tumbleProgress > GameConsts.TumbleDuration / 3f) {
       var player = collider.gameObject;
 
       var quantizedPlayerPosition = player.GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
