@@ -10,10 +10,10 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
 
   // NOTE: In order to get smooth player movement while moving it via rb.MovePosition below, I had to set Fixed Timestep (in project settings)
   // to 0.005 instead of the default 0.02. This increases CPU usage FYI.
-  private Rigidbody rb;
+  Rigidbody rb;
+  Quaternion lookDirection;
 
   void Awake() {
-    // setQuantizedPlayerPosition();
     rb = GetComponent<Rigidbody>();
   }
 
@@ -22,7 +22,6 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
     setQuantizedPlayerPosition();
 
     Vector3 directionVector = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
-
     Vector3 deltaMoveDirection = directionVector * Speed * Time.deltaTime;
 
     var playerPositionWithOffset = getPlayerPositionWithOffset();
@@ -42,6 +41,11 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
     }
 
     rb.MovePosition(rb.position + deltaMoveDirection);
+
+    if (directionVector != Vector3.zero) {
+      lookDirection = Quaternion.LookRotation(directionVector);
+      rb.MoveRotation(Quaternion.LookRotation(directionVector));
+    }
   }
 
   private Vector3 getPlayerPositionWithOffset() {
