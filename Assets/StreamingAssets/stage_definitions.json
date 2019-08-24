@@ -1,0 +1,49 @@
+{
+  "stages": [
+      {
+          "name": 1,
+          "waveCount": 4,
+          "puzzlesPerWave": 3
+      },
+      {
+          "name": 2,
+          "waveCount": 4,
+          "puzzlesPerWave": 3
+      },
+      {
+          "name": 3,
+          "waveCount": 4,
+          "puzzlesPerWave": 3
+      },
+      {
+          "name": 4,
+          "waveCount": 4,
+          "puzzlesPerWave": 2
+      },
+      {
+          "name": 5,
+          "waveCount": 4,
+          "puzzlesPerWave": 3
+      },
+      {
+          "name": 6,
+          "waveCount": 4,
+          "puzzlesPerWave": 2
+      },
+      {
+          "name": 7,
+          "waveCount": 4,
+          "puzzlesPerWave": 3
+      },
+      {
+          "name": 8,
+          "waveCount": 4,
+          "puzzlesPerWave": 2
+      },
+      {
+          "name": 9,
+          "waveCount": 4,
+          "puzzlesPerWave": 1
+      }
+  ]
+}

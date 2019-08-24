@@ -13,7 +13,7 @@ public class BoardManager : MonoBehaviour {
   public FloorManager floorManager;
 
   const int FLOOR_WIDTH = 4;
-  const int FLOOR_LENGTH = 10;
+  const int FLOOR_LENGTH = 15;
 
   private PuzzleLoader puzzleLoader;
 

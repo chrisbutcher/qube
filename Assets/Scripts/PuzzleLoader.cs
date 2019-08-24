@@ -47,6 +47,7 @@ public class PuzzleLoader {
     return puzzle;
   }
 
+  // TODO: Rewrite/use https://app.quicktype.io/ instead of hand-rolled loader/parser
   private void LoadAndParsePuzzles() {
     string filePath = Path.Combine(Application.streamingAssetsPath, FILENAME);
 
