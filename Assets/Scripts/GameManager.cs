@@ -13,8 +13,9 @@ public class GameManager : MonoBehaviour {
   public GameObject PlayerPrefab;
   public List<GameObject> Players;
 
-  StageDefinitions stageDefinitions;
+  // https://www.youtube.com/watch?v=BZM9kTGFeko&t=101s TODO: Implement rest of gameplay!
 
+  StageDefinitions stageDefinitions;
   public int CurrentStageIndex = 0;
   public Stage CurrentStage;
   public int CurrentWave;
