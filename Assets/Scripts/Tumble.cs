@@ -103,6 +103,8 @@ public class Tumble : MonoBehaviour {
       isFalling = true;
 
       EnablePhysics();
+
+      GetComponent<Destroyable>().DestroyedByPlayerOrByFalling = true;
       OnCubeFell(this.gameObject);
     }
   }

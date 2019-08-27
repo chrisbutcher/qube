@@ -5,7 +5,7 @@ using UnityEngine;
 public class Puzzle : MonoBehaviour {
   List<GameObject> puzzleCubes = new List<GameObject>();
 
-  bool active = false;
+  public bool active = false;
   float sleepingFor = 0f;
 
   public enum State { Roll, RollPaused, DetonationPaused };
@@ -42,12 +42,14 @@ public class Puzzle : MonoBehaviour {
   }
 
   void HandleCubeDestructionPause() {
-    if (stateQueue.Count > 0) {
-      if (stateQueue.Peek() != State.DetonationPaused) {
+    if (active) {
+      if (stateQueue.Count > 0) {
+        if (stateQueue.Peek() != State.DetonationPaused) {
+          stateQueue.Enqueue(State.DetonationPaused);
+        }
+      } else {
         stateQueue.Enqueue(State.DetonationPaused);
       }
-    } else {
-      stateQueue.Enqueue(State.DetonationPaused);
     }
   }
 
@@ -82,11 +84,15 @@ public class Puzzle : MonoBehaviour {
         }
       }
     }
+
+    if (puzzleCubes.Count == 0) {
+      active = false;
+    }
   }
 
-  public void Build(GameObject cubePrefab, PuzzleLoader.InternalPuzzle internalPuzzle) {
+  public void Build(GameObject cubePrefab, PuzzleLoader.InternalPuzzle internalPuzzle, Vector3 positionOffset) {
     foreach (var positionAndType in internalPuzzle.cubes) {
-      GameObject cube = (GameObject)Instantiate(cubePrefab, positionAndType.position, Quaternion.identity);
+      GameObject cube = (GameObject)Instantiate(cubePrefab, positionAndType.position + positionOffset, Quaternion.identity);
       cube.GetComponent<CubeType>().CurrentType = positionAndType.type;
 
       puzzleCubes.Add(cube);
@@ -107,6 +113,24 @@ public class Puzzle : MonoBehaviour {
 
   public bool IsActive() {
     return active;
+  }
+
+  public int CubeCount() {
+    return puzzleCubes.Count;
+  }
+
+  public int ActiveGameObjectCubeCount() {
+    int activeCount = 0;
+    foreach (var c in puzzleCubes) {
+
+      if (c != null) {
+        if (c.GetComponent<Destroyable>().DestroyedByPlayerOrByFalling == false) {
+          activeCount += 1;
+        }
+      }
+    }
+
+    return activeCount;
   }
 
   public void CleanUpDestroyedCubes() {

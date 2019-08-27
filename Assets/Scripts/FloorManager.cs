@@ -9,7 +9,7 @@ public class FloorManager : MonoBehaviour {
   Stack<FloorStack> floorStacks;
 
   void Awake() {
-    floorStacks = new Stack<FloorStack>();
+    Reset();
   }
 
   void OnEnable() {
@@ -36,6 +36,10 @@ public class FloorManager : MonoBehaviour {
     if (cubeType != CubeType.Type.Forbidden) {
       DropLast();
     }
+  }
+
+  public void Reset() {
+    floorStacks = new Stack<FloorStack>();
   }
 
   public void Add(GameObject floorCubePrefab, int width) {

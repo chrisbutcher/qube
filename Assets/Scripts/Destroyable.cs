@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Destroyable : MonoBehaviour {
+  public bool DestroyedByPlayerOrByFalling = false;
 
   public bool MarkedForDestruction = false;
 
@@ -61,9 +62,12 @@ public class Destroyable : MonoBehaviour {
       this.gameObject.transform.SetParent(newParent);
     }
 
+
+    DestroyedByPlayerOrByFalling = true;
     OnCubeScored(this.gameObject);
 
     this.gameObject.SetActive(false);
+
     Destroy(this.gameObject);
 
     GameManager.instance.boardManager.CleanUpDestroyedCubes();

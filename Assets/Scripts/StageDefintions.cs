@@ -12,13 +12,24 @@ public partial class StageDefinitions {
 
 public partial class Stage {
   [JsonProperty("name")]
-  public long Name { get; set; }
-
-  [JsonProperty("waveCount")]
-  public long WaveCount { get; set; }
+  public int Name { get; set; }
 
   [JsonProperty("puzzlesPerWave")]
-  public long PuzzlesPerWave { get; set; }
+  public int PuzzlesPerWave { get; set; }
+
+  [JsonProperty("waves")]
+  public List<Wave> Waves { get; set; }
+}
+
+public partial class Wave {
+  [JsonProperty("name")]
+  public int Name { get; set; }
+
+  [JsonProperty("width")]
+  public int Width { get; set; }
+
+  [JsonProperty("depth")]
+  public int Depth { get; set; }
 }
 
 public partial class StageDefinitions {
