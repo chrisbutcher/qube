@@ -38,22 +38,7 @@ public class BoardManager : MonoBehaviour {
       puzzle.Build(CubePrefab, internalPuzzle, positionOffset);
       puzzles.Push(puzzle);
     }
-
-    StartCoroutine(AutomaticallyActivateWave());
   }
-
-  IEnumerator AutomaticallyActivateWave() {
-    float time = 1f;
-    float elapsedTime = 0;
-
-    while (elapsedTime < time) {
-      elapsedTime += Time.deltaTime;
-      yield return null;
-    }
-
-    ActivateNextPuzzle();
-  }
-
 
   void RemoveAllPuzzles() {
     foreach (var p in puzzles) {

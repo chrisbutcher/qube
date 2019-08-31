@@ -99,6 +99,7 @@ public class GameManager : MonoBehaviour {
   void Start() {
     boardManager.LoadStage(CurrentWave.Width, 15); // TODO: Determine dynamic floor depth as stages change
     boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
+    StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
 
     var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(1.5f, 0f, -7.5f), Quaternion.identity); // TODO: Do not hard code initial player position
     Players.Add(player);
@@ -116,7 +117,7 @@ public class GameManager : MonoBehaviour {
     if (boardManager.HasActivePuzzle() == false) {
 
       if (boardManager.CurrentWavePuzzleCount() > 0) { // If the current wave has an already loaded puzzle...
-        boardManager.ActivateNextPuzzle(); // activate it, to continue this wave
+        StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
       } else {
         // TODO: Load next wave, unless end of stage
         Debug.Log("END OF WAVE");
@@ -125,6 +126,7 @@ public class GameManager : MonoBehaviour {
           CurrentWaveIndex += 1;
           CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
           boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
+          StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
         } else {
           Debug.Log("END OF STAGE");
         }
@@ -132,10 +134,10 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  void Update() {
-    // if (Input.GetKeyDown(KeyCode.BackQuote)) {
-    //   boardManager.ActivateNextPuzzle();
-    // }
+  IEnumerator ActivateNextPuzzleAfterDelay(float afterDelay) {
+    yield return new WaitForSeconds(afterDelay);
+
+    boardManager.ActivateNextPuzzle(); // activate it, to continue this wave
   }
 
   public float TumbleSpeedMultiplier() {

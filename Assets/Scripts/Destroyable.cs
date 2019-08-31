@@ -6,6 +6,7 @@ public class Destroyable : MonoBehaviour {
   public bool DestroyedByPlayerOrByFalling = false;
 
   public bool MarkedForDestruction = false;
+  public bool AnimatingDestruction = false;
 
   public static event SharedEvents.CubeDestructionPause OnCubeDestructionPause;
   public static event SharedEvents.CubeScored OnCubeScored;
@@ -21,10 +22,12 @@ public class Destroyable : MonoBehaviour {
   }
 
   void HandleCubeDestroyed() {
-    if (this.MarkedForDestruction && !this.GetComponent<Tumble>().isMoving) {
+    if (this.MarkedForDestruction && !this.GetComponent<Tumble>().isMoving && !AnimatingDestruction) {
       if (OnCubeDestructionPause != null) {
         OnCubeDestructionPause();
       }
+
+      AnimatingDestruction = true;
       StartCoroutine(SquashCubeAndScore());
     }
   }
@@ -32,6 +35,8 @@ public class Destroyable : MonoBehaviour {
   IEnumerator SquashCubeAndScore() {
     float time = .7f;
     float elapsedTime = 0;
+
+    Debug.Log($"Started cube destruction at frame: {Time.frameCount}");
 
     // Creating a new transform, initialized with worldspace defaults ...
     Transform newParent = new GameObject().transform;
