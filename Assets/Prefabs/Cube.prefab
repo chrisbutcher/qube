@@ -166,6 +166,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f0b7a81d17bcd42ab97277cb492aa0b5, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  DestroyedByPlayerOrByFalling: 0
   MarkedForDestruction: 0
 --- !u!114 &114466241179242566
 MonoBehaviour:

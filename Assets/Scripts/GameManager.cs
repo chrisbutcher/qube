@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour {
   //   again empty.  This meter resets for each wave of puzzles.  As the puzzles get larger, you can drop more Qubes over the edge before you start losing rows off the grid
 
   // GETTING SQUISHED
-  // * [ ] If you do get squished, twom ajor things will happen.  Firstly, the puzzle will accelerate, denying you the chance to complete it.  Any remaining Qubes will be dropped off the edge, and 
+  // * [ ] If you do get squished, twom ajor things will happen.  Firstly, the puzzle will accelerate, denying you the chance to complete it.  Any remaining Qubes will be dropped off the edge, and
   // *   they will count towards your allowed dropped Qube total, as measured by the Block Scale.  If this allowed number is exceeded, you will lose rows off the grid accordingly.  Please note that
   // *   when squished, even Forbidden Qubes will add to the Block Scale counter.
   // * [ ] Oncc squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again.This time, however, the over-the-block indicators that are present
@@ -133,9 +133,9 @@ public class GameManager : MonoBehaviour {
   }
 
   void Update() {
-    if (Input.GetKeyDown(KeyCode.BackQuote)) {
-      boardManager.ActivateNextPuzzle();
-    }
+    // if (Input.GetKeyDown(KeyCode.BackQuote)) {
+    //   boardManager.ActivateNextPuzzle();
+    // }
   }
 
   public float TumbleSpeedMultiplier() {

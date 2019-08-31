@@ -84,6 +84,14 @@ public class Tumble : MonoBehaviour {
   }
 
   void OnCollisionEnter(Collision collision) {
+    HandleCollisionEnterOrStay(collision);
+  }
+
+  void OnCollisionStay(Collision collision) {
+    HandleCollisionEnterOrStay(collision);
+  }
+
+  void HandleCollisionEnterOrStay(Collision collision) {
     var collider = collision.collider;
 
     if (collider.tag == "Player" && tumbleProgress > GameConsts.TumbleDuration / 3f) {
