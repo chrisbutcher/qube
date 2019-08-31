@@ -11,6 +11,8 @@ public class Tumble : MonoBehaviour {
 
   public static event SharedEvents.CubeFell OnCubeFell;
   public static event SharedEvents.PlayerSquashed OnPlayerSquashed;
+  public static event SharedEvents.CubeStartedRotating OnCubeStartedRotating;
+  public static event SharedEvents.CubeFinishedRotating OnCubeFinishedRotating;
 
   private float tumbleProgress;
 
@@ -67,6 +69,8 @@ public class Tumble : MonoBehaviour {
     var rotationSpeed = 90.0f / duration;
     tumbleProgress = 0.0f;
 
+    OnCubeStartedRotating(this.gameObject);
+
     while (tumbleProgress < duration) {
       var timeDelta = Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
       tumbleProgress += timeDelta;
@@ -74,6 +78,8 @@ public class Tumble : MonoBehaviour {
 
       yield return null;
     }
+
+    OnCubeFinishedRotating(this.gameObject);
 
     transform.rotation = endRotation;
     transform.position = PositionMovingTo;

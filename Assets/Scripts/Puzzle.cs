@@ -123,6 +123,17 @@ public class Puzzle : MonoBehaviour {
     return puzzleCubes.Count;
   }
 
+  public bool CubeIsInCurrentPuzzle(GameObject cube) {
+    foreach (var c in puzzleCubes) {
+      if (c == cube) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
   public int ActiveGameObjectCubeCount() {
     int activeCount = 0;
     foreach (var c in puzzleCubes) {

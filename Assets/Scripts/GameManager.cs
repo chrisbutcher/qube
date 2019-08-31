@@ -65,6 +65,7 @@ public class GameManager : MonoBehaviour {
 
   public static GameManager instance = null;
   public BoardManager boardManager;
+  public CubeRotationMonitor cubeRotationMonitor;
 
   public GameObject PlayerPrefab;
   public List<GameObject> Players;
@@ -78,6 +79,8 @@ public class GameManager : MonoBehaviour {
 
   public int CurrentWaveBlockScaleUsed = 0; // TODO: This meter resets for each wave of puzzles
   public int CurrentWaveBlockScaleAvailable = 3; // TODO: Find out size of block scale per stage/wave.
+
+  public bool CurrentPuzzlePlayerMadeMistakes = false; // Mistake == capturing a forbidden cube, or dropping a non-forbidden cube
 
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
@@ -98,15 +101,22 @@ public class GameManager : MonoBehaviour {
     CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
 
     boardManager = GetComponent<BoardManager>();
+    cubeRotationMonitor = GetComponent<CubeRotationMonitor>();
   }
 
   void Start() {
     boardManager.LoadStage(CurrentWave.Width, 15); // TODO: Determine dynamic floor depth as stages change
-    boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
-    StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
+    LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
 
     var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(1.5f, 0f, -7.5f), Quaternion.identity); // TODO: Do not hard code initial player position
     Players.Add(player);
+  }
+
+  void LoadWaveAndPerformSideEffects(int numPuzzles, int width, int depth) {
+    boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
+    CurrentWaveBlockScaleUsed = 0;
+
+    StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
   }
 
   void HandleCubeScored(GameObject scoredCube) {
@@ -114,11 +124,26 @@ public class GameManager : MonoBehaviour {
   }
 
   void HandleCubeFell(GameObject fallenCube) {
+    var cubeType = fallenCube.GetComponent<CubeType>().CurrentType;
+
+    if (cubeType != CubeType.Type.Forbidden) {
+      CurrentPuzzlePlayerMadeMistakes = true;
+
+      CurrentWaveBlockScaleUsed += 1;
+
+      if (CurrentWaveBlockScaleUsed >= CurrentWaveBlockScaleAvailable) {
+        boardManager.floorManager.DropLast();
+      }
+    }
+
     PossiblyLoadNextWaveOrStage(fallenCube);
   }
 
   void PossiblyLoadNextWaveOrStage(GameObject fallenOrDestroyedCube) {
     if (boardManager.HasActivePuzzle() == false) {
+      if (CurrentPuzzlePlayerMadeMistakes == false) {
+        boardManager.floorManager.Add(CurrentWave.Width);
+      }
 
       if (boardManager.CurrentWavePuzzleCount() > 0) { // If the current wave has an already loaded puzzle...
         StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
@@ -129,8 +154,7 @@ public class GameManager : MonoBehaviour {
         if (CurrentWaveIndex + 1 <= CurrentStage.Waves.Count) {
           CurrentWaveIndex += 1;
           CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
-          boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
-          StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
+          LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
         } else {
           Debug.Log("END OF STAGE");
         }
@@ -138,8 +162,13 @@ public class GameManager : MonoBehaviour {
     }
   }
 
+
+
   IEnumerator ActivateNextPuzzleAfterDelay(float afterDelay) {
     yield return new WaitForSeconds(afterDelay);
+
+    cubeRotationMonitor.CubeScoredThisPuzzle = false;
+    CurrentPuzzlePlayerMadeMistakes = false;
 
     boardManager.ActivateNextPuzzle(); // activate it, to continue this wave
   }

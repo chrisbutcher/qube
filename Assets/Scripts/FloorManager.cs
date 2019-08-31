@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Linq;
 
 public class FloorManager : MonoBehaviour {
+  public GameObject FloorCubePrefab;
   const float FLOOR_HEIGHT = -GameConsts.CubeSize;
 
   Stack<FloorStack> floorStacks;
@@ -14,26 +15,18 @@ public class FloorManager : MonoBehaviour {
 
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
-    Tumble.OnCubeFell += HandleCubeFell;
   }
 
   void OnDisable() {
     Destroyable.OnCubeScored -= HandleCubeScored;
-    Tumble.OnCubeFell -= HandleCubeFell;
   }
 
   void HandleCubeScored(GameObject scoredCube) {
     var cubeType = scoredCube.GetComponent<CubeType>().CurrentType;
 
     if (cubeType == CubeType.Type.Forbidden) {
-      DropLast();
-    }
-  }
+      GameManager.instance.CurrentPuzzlePlayerMadeMistakes = true;
 
-  void HandleCubeFell(GameObject fallenCube) {
-    var cubeType = fallenCube.GetComponent<CubeType>().CurrentType;
-
-    if (cubeType != CubeType.Type.Forbidden) {
       DropLast();
     }
   }
@@ -42,7 +35,7 @@ public class FloorManager : MonoBehaviour {
     floorStacks = new Stack<FloorStack>();
   }
 
-  public void Add(GameObject floorCubePrefab, int width) {
+  public void Add(int width) {
     var nextStackLocation = new Vector3(0, FLOOR_HEIGHT, 0);
     FloorStack lastStack = null;
 
@@ -56,7 +49,7 @@ public class FloorManager : MonoBehaviour {
     }
 
     var floorStack = gameObject.AddComponent<FloorStack>();
-    floorStack.Build(floorCubePrefab, nextStackLocation, width);
+    floorStack.Build(FloorCubePrefab, nextStackLocation, width);
     floorStacks.Push(floorStack);
   }
 

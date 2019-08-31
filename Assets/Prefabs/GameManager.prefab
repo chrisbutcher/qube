@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 4488957446979246}
   - component: {fileID: 114801143337416018}
   - component: {fileID: 114926829590886710}
+  - component: {fileID: -2769237553329186607}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -48,6 +49,12 @@ MonoBehaviour:
   PlayerPrefab: {fileID: 1336510127863680, guid: 987990f80592d43258eaaf40ed5c628e,
     type: 3}
   Players: []
+  CurrentStageIndex: 0
+  CurrentWaveIndex: 0
+  CurrentStageScore: 0
+  CubeScoredThisPuzzle: 0
+  CurrentWaveBlockScaleUsed: 3
+  CurrentWaveBlockScaleAvailable: 3
 --- !u!114 &114926829590886710
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -64,3 +71,15 @@ MonoBehaviour:
   FloorCubePrefab: {fileID: 1487568600275232, guid: 686801ed3384044ccbb254a992e2a019,
     type: 3}
   floorManager: {fileID: 0}
+--- !u!114 &-2769237553329186607
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1438254896453662}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 14326f6ce97846c42b56bad3934446d1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

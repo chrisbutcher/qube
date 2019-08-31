@@ -17,6 +17,8 @@ public class BoardManager : MonoBehaviour {
 
   void Awake() {
     floorManager = gameObject.AddComponent<FloorManager>();
+    floorManager.FloorCubePrefab = FloorCubePrefab;
+
     puzzleLoader = new PuzzleLoader();
   }
 
@@ -25,7 +27,7 @@ public class BoardManager : MonoBehaviour {
     floorManager.Reset();
 
     for (int i = 0; i < depth; i++) {
-      floorManager.Add(FloorCubePrefab, width);
+      floorManager.Add(width);
     }
   }
 
@@ -67,6 +69,14 @@ public class BoardManager : MonoBehaviour {
       }
 
       return true;
+    } else {
+      return false;
+    }
+  }
+
+  public bool CubeIsInCurrentPuzzle(GameObject cube) {
+    if (CurrentPuzzle != null) {
+      return CurrentPuzzle.CubeIsInCurrentPuzzle(cube);
     } else {
       return false;
     }
