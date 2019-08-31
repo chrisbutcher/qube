@@ -168,6 +168,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   DestroyedByPlayerOrByFalling: 0
   MarkedForDestruction: 0
+  AnimatingDestruction: 0
 --- !u!114 &114466241179242566
 MonoBehaviour:
   m_ObjectHideFlags: 0

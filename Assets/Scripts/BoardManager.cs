@@ -52,6 +52,14 @@ public class BoardManager : MonoBehaviour {
     return puzzles.Count;
   }
 
+  public Puzzle CurrentPuzzleOrNextPuzzleUp() {
+    if (CurrentPuzzle != null) {
+      return CurrentPuzzle;
+    }
+
+    return puzzles.Peek();
+  }
+
   public bool HasActivePuzzle() {
     if (CurrentPuzzle != null) {
       if (CurrentPuzzle.ActiveGameObjectCubeCount() == 0) {

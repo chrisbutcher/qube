@@ -74,6 +74,10 @@ public class GameManager : MonoBehaviour {
   public Stage CurrentStage;
   public int CurrentWaveIndex = 0;
   public Wave CurrentWave;
+  public int CurrentStageScore;
+
+  public int CurrentWaveBlockScaleUsed = 0; // TODO: This meter resets for each wave of puzzles
+  public int CurrentWaveBlockScaleAvailable = 3; // TODO: Find out size of block scale per stage/wave.
 
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;

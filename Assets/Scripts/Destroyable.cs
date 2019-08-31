@@ -36,8 +36,6 @@ public class Destroyable : MonoBehaviour {
     float time = .7f;
     float elapsedTime = 0;
 
-    Debug.Log($"Started cube destruction at frame: {Time.frameCount}");
-
     // Creating a new transform, initialized with worldspace defaults ...
     Transform newParent = new GameObject().transform;
 

@@ -8,6 +8,9 @@ public class Puzzle : MonoBehaviour {
   public bool active = false;
   float sleepingFor = 0f;
 
+  public int RotationsSinceFirstCubeDestroyed;
+  public int TypicalRotationNumber;
+
   public enum State { Roll, RollPaused, DetonationPaused };
   Dictionary<State, float> StateDelays = new Dictionary<State, float>() {
     {State.Roll, 1f},
@@ -94,6 +97,7 @@ public class Puzzle : MonoBehaviour {
     foreach (var positionAndType in internalPuzzle.cubes) {
       GameObject cube = (GameObject)Instantiate(cubePrefab, positionAndType.position + positionOffset, Quaternion.identity);
       cube.GetComponent<CubeType>().CurrentType = positionAndType.type;
+      TypicalRotationNumber = internalPuzzle.typicalRotationsNeeded;
 
       puzzleCubes.Add(cube);
     }
