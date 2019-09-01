@@ -24,7 +24,11 @@ public class MarkerDetonationSubscribed : MonoBehaviour {
       // And its destination position (defaults to current position) is the same as the detonated marker...
       if (Util.Vec3sEqualXandZ(positionDetonatedIsMovingTo, detonatedMarker.transform.position)) {
         // ... mark it for destruction!
-        GetComponent<Destroyable>().MarkedForDestruction = true;
+        var destroyable = GetComponent<Destroyable>();
+        destroyable.MarkedForDestruction = true;
+
+        var markerType = detonatedMarker.GetComponent<MarkerType>().CurrentType;
+        destroyable.MarkerTypeDestroyedBy = markerType;
 
         if (OnMarkedCubesDestroy != null) {
           OnMarkedCubesDestroy();

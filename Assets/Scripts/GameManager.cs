@@ -59,7 +59,7 @@ public class GameManager : MonoBehaviour {
   //                   up to maximum of: 27,000 (1st Stage)
   //                                     39,000 (3rd Stage)
   //                                     40,000 (all other Stages)
-  //              TODO: Implement per-stage row bonus maximums
+  //                   TODO: Implement per-stage row bonus maximums
 
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 
@@ -75,12 +75,12 @@ public class GameManager : MonoBehaviour {
   public Stage CurrentStage;
   public int CurrentWaveIndex = 0;
   public Wave CurrentWave;
-  public int CurrentStageScore;
 
   public int CurrentWaveBlockScaleUsed = 0; // TODO: This meter resets for each wave of puzzles
   public int CurrentWaveBlockScaleAvailable = 3; // TODO: Find out size of block scale per stage/wave.
 
   public bool CurrentPuzzlePlayerMadeMistakes = false; // Mistake == capturing a forbidden cube, or dropping a non-forbidden cube
+  public int CurrentStageScore;
 
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
@@ -119,7 +119,15 @@ public class GameManager : MonoBehaviour {
     StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
   }
 
-  void HandleCubeScored(GameObject scoredCube) {
+  void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
+    // Score captured non-forbidden cubes
+    // TODO: Constantize
+    if (scoredByMarkerType is MarkerType.Type.AdvantageMarker) {
+      CurrentStageScore += 200;
+    } else if (scoredByMarkerType is MarkerType.Type.PlayerMarker) {
+      CurrentStageScore += 100;
+    }
+
     PossiblyLoadNextWaveOrStage(scoredCube);
   }
 
@@ -141,7 +149,22 @@ public class GameManager : MonoBehaviour {
 
   void PossiblyLoadNextWaveOrStage(GameObject fallenOrDestroyedCube) {
     if (boardManager.HasActivePuzzle() == false) {
-      if (CurrentPuzzlePlayerMadeMistakes == false) {
+
+      // Score based on rotations used to solve puzzle, vs. TRN
+      // TODO: Constantize
+      if (CurrentPuzzlePlayerMadeMistakes == false) { // TODO: Double check these bonuses are only applied if player made no mistakes
+        var justCompletedPuzzle = boardManager.CurrentPuzzleOrNextPuzzleUp();
+        if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed < justCompletedPuzzle.TypicalRotationNumber) {
+          CurrentStageScore += 10000;
+          Debug.Log("True Genius!!"); // under TRN
+        } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed == justCompletedPuzzle.TypicalRotationNumber) {
+          CurrentStageScore += 5000;
+          Debug.Log("Brilliant!!"); // on TRN
+        } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed > justCompletedPuzzle.TypicalRotationNumber) {
+          CurrentStageScore += 1000;
+          Debug.Log("Perfect"); // above TRN
+        }
+
         boardManager.floorManager.Add(CurrentWave.Width);
       }
 

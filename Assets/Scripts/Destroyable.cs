@@ -8,6 +8,8 @@ public class Destroyable : MonoBehaviour {
   public bool MarkedForDestruction = false;
   public bool AnimatingDestruction = false;
 
+  public MarkerType.Type MarkerTypeDestroyedBy;
+
   public static event SharedEvents.CubeDestructionPause OnCubeDestructionPause;
   public static event SharedEvents.CubeScored OnCubeScored;
 
@@ -33,7 +35,7 @@ public class Destroyable : MonoBehaviour {
   }
 
   IEnumerator SquashCubeAndScore() {
-    float time = .7f;
+    float time = .5f; // TODO: Constantize
     float elapsedTime = 0;
 
     // Creating a new transform, initialized with worldspace defaults ...
@@ -67,7 +69,7 @@ public class Destroyable : MonoBehaviour {
 
 
     DestroyedByPlayerOrByFalling = true;
-    OnCubeScored(this.gameObject);
+    OnCubeScored(this.gameObject, MarkerTypeDestroyedBy);
 
     this.gameObject.SetActive(false);
 

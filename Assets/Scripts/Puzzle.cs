@@ -133,7 +133,6 @@ public class Puzzle : MonoBehaviour {
     return false;
   }
 
-
   public int ActiveGameObjectCubeCount() {
     int activeCount = 0;
     foreach (var c in puzzleCubes) {
@@ -146,6 +145,10 @@ public class Puzzle : MonoBehaviour {
     }
 
     return activeCount;
+  }
+
+  public bool PuzzleContainsNonForbiddenCubes() {
+    return puzzleCubes.Exists(c => c != null && c.GetComponent<CubeType>().CurrentType != CubeType.Type.Forbidden);
   }
 
   public void CleanUpDestroyedCubes() {

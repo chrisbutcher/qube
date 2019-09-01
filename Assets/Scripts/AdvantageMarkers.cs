@@ -16,7 +16,7 @@ public class AdvantageMarkers : MonoBehaviour {
     Destroyable.OnCubeScored -= HandleCubeScored;
   }
 
-  void HandleCubeScored(GameObject scoredCube) {
+  void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
     if (scoredCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
       var destroyedAdvantageCubePosition = scoredCube.transform.position;
 
@@ -30,7 +30,8 @@ public class AdvantageMarkers : MonoBehaviour {
 
           if (GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(newAdvantageMarkerPosition)) {
             var advantageMarker = (GameObject)Instantiate(MarkerPrefab, newAdvantageMarkerPosition, Quaternion.identity);
-            ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green);
+            advantageMarker.GetComponent<MarkerType>().CurrentType = MarkerType.Type.AdvantageMarker;
+            ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green); // TODO: Move this color setting logic to MarkerType
 
             AdvantageMarkersList.Add(advantageMarker);
           }

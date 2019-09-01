@@ -21,7 +21,7 @@ public class FloorManager : MonoBehaviour {
     Destroyable.OnCubeScored -= HandleCubeScored;
   }
 
-  void HandleCubeScored(GameObject scoredCube) {
+  void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
     var cubeType = scoredCube.GetComponent<CubeType>().CurrentType;
 
     if (cubeType == CubeType.Type.Forbidden) {

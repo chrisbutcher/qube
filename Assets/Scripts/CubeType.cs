@@ -27,7 +27,4 @@ public class CubeType : MonoBehaviour {
         break;
     }
   }
-
-  void Update() {
-  }
 }

@@ -18,7 +18,7 @@ public class CubeRotationMonitor : MonoBehaviour {
     Tumble.OnCubeFinishedRotating -= HandleCubeRotated;
   }
 
-  void HandleCubeScored(GameObject scoredCube) {
+  void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
     if (!CubeScoredThisPuzzle) {
       CubeScoredThisPuzzle = true;
 
@@ -37,7 +37,9 @@ public class CubeRotationMonitor : MonoBehaviour {
       trackedEndOfRotation = true;
 
       var puzzle = GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp();
-      puzzle.RotationsSinceFirstCubeDestroyed += 1;
+      if (puzzle.PuzzleContainsNonForbiddenCubes()) {
+        puzzle.RotationsSinceFirstCubeDestroyed += 1; // Only count if remaining cubes are NOT all forbidden cubes
+      }
     }
   }
 }

@@ -12,6 +12,7 @@ public class PlayerMarker : MonoBehaviour {
 
   void Start() {
     CurrentPlayerMarker = (GameObject)Instantiate(PlayerMarkerPrefab, Vector3.zero, Quaternion.identity);
+    CurrentPlayerMarker.GetComponent<MarkerType>().CurrentType = MarkerType.Type.PlayerMarker;
     CurrentPlayerMarker.SetActive(false);
   }
 
