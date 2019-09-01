@@ -33,8 +33,8 @@ public class GameManager : MonoBehaviour {
   //                   TODO: Implement per-stage row bonus maximums
 
   // Actual game vs. clone differences
-  // * [ ] Detonted advantage markers don't spawn actual 3x3 set of advantage markers, just has that effect once blown up.
-  // * [ ] If player marker is in 3x3 grid of detonated advantage marker, block detonation of advantage marker from blowing up that grid square
+  // * [ ] Can't put player marker on top of single advantage marker
+  // * [ ] All advantage markers get cleared at end of puzzle
 
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 

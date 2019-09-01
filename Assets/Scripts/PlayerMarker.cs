@@ -18,10 +18,17 @@ public class PlayerMarker : MonoBehaviour {
 
   void Update() {
     if (Input.GetKeyDown(KeyCode.X)) {
-      if (!CurrentPlayerMarker.activeInHierarchy) {
-        CurrentPlayerMarker.SetActive(true);
 
+
+
+      if (!CurrentPlayerMarker.activeInHierarchy) {
         var quantizedPlayerPosition = GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
+
+        if (GameManager.instance.Players[0].GetComponent<AdvantageMarkers>().HasAdvantageMarkerOnPosition(quantizedPlayerPosition)) {
+          return;
+        }
+
+        CurrentPlayerMarker.SetActive(true);
 
         CurrentPlayerMarker.transform.position = new Vector3(
           quantizedPlayerPosition.x,
@@ -30,7 +37,7 @@ public class PlayerMarker : MonoBehaviour {
         );
       } else {
         if (OnMarkerDetonation != null) {
-          OnMarkerDetonation(CurrentPlayerMarker);
+          OnMarkerDetonation(CurrentPlayerMarker.transform.position, CurrentPlayerMarker.GetComponent<MarkerType>().CurrentType);
         }
 
         CurrentPlayerMarker.SetActive(false);
@@ -38,8 +45,8 @@ public class PlayerMarker : MonoBehaviour {
     }
   }
 
-  public bool OtherMarkerOverlapping(GameObject otherMarker) {
-    var playerMarkerOverlapping = CurrentPlayerMarker.transform.position == otherMarker.transform.position;
+  public bool OtherMarkerOverlapping(Vector3 otherMarkerPosition) {
+    var playerMarkerOverlapping = CurrentPlayerMarker.transform.position == otherMarkerPosition;
     return CurrentPlayerMarker.activeInHierarchy && playerMarkerOverlapping;
   }
 }

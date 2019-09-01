@@ -16,27 +16,24 @@ public class AdvantageMarkers : MonoBehaviour {
     Destroyable.OnCubeScored -= HandleCubeScored;
   }
 
+  public bool HasAdvantageMarkerOnPosition(Vector3 position) {
+    foreach (var advantageMarker in AdvantageMarkersList) {
+      if (Util.Vec3sEqualXandZ(advantageMarker.transform.position, position)) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
+
   void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
     if (scoredCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
-      var destroyedAdvantageCubePosition = scoredCube.transform.position;
+      var advantageMarker = (GameObject)Instantiate(MarkerPrefab, scoredCube.transform.position, Quaternion.identity);
+      advantageMarker.GetComponent<MarkerType>().CurrentType = MarkerType.Type.AdvantageMarker;
+      ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green); // TODO: Move this color setting logic to MarkerType
 
-      for (float x = -1; x < 2; x++) {
-        for (float z = -1; z < 2; z++) {
-          var newAdvantageMarkerPosition = new Vector3(
-            destroyedAdvantageCubePosition.x + x,
-            PlayerMarker.DEFAULT_MARKER_HEIGHT,
-            destroyedAdvantageCubePosition.z + z
-          );
-
-          if (GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(newAdvantageMarkerPosition)) {
-            var advantageMarker = (GameObject)Instantiate(MarkerPrefab, newAdvantageMarkerPosition, Quaternion.identity);
-            advantageMarker.GetComponent<MarkerType>().CurrentType = MarkerType.Type.AdvantageMarker;
-            ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green); // TODO: Move this color setting logic to MarkerType
-
-            AdvantageMarkersList.Add(advantageMarker);
-          }
-        }
-      }
+      AdvantageMarkersList.Add(advantageMarker);
     }
   }
 
@@ -51,10 +48,20 @@ public class AdvantageMarkers : MonoBehaviour {
         for (int i = 0; i < advantageMarkersListToIterate.Count; i++) {
           var advantageMarker = advantageMarkersListToIterate[i];
 
-          if (OnAdvantageMarkerDetonation != null) {
-            // Note: See -- PROTECTING QUBES -- section of FAQ.
-            if (!GetComponent<PlayerMarker>().OtherMarkerOverlapping(advantageMarker)) {
-              OnAdvantageMarkerDetonation(advantageMarker);
+          for (float x = -1; x < 2; x++) {
+            for (float z = -1; z < 2; z++) {
+              var advantageMarkerBlastPosition = new Vector3(
+                advantageMarker.transform.position.x + x,
+                PlayerMarker.DEFAULT_MARKER_HEIGHT,
+                advantageMarker.transform.position.z + z
+              );
+
+              if (OnAdvantageMarkerDetonation != null) {
+                // Note: See -- PROTECTING QUBES -- section of FAQ.
+                if (!GetComponent<PlayerMarker>().OtherMarkerOverlapping(advantageMarkerBlastPosition)) {
+                  OnAdvantageMarkerDetonation(advantageMarkerBlastPosition, MarkerType.Type.AdvantageMarker);
+                }
+              }
             }
           }
 
