@@ -12,9 +12,6 @@ public class GameManager : MonoBehaviour {
   // GAMEPLAY TO IMPLEMENT:
   // * [ ] You will also receive a bonus at the end of each stage, based on how many rows you have left on the playing field.
 
-  // ADVANTAGE MARKERS
-  // * [ ] Within an Advantage Zone, if you mark a square before bombing, that square will be protected from the triggered Advantage Zone.
-
   // BlOCK SCALE (bottom right)
   // * [ ] As the puzzles get larger, you can drop more Qubes over the edge before you start losing rows off the grid
 
@@ -26,14 +23,12 @@ public class GameManager : MonoBehaviour {
   //   on the easiest play mode will be in effect for the duration of that puzzle, highlighting for you the positions of any marked or Advantage squares.If the puzzle in which you originally got squished
   //   was the last puzzle of the current wave, you will not have to repeat it(the new wave clears this effect).  Similarly, if you get squished again while repeating a puzzle, you will not have to do it a third time.
 
+  // Stage bonuses:
   // After each stage: For every row remaining on grid - 1,000 points
   //                   up to maximum of: 27,000 (1st Stage)
   //                                     39,000 (3rd Stage)
   //                                     40,000 (all other Stages)
   //                   TODO: Implement per-stage row bonus maximums
-
-  // Actual game vs. clone differences
-  // * [ ] All advantage markers get cleared at end of puzzle
 
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 

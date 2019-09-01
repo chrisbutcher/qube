@@ -31,6 +31,8 @@ public class MarkerDetonationSubscribed : MonoBehaviour {
 
         if (OnMarkedCubesDestroy != null) {
           OnMarkedCubesDestroy();
+
+          MarkerType.SpawnDestroyedMarkerAt(detonatedMarkerPosition);
         }
       }
     }

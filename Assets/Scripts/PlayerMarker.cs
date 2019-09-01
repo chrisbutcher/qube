@@ -18,9 +18,6 @@ public class PlayerMarker : MonoBehaviour {
 
   void Update() {
     if (Input.GetKeyDown(KeyCode.X)) {
-
-
-
       if (!CurrentPlayerMarker.activeInHierarchy) {
         var quantizedPlayerPosition = GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
 
@@ -41,6 +38,8 @@ public class PlayerMarker : MonoBehaviour {
         }
 
         CurrentPlayerMarker.SetActive(false);
+
+        MarkerType.SpawnDestroyedMarkerAt(CurrentPlayerMarker.transform.position);
       }
     }
   }

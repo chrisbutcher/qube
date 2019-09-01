@@ -40,7 +40,7 @@ public class AdvantageMarkers : MonoBehaviour {
     if (scoredCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
       var advantageMarker = (GameObject)Instantiate(MarkerPrefab, scoredCube.transform.position, Quaternion.identity);
       advantageMarker.GetComponent<MarkerType>().CurrentType = MarkerType.Type.AdvantageMarker;
-      ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green); // TODO: Move this color setting logic to MarkerType
+      Util.ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green); // TODO: Move this color setting logic to MarkerType
 
       AdvantageMarkersList.Add(advantageMarker);
     }
@@ -79,18 +79,6 @@ public class AdvantageMarkers : MonoBehaviour {
         }
 
         advantageMarkersListToIterate.Clear();
-      }
-    }
-  }
-
-  void ChangeColorOfGameObjectAndAllChildren(GameObject obj, Color newColor) {
-    var advantageMarkerMaterials = obj.GetComponent<Renderer>().materials;
-    advantageMarkerMaterials[0].color = newColor;
-
-    var renderers = obj.GetComponentsInChildren<Renderer>();
-    foreach (var r in renderers) {
-      foreach (var m in r.materials) {
-        m.color = newColor;
       }
     }
   }

@@ -21,4 +21,16 @@ public class Util {
       this.type = type;
     }
   }
+
+  public static void ChangeColorOfGameObjectAndAllChildren(GameObject obj, Color newColor) {
+    var advantageMarkerMaterials = obj.GetComponent<Renderer>().materials;
+    advantageMarkerMaterials[0].color = newColor;
+
+    var renderers = obj.GetComponentsInChildren<Renderer>();
+    foreach (var r in renderers) {
+      foreach (var m in r.materials) {
+        m.color = newColor;
+      }
+    }
+  }
 }

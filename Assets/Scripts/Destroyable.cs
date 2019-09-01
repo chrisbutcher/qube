@@ -13,6 +13,8 @@ public class Destroyable : MonoBehaviour {
   public static event SharedEvents.CubeDestructionPause OnCubeDestructionPause;
   public static event SharedEvents.CubeScored OnCubeScored;
 
+  bool BoxColliderDisabled = false;
+
   void OnEnable() {
     MarkerDetonationSubscribed.OnMarkedCubesDestroy += HandleCubeDestroyed;
     Puzzle.OnMarkedCubesDestroy += HandleCubeDestroyed;
@@ -62,6 +64,11 @@ public class Destroyable : MonoBehaviour {
       );
 
       elapsedTime += Time.deltaTime;
+
+      if (elapsedTime > (time / 2) && !BoxColliderDisabled) {
+        BoxColliderDisabled = true;
+        GetComponent<BoxCollider>().enabled = false;
+      }
 
       yield return null;
       this.gameObject.transform.SetParent(newParent);
