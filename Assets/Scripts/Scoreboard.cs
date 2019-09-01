@@ -10,12 +10,16 @@ public class Scoreboard : MonoBehaviour {
   Text Turns;
   Text BlockScale;
 
-  void Start() {
+  Text PostPuzzleAnnounce;
+  float ShowAnnounceForNSeconds = 0f;
+
+  void Awake() {
     CurrentStage = GameObject.FindGameObjectWithTag("UI-CurrentStage").GetComponent<Text>();
     CurrentWave = GameObject.FindGameObjectWithTag("UI-CurrentWave").GetComponent<Text>();
     Score = GameObject.FindGameObjectWithTag("UI-Score").GetComponent<Text>();
     Turns = GameObject.FindGameObjectWithTag("UI-Turns").GetComponent<Text>();
     BlockScale = GameObject.FindGameObjectWithTag("UI-BlockScale").GetComponent<Text>();
+    PostPuzzleAnnounce = GameObject.FindGameObjectWithTag("UI-PostPuzzleAnnounce").GetComponent<Text>();
   }
 
   void Update() {
@@ -24,5 +28,21 @@ public class Scoreboard : MonoBehaviour {
     Score.text = $"Score: {GameManager.instance.CurrentStageScore}";
     Turns.text = $"{GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().RotationsSinceFirstCubeDestroyed} / {GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().TypicalRotationNumber}";
     BlockScale.text = $"{GameManager.instance.CurrentWaveBlockScaleUsed} / {GameManager.instance.CurrentWaveBlockScaleAvailable}";
+
+    if (ShowAnnounceForNSeconds > 0f) {
+      ShowAnnounceForNSeconds -= Time.deltaTime;
+    } else {
+      HideAnnounce();
+    }
+  }
+
+  public void ShowAnnounce(string text, float duration) {
+    PostPuzzleAnnounce.text = text;
+    ShowAnnounceForNSeconds = duration;
+  }
+
+  public void HideAnnounce() {
+    PostPuzzleAnnounce.text = "";
+    ShowAnnounceForNSeconds = 0f;
   }
 }

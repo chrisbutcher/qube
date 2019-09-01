@@ -13,8 +13,9 @@ public class FrameRateCounter : MonoBehaviour {
 
     GUIStyle style = new GUIStyle();
 
-    Rect rect = new Rect(0, 0, w, h * 2 / 100);
-    style.alignment = TextAnchor.UpperLeft;
+    // Rect rect = new Rect(0, 0, w, h * 2 / 100);
+    Rect rect = new Rect(0, 0, w, h - 20);
+    style.alignment = TextAnchor.LowerLeft;
     style.fontSize = h * 2 / 100;
     style.normal.textColor = Color.white;
 

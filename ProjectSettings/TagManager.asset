@@ -9,6 +9,8 @@ TagManager:
   - UI-Score
   - UI-Turns
   - UI-BlockScale
+  - UI
+  - UI-PostPuzzleAnnounce
   layers:
   - Default
   - TransparentFX
