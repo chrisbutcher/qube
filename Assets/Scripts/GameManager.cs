@@ -33,7 +33,6 @@ public class GameManager : MonoBehaviour {
   //                   TODO: Implement per-stage row bonus maximums
 
   // Actual game vs. clone differences
-  // * [ ] Can't put player marker on top of single advantage marker
   // * [ ] All advantage markers get cleared at end of puzzle
 
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
@@ -142,6 +141,8 @@ public class GameManager : MonoBehaviour {
 
   void PossiblyLoadNextWaveOrStage(GameObject fallenOrDestroyedCube) {
     if (boardManager.HasActivePuzzle() == false) {
+
+      Players[0].GetComponent<AdvantageMarkers>().ClearAllAdvantageMarkers();
 
       // Score based on rotations used to solve puzzle, vs. TRN
       // TODO: Constantize

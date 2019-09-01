@@ -26,6 +26,15 @@ public class AdvantageMarkers : MonoBehaviour {
     return false;
   }
 
+  public void ClearAllAdvantageMarkers() {
+    for (int i = 0; i < AdvantageMarkersList.Count; i++) {
+      var advantageMarker = AdvantageMarkersList[i];
+      AdvantageMarkersList[i] = null;
+      Destroy(advantageMarker);
+    }
+
+    AdvantageMarkersList.Clear();
+  }
 
   void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
     if (scoredCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
