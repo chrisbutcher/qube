@@ -20,9 +20,9 @@ public class GameManager : MonoBehaviour {
 
   // GETTING SQUISHED
   // * [ ] If you do get squished, twom ajor things will happen.  Firstly, the puzzle will accelerate, denying you the chance to complete it.  Any remaining Qubes will be dropped off the edge, and
-  // *   they will count towards your allowed dropped Qube total, as measured by the Block Scale.  If this allowed number is exceeded, you will lose rows off the grid accordingly.  Please note that
-  // *   when squished, even Forbidden Qubes will add to the Block Scale counter.
-  // * [ ] Oncc squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again.This time, however, the over-the-block indicators that are present
+  // *   they will count towards your allowed dropped Qube total, as measured by the Block Scale.  If this allowed number is exceeded, you will lose rows off the grid accordingly. 
+  // * [ ] When squished, even Forbidden Qubes will add to the Block Scale counter.
+  // * [ ] Once squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again.This time, however, the over-the-block indicators that are present
   //   on the easiest play mode will be in effect for the duration of that puzzle, highlighting for you the positions of any marked or Advantage squares.If the puzzle in which you originally got squished
   //   was the last puzzle of the current wave, you will not have to repeat it(the new wave clears this effect).  Similarly, if you get squished again while repeating a puzzle, you will not have to do it a third time.
 
@@ -31,6 +31,10 @@ public class GameManager : MonoBehaviour {
   //                                     39,000 (3rd Stage)
   //                                     40,000 (all other Stages)
   //                   TODO: Implement per-stage row bonus maximums
+
+  // Actual game vs. clone differences
+  // * [ ] Detonted advantage markers don't spawn actual 3x3 set of advantage markers, just has that effect once blown up.
+  // * [ ] If player marker is in 3x3 grid of detonated advantage marker, block detonation of advantage marker from blowing up that grid square
 
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 
@@ -170,8 +174,6 @@ public class GameManager : MonoBehaviour {
       }
     }
   }
-
-
 
   IEnumerator ActivateNextPuzzleAfterDelay(float afterDelay) {
     yield return new WaitForSeconds(afterDelay);
