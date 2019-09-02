@@ -11,6 +11,7 @@ TagManager:
   - UI-BlockScale
   - UI
   - UI-PostPuzzleAnnounce
+  - PlayerMarker
   layers:
   - Default
   - TransparentFX
