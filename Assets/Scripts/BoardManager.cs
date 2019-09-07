@@ -27,7 +27,7 @@ public class BoardManager : MonoBehaviour {
     floorManager.Reset();
 
     for (int i = 0; i < depth; i++) {
-      floorManager.Add(width);
+      floorManager.Add(width, false);
     }
   }
 

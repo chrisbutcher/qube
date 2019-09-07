@@ -171,7 +171,7 @@ public class GameManager : MonoBehaviour {
         scoreboard.ShowAnnounce("Perfect", GameConsts.PostPuzzleScoreTextDuration); // above TRN
       }
 
-      boardManager.floorManager.Add(CurrentWave.Width);
+      boardManager.floorManager.Add(CurrentWave.Width, true);
     }
 
     if (boardManager.CurrentWavePuzzleCount() > 0) { // If the current wave has an already loaded puzzle...

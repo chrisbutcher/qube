@@ -9,6 +9,7 @@ public class Util {
   }
 
   public static bool Vec3sEqualXandZ(Vector3 vec1, Vector3 vec2) {
+    // NOTE: Casting these to ints and comparing didn't do anything
     return vec1.x == vec2.x && vec1.z == vec2.z;
   }
 
@@ -34,8 +35,12 @@ public class Util {
     }
   }
 
-  public static void ParentInstanceUnderEmpty(GameObject gameObject, string emptyObjectName) {
+  public static void ParentInstanceUnderEmpty(GameObject gameObject, string emptyObjectName) { // TODO Better name for these?
     var floorGroup = GameObject.Find(emptyObjectName);
     gameObject.transform.SetParent(floorGroup.transform, false);
+  }
+
+  public static void ParentInstanceUnderEmpty(GameObject gameObject, GameObject parentGameObject) {
+    gameObject.transform.SetParent(parentGameObject.transform, false);
   }
 }

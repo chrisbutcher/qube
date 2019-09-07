@@ -35,7 +35,7 @@ public class FloorManager : MonoBehaviour {
     floorStacks = new Stack<FloorStack>();
   }
 
-  public void Add(int width) {
+  public void Add(int width, bool animate) {
     var nextStackLocation = new Vector3(0, FLOOR_HEIGHT, 0);
     FloorStack lastStack = null;
 
@@ -51,6 +51,34 @@ public class FloorManager : MonoBehaviour {
     var floorStack = gameObject.AddComponent<FloorStack>();
     floorStack.Build(FloorCubePrefab, nextStackLocation, width);
     floorStacks.Push(floorStack);
+
+    if (animate) {
+      StartCoroutine(AnimateInFloorStack(floorStack.ParentGameObject));
+    }
+  }
+
+  IEnumerator AnimateInFloorStack(GameObject floorStackParent) {
+    float time = .7f; // TODO constantize
+    float elapsedTime = 0;
+
+    var targetPosition = floorStackParent.transform.position;
+    var initialPosition = targetPosition - (Vector3.forward * 6); // TODO constantize
+
+    floorStackParent.transform.position = initialPosition;
+
+    while (elapsedTime < time) {
+      floorStackParent.transform.position = new Vector3(
+        initialPosition.x,
+        initialPosition.y,
+        Mathf.SmoothStep(initialPosition.z, targetPosition.z, (elapsedTime / time))
+      );
+
+      elapsedTime += Time.deltaTime;
+      yield return null;
+    }
+
+    // Compensate for some floating point innaccuracy that messes with Util.Vec3sEqualXandZ
+    floorStackParent.transform.position = targetPosition; // TODO: Not working??
   }
 
   public void DropLast() {

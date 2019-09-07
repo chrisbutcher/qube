@@ -5,11 +5,13 @@ using UnityEngine;
 public class FloorStack : MonoBehaviour {
   const int FLOOR_STACK_HEIGHT = 5;
 
+  public GameObject ParentGameObject;
   List<GameObject> cubes = new List<GameObject>();
 
   private int width;
 
   void Awake() {
+    ParentGameObject = new GameObject("FloorStack");
   }
 
   void Start() {
@@ -23,7 +25,8 @@ public class FloorStack : MonoBehaviour {
     for (int y = 0; y < FLOOR_STACK_HEIGHT; y++) {
       for (int x = 0; x < floorStackWidth; x++) {
         GameObject cube = (GameObject)Instantiate(floorCubePrefab, position + new Vector3(x, -y, 0f), Quaternion.identity);
-        Util.ParentInstanceUnderEmpty(cube, "FloorGroup");
+        Util.ParentInstanceUnderEmpty(cube, ParentGameObject);
+        Util.ParentInstanceUnderEmpty(ParentGameObject, "FloorGroup");
 
         cubes.Add(cube);
         width = floorStackWidth;
@@ -38,6 +41,8 @@ public class FloorStack : MonoBehaviour {
       if (Util.Vec3sEqualXandZ(quantizedVec, cube.transform.position))
         return true;
     }
+
+    //Debug.Log($"Floor not below cube. OG position is: {vec}. Quantized was: {quantizedVec}");
 
     return false;
   }
