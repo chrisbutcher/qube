@@ -9,8 +9,7 @@ public class Util {
   }
 
   public static bool Vec3sEqualXandZ(Vector3 vec1, Vector3 vec2) {
-    // NOTE: Casting these to ints and comparing didn't do anything
-    return vec1.x == vec2.x && vec1.z == vec2.z;
+    return Mathf.Approximately(vec1.x, vec2.x) && Mathf.Approximately(vec1.z, vec2.z);
   }
 
   public struct CubePositionAndType {
