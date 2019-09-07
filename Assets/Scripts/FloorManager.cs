@@ -70,12 +70,18 @@ public class FloorManager : MonoBehaviour {
     return false;
   }
 
-  public float SideToSidePositionOnFloor(Transform transform) {
+  public float SideToSidePositionOnFloor(Vector3 position) {
     var firstFloorStack = floorStacks.Peek();
 
-    var normalizedPosition = transform.position.x + (GameConsts.CubeSize / 2);
+    var normalizedPosition = position.x + (GameConsts.CubeSize / 2);
     var sideToSidePercentage = normalizedPosition / firstFloorStack.Width();
 
     return Mathf.Lerp(1f, -1f, sideToSidePercentage);
+  }
+
+  public GameObject GetNearestRightMostFloorCube() {
+    var nearestFloorStack = floorStacks.Peek();
+
+    return nearestFloorStack.GetNearestRightMostFloorCube();
   }
 }

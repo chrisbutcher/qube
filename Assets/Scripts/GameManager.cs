@@ -56,6 +56,8 @@ public class GameManager : MonoBehaviour {
 
   const float PlayerStartingPosY = -0.5f;
 
+  bool InPostPuzzlePause = false;
+
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
     Tumble.OnCubeFell += HandleCubeFell;
@@ -145,6 +147,7 @@ public class GameManager : MonoBehaviour {
   }
 
   IEnumerator PostPuzzleDelayPhase(float delayLength) {
+    InPostPuzzlePause = true;
     yield return new WaitForSeconds(delayLength);
 
     if (PlayerSquashed) {
@@ -189,12 +192,21 @@ public class GameManager : MonoBehaviour {
 
     cubeRotationMonitor.CubeScoredThisPuzzle = false;
     CurrentPuzzlePlayerMadeMistakes = false;
+    InPostPuzzlePause = false;
 
     boardManager.ActivateNextPuzzle(); // activate it, to continue this wave
   }
 
+  public bool CameraFollowingPlayer() {
+    return CubesSpedUp() == false && InPostPuzzlePause == false;
+  }
+
   public float TumbleSpeedMultiplier() {
-    return Input.GetKey(KeyCode.LeftShift) || PlayerSquashed ? 4f : 1f;
+    return CubesSpedUp() ? 4f : 1f;
+  }
+
+  bool CubesSpedUp() {
+    return Input.GetKey(KeyCode.LeftShift) || PlayerSquashed;
   }
 
   void LoadStageDefinitions() {

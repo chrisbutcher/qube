@@ -62,4 +62,18 @@ public class FloorStack : MonoBehaviour {
   public float Width() {
     return (float)width;
   }
+
+  public GameObject GetNearestRightMostFloorCube() {
+    Vector3 furthestUpAndRight = new Vector3(-1000f, -1000f, -1000f);
+    GameObject furthestUpAndRightCube = cubes[0];
+
+    foreach (var c in cubes) {
+      if (c.transform.position.x > furthestUpAndRight.x || c.transform.position.y > furthestUpAndRight.y) {
+        furthestUpAndRight = c.transform.position;
+        furthestUpAndRightCube = c;
+      }
+    }
+
+    return furthestUpAndRightCube;
+  }
 }
