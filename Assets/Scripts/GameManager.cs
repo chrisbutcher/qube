@@ -127,7 +127,7 @@ public class GameManager : MonoBehaviour {
       CurrentWaveBlockScaleUsed += 1;
 
       if (CurrentWaveBlockScaleUsed >= CurrentWaveBlockScaleAvailable) {
-        boardManager.floorManager.DropLast();
+        boardManager.floorManager.DropLast(); // TODO: Need to make this idempotent?
       }
     }
 
@@ -146,6 +146,11 @@ public class GameManager : MonoBehaviour {
 
   IEnumerator PostPuzzleDelayPhase(float delayLength) {
     yield return new WaitForSeconds(delayLength);
+
+    if (PlayerSquashed) {
+      Players[0].GetComponent<PlayerSquashable>().UnSquashPlayer();
+      PlayerSquashed = false;
+    }
 
     Players[0].GetComponent<AdvantageMarkers>().ClearAllAdvantageMarkers();
 

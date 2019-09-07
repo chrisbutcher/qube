@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerSquashable : MonoBehaviour {
+  Vector3 preSquashScale;
+  Vector3 preSquashPosition;
+
   void OnEnable() {
     Tumble.OnPlayerSquashed += HandlePlayerSquashed;
   }
@@ -11,31 +14,39 @@ public class PlayerSquashable : MonoBehaviour {
     Tumble.OnPlayerSquashed -= HandlePlayerSquashed;
   }
 
-  void HandlePlayerSquashed(GameObject player) {
-    player.GetComponent<RigidBodyPlayerMovement>().enabled = false;
-    player.GetComponent<CapsuleCollider>().enabled = false;
+  public void UnSquashPlayer() {
+    this.gameObject.transform.localScale = preSquashScale;
+    this.gameObject.transform.position = preSquashPosition;
 
-    StartCoroutine(AnimateSquash(player));
+    this.gameObject.GetComponent<RigidBodyPlayerMovement>().enabled = true;
+    this.gameObject.GetComponent<CapsuleCollider>().enabled = true;
+  }
+
+  void HandlePlayerSquashed(GameObject unusedPlayer) {
+    this.gameObject.GetComponent<RigidBodyPlayerMovement>().enabled = false;
+    this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+    StartCoroutine(AnimateSquash(this.gameObject));
   }
 
   IEnumerator AnimateSquash(GameObject player) {
     float time = .4f;
     float elapsedTime = 0;
 
-    var initialScale = player.transform.localScale;
-    var initialPosition = player.transform.position;
+    preSquashScale = player.transform.localScale;
+    preSquashPosition = player.transform.position;
 
     while (elapsedTime < time) {
       player.transform.localScale = new Vector3(
-        initialScale.x,
-        Mathf.SmoothStep(initialScale.y, 0.0f, (elapsedTime / time)),
-        initialScale.z
+        preSquashScale.x,
+        Mathf.SmoothStep(preSquashScale.y, 0.0f, (elapsedTime / time)),
+        preSquashScale.z
       );
 
       player.transform.position = new Vector3(
-        initialPosition.x,
-        Mathf.SmoothStep(initialPosition.y, GameConsts.PlayerSquashDownwardDistance, (elapsedTime / time)),
-        initialPosition.z
+        preSquashPosition.x,
+        Mathf.SmoothStep(preSquashPosition.y, GameConsts.PlayerSquashDownwardDistance, (elapsedTime / time)),
+        preSquashPosition.z
       );
 
       elapsedTime += Time.deltaTime;
