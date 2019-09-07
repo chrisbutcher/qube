@@ -140,37 +140,41 @@ public class GameManager : MonoBehaviour {
 
   void PossiblyLoadNextWaveOrStage(GameObject fallenOrDestroyedCube) {
     if (boardManager.HasActivePuzzle() == false) {
+      StartCoroutine(PostPuzzleDelayPhase(GameConsts.PostPuzzleScoringPause));
+    }
+  }
 
-      Players[0].GetComponent<AdvantageMarkers>().ClearAllAdvantageMarkers();
+  IEnumerator PostPuzzleDelayPhase(float delayLength) {
+    yield return new WaitForSeconds(delayLength);
 
-      // Score based on rotations used to solve puzzle, vs. TRN
-      // TODO: Constantize
-      if (CurrentPuzzlePlayerMadeMistakes == false) { // TODO: Double check these bonuses are only applied if player made no mistakes
-        var justCompletedPuzzle = boardManager.CurrentPuzzleOrNextPuzzleUp();
-        if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed < justCompletedPuzzle.TypicalRotationNumber) {
-          CurrentStageScore += 10000;
-          scoreboard.ShowAnnounce("True Genius!!", 2f); // under TRN
-        } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed == justCompletedPuzzle.TypicalRotationNumber) {
-          CurrentStageScore += 5000;
-          scoreboard.ShowAnnounce("Brilliant!!", 2f); // on TRN
-        } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed > justCompletedPuzzle.TypicalRotationNumber) {
-          CurrentStageScore += 1000;
-          scoreboard.ShowAnnounce("Perfect", 2f); // above TRN
-        }
+    Players[0].GetComponent<AdvantageMarkers>().ClearAllAdvantageMarkers();
 
-        boardManager.floorManager.Add(CurrentWave.Width);
+    // Score based on rotations used to solve puzzle, vs. TRN
+    if (CurrentPuzzlePlayerMadeMistakes == false) { // TODO: Double check these bonuses are only applied if player made no mistakes
+      var justCompletedPuzzle = boardManager.CurrentPuzzleOrNextPuzzleUp();
+      if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed < justCompletedPuzzle.TypicalRotationNumber) {
+        CurrentStageScore += 10000;
+        scoreboard.ShowAnnounce("True Genius!!", GameConsts.PostPuzzleScoreTextDuration); // under TRN
+      } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed == justCompletedPuzzle.TypicalRotationNumber) {
+        CurrentStageScore += 5000;
+        scoreboard.ShowAnnounce("Brilliant!!", GameConsts.PostPuzzleScoreTextDuration); // on TRN
+      } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed > justCompletedPuzzle.TypicalRotationNumber) {
+        CurrentStageScore += 1000;
+        scoreboard.ShowAnnounce("Perfect", GameConsts.PostPuzzleScoreTextDuration); // above TRN
       }
 
-      if (boardManager.CurrentWavePuzzleCount() > 0) { // If the current wave has an already loaded puzzle...
-        StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
+      boardManager.floorManager.Add(CurrentWave.Width);
+    }
+
+    if (boardManager.CurrentWavePuzzleCount() > 0) { // If the current wave has an already loaded puzzle...
+      StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
+    } else {
+      if (CurrentWaveIndex + 1 <= CurrentStage.Waves.Count) {
+        CurrentWaveIndex += 1;
+        CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
+        LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
       } else {
-        if (CurrentWaveIndex + 1 <= CurrentStage.Waves.Count) {
-          CurrentWaveIndex += 1;
-          CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
-          LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
-        } else {
-          Debug.Log("END OF STAGE");
-        }
+        Debug.Log("END OF STAGE");
       }
     }
   }
