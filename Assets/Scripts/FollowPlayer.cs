@@ -17,7 +17,9 @@ public class FollowPlayer : MonoBehaviour { // TODO: Rename this script since it
   GameManager gameManager;
   FloorManager floorManager;
 
-  //bool FollowingPlayer = true; // TODO: Enum of camera modes
+  // This ensures that we don't keep updating the corner cube to follow when in bird's eye mode,
+  // so when floor cubes get added or drop off, we don't follow them.
+  bool lastFrameCameraWasFollowingPlayer;
 
   void Awake() {
     gameManager = GameManager.instance;
@@ -49,9 +51,15 @@ public class FollowPlayer : MonoBehaviour { // TODO: Rename this script since it
 
     if (gameManager.CameraFollowingPlayer()) {
       follow = GameObject.FindWithTag("Player").transform.position;
+      lastFrameCameraWasFollowingPlayer = true;
     } else {
       var floorManager = GameManager.instance.boardManager.floorManager;
-      follow = floorManager.GetNearestRightMostFloorCube().transform.position; // TODO: Have this make a copy of the transform, so that if that cube moves, the camera doesn't go with it
+
+      if (lastFrameCameraWasFollowingPlayer) {
+        follow = floorManager.GetNearestRightMostFloorCube().transform.position;
+      }
+
+      lastFrameCameraWasFollowingPlayer = false;
     }
   }
 
