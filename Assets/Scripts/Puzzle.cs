@@ -96,6 +96,8 @@ public class Puzzle : MonoBehaviour {
   public void Build(GameObject cubePrefab, PuzzleLoader.InternalPuzzle internalPuzzle, Vector3 positionOffset) {
     foreach (var positionAndType in internalPuzzle.cubes) {
       GameObject cube = (GameObject)Instantiate(cubePrefab, positionAndType.position + positionOffset, Quaternion.identity);
+      Util.ParentInstanceUnderEmpty(cube, "CubeGroup");
+
       cube.GetComponent<CubeType>().CurrentType = positionAndType.type;
       TypicalRotationNumber = internalPuzzle.typicalRotationsNeeded;
 

@@ -54,6 +54,8 @@ public class GameManager : MonoBehaviour {
 
   public bool PlayerSquashed = false;
 
+  const float PlayerStartingPosY = -0.5f;
+
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
     Tumble.OnCubeFell += HandleCubeFell;
@@ -83,7 +85,9 @@ public class GameManager : MonoBehaviour {
   void Start() {
     boardManager.LoadStage(CurrentWave.Width, 15); // TODO: Determine dynamic floor depth as stages change
 
-    var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(1.5f, 0f, -7.5f), Quaternion.identity); // TODO: Do not hard code initial player position
+    var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(1.5f, PlayerStartingPosY, -7.5f), Quaternion.identity); // TODO: Do not hard code initial player position
+    player.name = "Player";
+
     Players.Add(player);
 
     LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
@@ -91,7 +95,7 @@ public class GameManager : MonoBehaviour {
 
   void LoadWaveAndPerformSideEffects(int numPuzzles, int width, int depth) {
     float playerDistanceBack = (numPuzzles * depth) + 1.5f;
-    var playerPosition = new Vector3(1.5f, 0f, -playerDistanceBack);
+    var playerPosition = new Vector3(1.5f, PlayerStartingPosY, -playerDistanceBack);
 
     var playerRb = Players[0].GetComponent<Rigidbody>();
     playerRb.MovePosition(playerPosition);

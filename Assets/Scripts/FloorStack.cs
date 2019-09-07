@@ -9,6 +9,9 @@ public class FloorStack : MonoBehaviour {
 
   private int width;
 
+  void Awake() {
+  }
+
   void Start() {
   }
 
@@ -20,6 +23,8 @@ public class FloorStack : MonoBehaviour {
     for (int y = 0; y < FLOOR_STACK_HEIGHT; y++) {
       for (int x = 0; x < floorStackWidth; x++) {
         GameObject cube = (GameObject)Instantiate(floorCubePrefab, position + new Vector3(x, -y, 0f), Quaternion.identity);
+        Util.ParentInstanceUnderEmpty(cube, "FloorGroup");
+
         cubes.Add(cube);
         width = floorStackWidth;
       }

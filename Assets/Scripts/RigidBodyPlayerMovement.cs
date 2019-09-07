@@ -13,8 +13,12 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
   Rigidbody rb;
   Quaternion lookDirection;
 
+  Vector3 lastFramePosition;
+
+  Animator animator;
   void Awake() {
     rb = GetComponent<Rigidbody>();
+    animator = GetComponentInChildren<Animator>();
   }
 
   // https://www.reddit.com/r/Unity3D/comments/1ee65w/having_wonky_collisions_rigidbodies_being_weird/
@@ -41,6 +45,12 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
     }
 
     rb.MovePosition(rb.position + deltaMoveDirection);
+
+    var currentPosition = rb.position;
+    var velocity = (currentPosition - lastFramePosition) / Time.deltaTime;
+    animator.SetFloat("Speed", velocity.magnitude);
+
+    lastFramePosition = currentPosition;
 
     if (directionVector != Vector3.zero) {
       lookDirection = Quaternion.LookRotation(directionVector);

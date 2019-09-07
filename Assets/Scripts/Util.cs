@@ -33,4 +33,9 @@ public class Util {
       }
     }
   }
+
+  public static void ParentInstanceUnderEmpty(GameObject gameObject, string emptyObjectName) {
+    var floorGroup = GameObject.Find(emptyObjectName);
+    gameObject.transform.SetParent(floorGroup.transform, false);
+  }
 }

@@ -1,0 +1,12 @@
+# Blender MTL File: 'tux.blend'
+# Material Count: 1
+
+newmtl tux
+Ns 96.078431
+Ka 0.000000 0.000000 0.000000
+Kd 0.800000 0.800000 0.750068
+Ks 0.162957 0.175440 0.206648
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd tux_texture.png
