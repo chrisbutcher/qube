@@ -30,6 +30,10 @@ public class GameManager : MonoBehaviour {
   //                                     40,000 (all other Stages)
   //                   TODO: Implement per-stage row bonus maximums
 
+  // Falling:
+  // [ ] when there’s too little floor for the next wave to load, you fall off
+  // [ ] standing on cubes, the moment they start to fall, you fall with em
+
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 
   public static GameManager instance = null;
@@ -128,7 +132,8 @@ public class GameManager : MonoBehaviour {
 
       CurrentWaveBlockScaleUsed += 1;
 
-      if (CurrentWaveBlockScaleUsed >= CurrentWaveBlockScaleAvailable) {
+      if (CurrentWaveBlockScaleUsed >= CurrentWaveBlockScaleAvailable + 1) {
+        CurrentWaveBlockScaleUsed = 0;
         boardManager.floorManager.DropLast(); // TODO: Need to make this idempotent?
       }
     }
