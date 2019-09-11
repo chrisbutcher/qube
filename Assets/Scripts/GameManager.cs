@@ -203,11 +203,19 @@ public class GameManager : MonoBehaviour {
   }
 
   public bool CameraFollowingPlayer() {
-    return CubesSpedUp() == false && InPostPuzzlePause == false;
+    if (InPostPuzzlePause) {
+      return false;
+    }
+
+    if (boardManager.CurrentPuzzleOrNextPuzzleUp().PuzzleContainsOnlyForbiddenCubes()) {
+      return !CubesSpedUp();
+    }
+
+    return true;
   }
 
   public float TumbleSpeedMultiplier() {
-    return CubesSpedUp() ? 4f : 1f;
+    return CubesSpedUp() ? GameConsts.SpedUpTumbleMultiplier : 1f;
   }
 
   bool CubesSpedUp() {

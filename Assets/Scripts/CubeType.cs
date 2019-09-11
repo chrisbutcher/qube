@@ -11,20 +11,35 @@ public class CubeType : MonoBehaviour {
     Forbidden,
   }
 
+  public bool HasStartedToRoll = false;
   public Type CurrentType;
 
-  void Start() {
-    var materials = GetComponent<Renderer>().materials;
+  Type TypeAsOfLastFrame;
+  Material[] materials;
 
-    switch (CurrentType) {
-      case Type.Advantage:
-        materials[0].color = Color.green;
-        break;
-      case Type.Forbidden:
-        materials[0].color = Color.black;
-        break;
-      case Type.Normal:
-        break;
+  void Start() {
+    materials = GetComponent<Renderer>().materials;
+
+  }
+
+  void Update() {
+    if (!HasStartedToRoll) {
+      return;
+    }
+
+    if (TypeAsOfLastFrame != CurrentType) {
+      TypeAsOfLastFrame = CurrentType;
+
+      switch (CurrentType) {
+        case Type.Advantage:
+          materials[0].color = Color.green;
+          break;
+        case Type.Forbidden:
+          materials[0].color = Color.black;
+          break;
+        case Type.Normal:
+          break;
+      }
     }
   }
 }

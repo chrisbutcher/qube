@@ -108,6 +108,10 @@ public class Puzzle : MonoBehaviour {
   public void MoveAllCubes(Vector3 direction, float duration) {
     foreach (var c in puzzleCubes) {
       if (c != null && !c.GetComponent<Tumble>().isFalling) {
+        if (!c.GetComponent<CubeType>().HasStartedToRoll) {
+          c.GetComponent<CubeType>().HasStartedToRoll = true;
+        }
+
         c.GetComponent<Tumble>().TumbleInDirection(direction, duration);
       }
     }
@@ -151,6 +155,10 @@ public class Puzzle : MonoBehaviour {
 
   public bool PuzzleContainsNonForbiddenCubes() {
     return puzzleCubes.Exists(c => c != null && c.GetComponent<CubeType>().CurrentType != CubeType.Type.Forbidden);
+  }
+
+  public bool PuzzleContainsOnlyForbiddenCubes() {
+    return puzzleCubes.TrueForAll(c => c == null || c.GetComponent<CubeType>().CurrentType == CubeType.Type.Forbidden);
   }
 
   public void CleanUpDestroyedCubes() {
