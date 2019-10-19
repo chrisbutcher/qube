@@ -71,7 +71,7 @@ public class FollowPlayer : MonoBehaviour { // TODO: Rename this script since it
     UpdateCameraPosition(Smooth, followPercentageAcrossFloor);
   }
 
-  void UpdateCameraPosition(float smooth, float followPercentageAcrossFloor) {
+  public void UpdateCameraPosition(float smooth, float followPercentageAcrossFloor) {
     var turnVector = Vector3.forward + Vector3.right * (followPercentageAcrossFloor / 2);
     targetPosition = follow + Vector3.up * DistanceUp - turnVector * DistanceAway;
 

@@ -47,7 +47,7 @@ public class AdvantageMarkers : MonoBehaviour {
   }
 
   void Update() {
-    if (GameManager.instance.GetPlayerControls(0).isDetonatingAdvantageCubes()) {
+    if (GameManager.instance.GetPlayerControls(0).isDetonatingAdvantageMarkers()) {
       // NOTE: Copy list of advantage markers, so we don't mutate while iterating it via HandleCubeScored.
       var advantageMarkersListToIterate = new List<GameObject>(AdvantageMarkersList);
       AdvantageMarkersList.Clear();

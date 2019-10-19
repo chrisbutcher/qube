@@ -25,7 +25,7 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
   void FixedUpdate() {
     setQuantizedPlayerPosition();
 
-    Vector3 directionVector = new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+    Vector3 directionVector = GameManager.instance.GetPlayerControls(0).getPlayerMovementDirection();
     Vector3 deltaMoveDirection = directionVector * Speed * Time.deltaTime;
 
     var playerPositionWithOffset = getPlayerPositionWithOffset();
@@ -48,7 +48,11 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
 
     var currentPosition = rb.position;
     var velocity = (currentPosition - lastFramePosition) / Time.deltaTime;
-    animator.SetFloat("Speed", velocity.magnitude);
+
+    if (!rb.useGravity) {
+      // NOTE: If player is not falling.
+      animator.SetFloat("Speed", velocity.magnitude);
+    }
 
     lastFramePosition = currentPosition;
 
@@ -56,6 +60,10 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
       lookDirection = Quaternion.LookRotation(directionVector);
       rb.MoveRotation(Quaternion.LookRotation(directionVector));
     }
+  }
+
+  public void ResetLastFramePosition() {
+    lastFramePosition = rb.position;
   }
 
   private Vector3 getPlayerPositionWithOffset() {

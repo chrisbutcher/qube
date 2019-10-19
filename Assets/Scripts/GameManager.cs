@@ -32,7 +32,7 @@ public class GameManager : MonoBehaviour {
 
   // Falling:
   // [ ] when there’s too little floor for the next wave to load, you fall off
-  // [ ] standing on cubes, the moment they start to fall, you fall with em
+  // [ ] If you fall off the edge, it's Game Over. This means you get a chance to restart the game at the beginning of the stage you died on (i.e. stage 2, first wave).
 
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 
@@ -79,9 +79,6 @@ public class GameManager : MonoBehaviour {
 
     LoadStageDefinitions();
 
-    CurrentStage = stageDefinitions.Stages[CurrentStageIndex];
-    CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
-
     boardManager = GetComponent<BoardManager>();
     cubeRotationMonitor = GetComponent<CubeRotationMonitor>();
     scoreboard = GameObject.FindGameObjectWithTag("UI").GetComponent<Scoreboard>();
@@ -89,22 +86,66 @@ public class GameManager : MonoBehaviour {
   }
 
   void Start() {
-    // boardManager.LoadStage(CurrentWave.Width, 15); // TODO: Determine dynamic floor depth as stages change
-    boardManager.LoadStage(CurrentWave.Width, 15); // TODO: Determine dynamic floor depth as stages change
-
     var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(1.5f, PlayerStartingPosY, -7.5f), Quaternion.identity); // TODO: Do not hard code initial player position
     player.name = "Player";
-
     Players.Add(player);
 
+    SetAndLoadStage(1);
+  }
+
+  void SetAndLoadStage(int stageIndex) {
+    CurrentStageIndex = stageIndex;
+
+    CurrentStage = stageDefinitions.Stages[CurrentStageIndex];
+    CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
+
+    // NOTE: Floor depth = ((stage starting wave depth x stage puzzles per wave) * 2) + 3.
+    // e.g. ((2 * 3) * 2) + 3 = 15 for stage 1
+    //      ((5 * 3) * 2) + 3 = 33 for stage 2
+    //      ((4 * 3) * 2) + 3 = 27 for stage 3 ...
+    var stageInitialFloorDepth = ((CurrentWave.Depth * CurrentStage.PuzzlesPerWave) * 2) + 3;
+
+    // boardManager.LoadStage(CurrentWave.Width, stageInitialFloorDepth);
+    boardManager.LoadStage(CurrentWave.Width, 17);
+
     LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
+
+    // TODO: Attempting to smoothly set camera behind player when loading stage. WIP.
+    var playerRb = Players[0].GetComponent<Rigidbody>();
+    var camera = GameObject.FindGameObjectWithTag("MainCamera");
+    camera.transform.position = playerRb.transform.position + Vector3.back * 3;
+  }
+
+  public void RestartStageAfterDying(int playerIndex) {
+    // TODO: Reset score, delete all current puzzles, reset all other relevant state.
+
+    boardManager.RemoveAllPuzzles();
+
+    CurrentStageScore = 0;
+    CurrentWaveIndex = 0;
+
+    // if (PlayerSquashed) {
+    //   Players[0].GetComponent<PlayerSquashable>().UnSquashPlayer();
+    //   PlayerSquashed = false;
+    // }
+
+    CurrentPuzzlePlayerMadeMistakes = false;
+
+    SetAndLoadStage(CurrentStageIndex);
+    GetPlayerControls(playerIndex).Enable();
   }
 
   void LoadWaveAndPerformSideEffects(int numPuzzles, int width, int depth) {
     float playerDistanceBack = (numPuzzles * depth) + 1.5f;
     var playerPosition = new Vector3(1.5f, PlayerStartingPosY, -playerDistanceBack);
 
-    var playerRb = Players[0].GetComponent<Rigidbody>();
+    Debug.Log("Resetting player position to:");
+    Debug.Log(playerPosition);
+
+    var player = Players[0];
+    player.GetComponent<RigidBodyPlayerMovement>().ResetLastFramePosition();
+
+    var playerRb = player.GetComponent<Rigidbody>();
     playerRb.MovePosition(playerPosition);
 
     boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
@@ -147,6 +188,12 @@ public class GameManager : MonoBehaviour {
   }
 
   void PossiblyLoadNextWaveOrStage(GameObject fallenOrDestroyedCube) {
+    var playerIsFalling = Players[0].GetComponent<PlayerFallable>().PlayerFalling;
+
+    if (playerIsFalling) {
+      return;
+    }
+
     if (boardManager.HasActivePuzzle() == false) {
       StartCoroutine(PostPuzzleDelayPhase(GameConsts.PostPuzzleScoringPause));
     }
@@ -225,7 +272,9 @@ public class GameManager : MonoBehaviour {
   }
 
   bool CubesSpedUp() {
-    return Input.GetKey(KeyCode.LeftShift) || PlayerSquashed;
+    var playerFalling = Players[0].GetComponent<PlayerFallable>().PlayerFalling;
+
+    return (GameManager.instance.GetPlayerControls(0).isSpeedingUpCubes() || PlayerSquashed) && playerFalling == false;
   }
 
   void LoadStageDefinitions() {

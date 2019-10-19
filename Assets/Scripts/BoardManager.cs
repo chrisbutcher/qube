@@ -42,7 +42,13 @@ public class BoardManager : MonoBehaviour {
     }
   }
 
-  void RemoveAllPuzzles() {
+  public void RemoveAllPuzzles() {
+    if (CurrentPuzzle != null) {
+      CurrentPuzzle.CleanUpDestroyedCubes();
+      CurrentPuzzle.DestroyAll();
+      CurrentPuzzle = null;
+    }
+
     foreach (var p in puzzles) {
       p.DestroyAll();
     }

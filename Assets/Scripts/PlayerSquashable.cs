@@ -14,6 +14,9 @@ public class PlayerSquashable : MonoBehaviour {
     Tumble.OnPlayerSquashed -= HandlePlayerSquashed;
   }
 
+  void Start() {
+  }
+
   public void UnSquashPlayer() {
     this.gameObject.transform.localScale = preSquashScale;
     this.gameObject.transform.position = preSquashPosition;

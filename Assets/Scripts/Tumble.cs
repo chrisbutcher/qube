@@ -24,30 +24,6 @@ public class Tumble : MonoBehaviour {
     DisablePhysics();
   }
 
-  void Update() {
-    if (!isFalling && !isMoving) {
-      HandleInput();
-    }
-  }
-
-  void HandleInput() {
-    var direction = Vector3.zero;
-
-    if (Input.GetKeyUp(KeyCode.W))
-      direction = Vector3.forward;
-
-    if (Input.GetKeyUp(KeyCode.S))
-      direction = Vector3.back;
-
-    if (Input.GetKeyUp(KeyCode.A))
-      direction = Vector3.left;
-
-    if (Input.GetKeyUp(KeyCode.D))
-      direction = Vector3.right;
-
-    TumbleInDirection(direction, GameConsts.TumbleDuration);
-  }
-
   public void TumbleInDirection(Vector3 direction, float duration) {
     if (direction != Vector3.zero && !isMoving && gameObject.activeInHierarchy) {
       StartCoroutine(DoTumble(direction, duration));

@@ -17,7 +17,7 @@ public class PlayerMarker : MonoBehaviour {
   }
 
   void Update() {
-    if (Input.GetKeyDown(KeyCode.X)) {
+    if (GameManager.instance.GetPlayerControls(0).isDetonatingPlayerMarker()) {
       if (!CurrentPlayerMarker.activeInHierarchy) {
         var quantizedPlayerPosition = GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
 
