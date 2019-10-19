@@ -16,7 +16,7 @@ public class GameManager : MonoBehaviour {
   // * [ ] As the puzzles get larger, you can drop more Qubes over the edge before you start losing rows off the grid
 
   // GETTING SQUISHED
-  // * [ ] If you do get squished, twom ajor things will happen.  Firstly, the puzzle will accelerate, denying you the chance to complete it.  Any remaining Qubes will be dropped off the edge, and
+  // * [ ] If you do get squished, twom major things will happen.  Firstly, the puzzle will accelerate, denying you the chance to complete it.  Any remaining Qubes will be dropped off the edge, and
   // *   they will count towards your allowed dropped Qube total, as measured by the Block Scale.  If this allowed number is exceeded, you will lose rows off the grid accordingly. 
   // * [ ] When squished, even Forbidden Qubes will add to the Block Scale counter.
   // * [ ] Once squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again.This time, however, the over-the-block indicators that are present
@@ -89,6 +89,7 @@ public class GameManager : MonoBehaviour {
   }
 
   void Start() {
+    // boardManager.LoadStage(CurrentWave.Width, 15); // TODO: Determine dynamic floor depth as stages change
     boardManager.LoadStage(CurrentWave.Width, 15); // TODO: Determine dynamic floor depth as stages change
 
     var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(1.5f, PlayerStartingPosY, -7.5f), Quaternion.identity); // TODO: Do not hard code initial player position
@@ -200,6 +201,11 @@ public class GameManager : MonoBehaviour {
     InPostPuzzlePause = false;
 
     boardManager.ActivateNextPuzzle(); // activate it, to continue this wave
+  }
+
+  public PlayerControls GetPlayerControls(int playerIndex) {
+    var player = Players[playerIndex];
+    return player.GetComponent<PlayerControls>();
   }
 
   public bool CameraFollowingPlayer() {

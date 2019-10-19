@@ -7,6 +7,8 @@ public class FloorManager : MonoBehaviour {
   public GameObject FloorCubePrefab;
   const float FLOOR_HEIGHT = -GameConsts.CubeSize;
 
+  public static event SharedEvents.CubeStackDropped OnCubeStackDropped;
+
   Stack<FloorStack> floorStacks;
 
   void Awake() {
@@ -86,6 +88,7 @@ public class FloorManager : MonoBehaviour {
 
     if (droppedStack != null) {
       droppedStack.Drop();
+      OnCubeStackDropped();
     }
   }
 

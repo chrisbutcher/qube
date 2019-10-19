@@ -7,6 +7,7 @@ public class SharedEvents {
   public delegate void CubeFell(GameObject fallenCube);
   public delegate void CubeStartedRotating(GameObject rotatingCube);
   public delegate void CubeFinishedRotating(GameObject rotatedCube);
+  public delegate void CubeStackDropped();
   public delegate void CubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType);
   public delegate void DestroyMarkedCubes();
   public delegate void MarkerDetonationEvent(Vector3 detonatedMarkerPosition, MarkerType.Type detonatedMarkerType);
