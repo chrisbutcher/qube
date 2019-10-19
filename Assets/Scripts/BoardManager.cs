@@ -56,6 +56,10 @@ public class BoardManager : MonoBehaviour {
     puzzles.Clear();
   }
 
+  public void RemoveFloor() {
+    floorManager.RemoveAllFloorStacks();
+  }
+
   public int CurrentWavePuzzleCount() {
     return puzzles.Count;
   }

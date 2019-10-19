@@ -30,10 +30,6 @@ public class GameManager : MonoBehaviour {
   //                                     40,000 (all other Stages)
   //                   TODO: Implement per-stage row bonus maximums
 
-  // Falling:
-  // [ ] when there’s too little floor for the next wave to load, you fall off
-  // [ ] If you fall off the edge, it's Game Over. This means you get a chance to restart the game at the beginning of the stage you died on (i.e. stage 2, first wave).
-
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 
   public static GameManager instance = null;
@@ -105,8 +101,8 @@ public class GameManager : MonoBehaviour {
     //      ((4 * 3) * 2) + 3 = 27 for stage 3 ...
     var stageInitialFloorDepth = ((CurrentWave.Depth * CurrentStage.PuzzlesPerWave) * 2) + 3;
 
-    // boardManager.LoadStage(CurrentWave.Width, stageInitialFloorDepth);
-    boardManager.LoadStage(CurrentWave.Width, 17);
+    boardManager.LoadStage(CurrentWave.Width, stageInitialFloorDepth);
+    // boardManager.LoadStage(CurrentWave.Width, 17);
 
     LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
 
@@ -120,14 +116,15 @@ public class GameManager : MonoBehaviour {
     // TODO: Reset score, delete all current puzzles, reset all other relevant state.
 
     boardManager.RemoveAllPuzzles();
+    boardManager.RemoveFloor();
 
     CurrentStageScore = 0;
     CurrentWaveIndex = 0;
 
-    // if (PlayerSquashed) {
-    //   Players[0].GetComponent<PlayerSquashable>().UnSquashPlayer();
-    //   PlayerSquashed = false;
-    // }
+    if (PlayerSquashed) {
+      Players[0].GetComponent<PlayerSquashable>().UnSquashPlayer();
+      PlayerSquashed = false;
+    }
 
     CurrentPuzzlePlayerMadeMistakes = false;
 
@@ -139,14 +136,12 @@ public class GameManager : MonoBehaviour {
     float playerDistanceBack = (numPuzzles * depth) + 1.5f;
     var playerPosition = new Vector3(1.5f, PlayerStartingPosY, -playerDistanceBack);
 
-    Debug.Log("Resetting player position to:");
-    Debug.Log(playerPosition);
-
     var player = Players[0];
     player.GetComponent<RigidBodyPlayerMovement>().ResetLastFramePosition();
 
     var playerRb = player.GetComponent<Rigidbody>();
     playerRb.MovePosition(playerPosition);
+    player.transform.position = playerPosition;
 
     boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
     CurrentWaveBlockScaleUsed = 0;

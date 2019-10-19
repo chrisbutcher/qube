@@ -55,6 +55,14 @@ public class FloorStack : MonoBehaviour {
     }
   }
 
+  public void RemoveAllFloorCubes() {
+    foreach (var c in cubes) {
+      Destroy(c);
+    }
+
+    cubes.Clear();
+  }
+
   public void Drop() {
     foreach (var cube in cubes) {
       var rb = cube.GetComponent<Rigidbody>();

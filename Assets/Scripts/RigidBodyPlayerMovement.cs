@@ -14,8 +14,8 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
   Quaternion lookDirection;
 
   Vector3 lastFramePosition;
-
   Animator animator;
+
   void Awake() {
     rb = GetComponent<Rigidbody>();
     animator = GetComponentInChildren<Animator>();

@@ -26,7 +26,6 @@ public class PlayerFallable : MonoBehaviour {
     playerAnimator = GetComponentInChildren<Animator>();
   }
 
-
   void HandleCubeStackDropped() {
     RaycastHit hit;
     LayerMask layerMask = Physics.AllLayers;
@@ -57,12 +56,7 @@ public class PlayerFallable : MonoBehaviour {
     }
   }
 
-
-  void Update() {
-  }
-
-  void FixedUpdate() {
-    // TODO: Constantize
+  void LateUpdate() {
     if (playerRB.position.y <= PlayerFallDistanceBeforeGameOver && PlayerFalling == true) {
       PlayerFalling = false;
 
