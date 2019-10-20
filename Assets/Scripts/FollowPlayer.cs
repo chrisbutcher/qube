@@ -56,7 +56,9 @@ public class FollowPlayer : MonoBehaviour { // TODO: Rename this script since it
       var floorManager = GameManager.instance.boardManager.floorManager;
 
       if (lastFrameCameraWasFollowingPlayer) {
-        follow = floorManager.GetNearestRightMostFloorCube().transform.position;
+        var cornerCubeVerticalOffset = (Vector3.up * 1); // TODO: Constantize
+        follow = floorManager.GetNearestRightMostFloorCube().transform.position + cornerCubeVerticalOffset;
+        UpdateCameraPosition(50f, 0f);
       }
 
       lastFrameCameraWasFollowingPlayer = false;

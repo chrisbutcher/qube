@@ -17,19 +17,22 @@ public class PlayerSquashable : MonoBehaviour {
   void Start() {
   }
 
+  void HandlePlayerSquashed(GameObject unusedPlayer) {
+    this.gameObject.GetComponent<RigidBodyPlayerMovement>().enabled = false;
+    this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
+
+    GameManager.instance.DisablePlayerControlsAndWalkAnimation();
+
+    StartCoroutine(AnimateSquash(this.gameObject));
+  }
+
   public void UnSquashPlayer() {
     this.gameObject.transform.localScale = preSquashScale;
     this.gameObject.transform.position = preSquashPosition;
 
     this.gameObject.GetComponent<RigidBodyPlayerMovement>().enabled = true;
     this.gameObject.GetComponent<CapsuleCollider>().enabled = true;
-  }
-
-  void HandlePlayerSquashed(GameObject unusedPlayer) {
-    this.gameObject.GetComponent<RigidBodyPlayerMovement>().enabled = false;
-    this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
-
-    StartCoroutine(AnimateSquash(this.gameObject));
+    GameManager.instance.GetPlayerControls(0).Enable();
   }
 
   IEnumerator AnimateSquash(GameObject player) {

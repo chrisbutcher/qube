@@ -41,11 +41,8 @@ public class PuzzleLoader {
     var key = string.Format("{0}x{1}", width, height);
     var puzzlesOfSize = loadedPuzzles[key];
 
-    // var randomIndex = (int)Random.Range(0, puzzlesOfSize.Count);
-    // var puzzle = puzzlesOfSize[randomIndex];
-
     var randomIndex = (int)Random.Range(0, puzzlesOfSize.Count);
-    var puzzle = puzzlesOfSize[0];
+    var puzzle = puzzlesOfSize[randomIndex];
 
     return puzzle;
   }

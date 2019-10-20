@@ -13,5 +13,5 @@ public class GameConsts {
 
   public const float CameraFollowPlayuerDistanceAway = 2.89f;
   public const float CameraFollowPlayuerDistanceUp = 3.39f;
-  public const float CameraFollowPlayuerCameraLookZOffset = 0.79f;
+  public const float CameraFollowPlayuerCameraLookZOffset = 1.79f;
 }

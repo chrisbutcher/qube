@@ -3,14 +3,12 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerControls : MonoBehaviour {
-  public bool Disabled = false;
+  bool Disabled = false;
 
   void Start() {
-
   }
 
   void Update() {
-
   }
 
   public bool isDetonatingPlayerMarker() {
@@ -30,10 +28,6 @@ public class PlayerControls : MonoBehaviour {
   }
 
   public bool isSpeedingUpCubes() {
-    if (Disabled) {
-      return false;
-    }
-
     return Input.GetKey(KeyCode.LeftShift);
   }
 

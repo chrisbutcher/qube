@@ -40,10 +40,7 @@ public class PlayerFallable : MonoBehaviour {
 
         livingPlayerRBConstraints = playerRB.constraints;
 
-        GameManager.instance.GetPlayerControls(0).Disable();
-
-        var playerAnimator = GetComponentInChildren<Animator>();
-        playerAnimator.SetFloat("Speed", 0f);
+        GameManager.instance.DisablePlayerControlsAndWalkAnimation();
         playerAnimator.SetTrigger("Falling");
 
         // playerRB.detectCollisions = true;

@@ -19,7 +19,7 @@ public class GameManager : MonoBehaviour {
   // * [ ] If you do get squished, twom major things will happen.  Firstly, the puzzle will accelerate, denying you the chance to complete it.  Any remaining Qubes will be dropped off the edge, and
   // *   they will count towards your allowed dropped Qube total, as measured by the Block Scale.  If this allowed number is exceeded, you will lose rows off the grid accordingly. 
   // * [ ] When squished, even Forbidden Qubes will add to the Block Scale counter.
-  // * [ ] Once squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again.This time, however, the over-the-block indicators that are present
+  // * [ ] Once squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again. This time, however, the over-the-block indicators that are present
   //   on the easiest play mode will be in effect for the duration of that puzzle, highlighting for you the positions of any marked or Advantage squares.If the puzzle in which you originally got squished
   //   was the last puzzle of the current wave, you will not have to repeat it(the new wave clears this effect).  Similarly, if you get squished again while repeating a puzzle, you will not have to do it a third time.
 
@@ -245,12 +245,29 @@ public class GameManager : MonoBehaviour {
     boardManager.ActivateNextPuzzle(); // activate it, to continue this wave
   }
 
+  public void DisablePlayerControlsAndWalkAnimation() {
+    var player = Players[0];
+
+    // TODO: Also destroy all player markers when squashed?
+    player.GetComponent<PlayerMarker>().CurrentPlayerMarker.SetActive(false);
+    player.GetComponent<AdvantageMarkers>().ClearAllAdvantageMarkers();
+
+    GameManager.instance.GetPlayerControls(0).Disable();
+
+    var playerAnimator = player.GetComponentInChildren<Animator>();
+    playerAnimator.SetFloat("Speed", 0f);
+  }
+
   public PlayerControls GetPlayerControls(int playerIndex) {
     var player = Players[playerIndex];
     return player.GetComponent<PlayerControls>();
   }
 
   public bool CameraFollowingPlayer() {
+    if (PlayerSquashed) {
+      return !CubesSpedUp();
+    }
+
     if (InPostPuzzlePause) {
       return false;
     }
@@ -269,7 +286,7 @@ public class GameManager : MonoBehaviour {
   bool CubesSpedUp() {
     var playerFalling = Players[0].GetComponent<PlayerFallable>().PlayerFalling;
 
-    return (GameManager.instance.GetPlayerControls(0).isSpeedingUpCubes() || PlayerSquashed) && playerFalling == false;
+    return GameManager.instance.GetPlayerControls(0).isSpeedingUpCubes() && playerFalling == false;
   }
 
   void LoadStageDefinitions() {
