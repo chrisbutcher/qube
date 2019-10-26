@@ -47,7 +47,8 @@ public class Puzzle : MonoBehaviour {
   void HandleCubeDestructionPause() {
     if (active) {
       if (stateQueue.Count > 0) {
-        if (stateQueue.Peek() != State.DetonationPaused) {
+
+        if (!stateQueue.Contains(State.DetonationPaused)) {
           stateQueue.Enqueue(State.DetonationPaused);
         }
       } else {
@@ -168,6 +169,19 @@ public class Puzzle : MonoBehaviour {
   // NOTE: Overly defensive?
   bool AllCubesStationary() {
     return !puzzleCubes.Exists(c => c != null && c.GetComponent<Tumble>().isMoving);
+  }
+
+  public string StateQueueStatus() {
+    var output = "";
+    foreach (var state in stateQueue) {
+      if (output != "") {
+        output += ", ";
+      }
+
+      output += "[" + state.ToString() + "]";
+    }
+
+    return output;
   }
 
   void ResetQueue() {

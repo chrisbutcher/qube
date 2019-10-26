@@ -263,6 +263,10 @@ public class GameManager : MonoBehaviour {
     return player.GetComponent<PlayerControls>();
   }
 
+  public string CurrentPuzzleStateQueueStatus() {
+    return boardManager.CurrentPuzzleOrNextPuzzleUp().StateQueueStatus();
+  }
+
   public bool CameraFollowingPlayer() {
     if (PlayerSquashed) {
       return !CubesSpedUp();

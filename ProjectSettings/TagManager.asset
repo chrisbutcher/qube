@@ -13,6 +13,7 @@ TagManager:
   - UI-PostPuzzleAnnounce
   - PlayerMarker
   - Floor Cube
+  - UI-CurrentPuzzleStateQueue
   layers:
   - Default
   - TransparentFX

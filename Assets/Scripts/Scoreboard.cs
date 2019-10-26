@@ -10,6 +10,8 @@ public class Scoreboard : MonoBehaviour {
   Text Turns;
   Text BlockScale;
 
+  Text CurrentPuzzleStateQueue;
+
   Text PostPuzzleAnnounce;
   float ShowAnnounceForNSeconds = 0f;
 
@@ -20,6 +22,7 @@ public class Scoreboard : MonoBehaviour {
     Turns = GameObject.FindGameObjectWithTag("UI-Turns").GetComponent<Text>();
     BlockScale = GameObject.FindGameObjectWithTag("UI-BlockScale").GetComponent<Text>();
     PostPuzzleAnnounce = GameObject.FindGameObjectWithTag("UI-PostPuzzleAnnounce").GetComponent<Text>();
+    CurrentPuzzleStateQueue = GameObject.FindGameObjectWithTag("UI-CurrentPuzzleStateQueue").GetComponent<Text>();
   }
 
   void Update() {
@@ -28,6 +31,7 @@ public class Scoreboard : MonoBehaviour {
     Score.text = $"Score: {GameManager.instance.CurrentStageScore}";
     Turns.text = $"{GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().RotationsSinceFirstCubeDestroyed} / {GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().TypicalRotationNumber}";
     BlockScale.text = $"{GameManager.instance.CurrentWaveBlockScaleUsed} / {GameManager.instance.CurrentWaveBlockScaleAvailable}";
+    CurrentPuzzleStateQueue.text = GameManager.instance.CurrentPuzzleStateQueueStatus();
 
     if (ShowAnnounceForNSeconds > 0f) {
       ShowAnnounceForNSeconds -= Time.deltaTime;
