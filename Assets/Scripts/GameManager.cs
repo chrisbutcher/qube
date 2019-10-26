@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour {
   //                                     40,000 (all other Stages)
   //                   TODO: Implement per-stage row bonus maximums
 
+  // Perf:
+  // * [ ] Maybe disable floor cube colliders until they are close to end of floor, able to drop and be able to be interacted with?
+
   // Bugs:
   // * [ ] Fix TODOs with cube physics in Tumble.
 

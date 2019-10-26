@@ -26,6 +26,7 @@ public class Scoreboard : MonoBehaviour {
   }
 
   void Update() {
+    // TODO: Update every few frames?
     CurrentStage.text = (GameManager.instance.CurrentStageIndex + 1).ToString();
     CurrentWave.text = $"Wave: {GameManager.instance.CurrentWaveIndex + 1}";
     Score.text = $"Score: {GameManager.instance.CurrentStageScore}";

@@ -111,7 +111,7 @@ public class Tumble : MonoBehaviour {
     // TODO: Dry up this with FloorStack#Drop
     rb.detectCollisions = true;
     rb.useGravity = true;
-    // rb.isKinematic = false; # ????
+    rb.isKinematic = false; // ????
     rb.constraints = RigidbodyConstraints.None;
 
     var range = 3f;
