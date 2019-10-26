@@ -64,11 +64,15 @@ public class FloorStack : MonoBehaviour {
   }
 
   public void Drop() {
+    // TODO: Dry up this with Tumble#EnablePhysics
     foreach (var cube in cubes) {
       var rb = cube.GetComponent<Rigidbody>();
       rb.detectCollisions = true;
       rb.useGravity = true;
       rb.constraints = RigidbodyConstraints.None;
+
+      var range = 3f;
+      rb.AddRelativeTorque(Random.Range(-range, range), Random.Range(-range, range), Random.Range(-range, range));
     }
   }
 

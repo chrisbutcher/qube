@@ -30,6 +30,9 @@ public class GameManager : MonoBehaviour {
   //                                     40,000 (all other Stages)
   //                   TODO: Implement per-stage row bonus maximums
 
+  // Bugs:
+  // * [ ] Fix TODOs with cube physics in Tumble.
+
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 
   public static GameManager instance = null;
@@ -290,7 +293,7 @@ public class GameManager : MonoBehaviour {
   bool CubesSpedUp() {
     var playerFalling = Players[0].GetComponent<PlayerFallable>().PlayerFalling;
 
-    return GameManager.instance.GetPlayerControls(0).isSpeedingUpCubes() && playerFalling == false;
+    return (GameManager.instance.GetPlayerControls(0).isSpeedingUpCubes() && playerFalling == false) || (PlayerSquashed && playerFalling == false);
   }
 
   void LoadStageDefinitions() {
