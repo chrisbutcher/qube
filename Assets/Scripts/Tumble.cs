@@ -94,14 +94,12 @@ public class Tumble : MonoBehaviour {
     var playerFellFarAlready = GameManager.instance.Players[0].transform.position.y < -7f;
     var floorIsBelowTumblingCube = GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(transform.position);
 
-    // TODO
-    // if (floorIsBelowTumblingCube == false && playerFalling == false) {
-    // if (floorIsBelowTumblingCube == false && playerFellFarAlready == false) {
     if (floorIsBelowTumblingCube == false) {
       isFalling = true;
 
       EnablePhysics();
 
+      enabled = false;
       GetComponent<Destroyable>().DestroyedByPlayerOrByFalling = true;
       OnCubeFell(this.gameObject);
     }
@@ -113,6 +111,7 @@ public class Tumble : MonoBehaviour {
     rb.useGravity = true;
     rb.isKinematic = false; // ????
     rb.constraints = RigidbodyConstraints.None;
+    rb.mass = 0.2f;
 
     var range = 3f;
     rb.AddRelativeTorque(Random.Range(-range, range), Random.Range(-range, range), Random.Range(-range, range));

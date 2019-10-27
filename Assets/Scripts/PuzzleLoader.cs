@@ -48,7 +48,7 @@ public class PuzzleLoader {
   }
 
   // TODO: Rewrite/use https://app.quicktype.io/ instead of hand-rolled loader/parser
-  private void LoadAndParsePuzzles() {
+  public void LoadAndParsePuzzles() {
     string filePath = Path.Combine(Application.streamingAssetsPath, FILENAME);
 
     if (File.Exists(filePath)) {
@@ -94,10 +94,10 @@ public class PuzzleLoader {
               }
               cubes.Add(cube);
 
-              puzzlePosition += GameConsts.CubeSize;
+              puzzlePosition += 1;
             }
 
-            puzzleDepth += GameConsts.CubeSize;
+            puzzleDepth += 1;
           }
 
           InternalPuzzle puzzle = new InternalPuzzle(cubes, typicalRotationsNeeded);

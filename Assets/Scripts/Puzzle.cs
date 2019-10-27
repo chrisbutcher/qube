@@ -94,15 +94,15 @@ public class Puzzle : MonoBehaviour {
     }
   }
 
-  public void Build(GameObject cubePrefab, PuzzleLoader.InternalPuzzle internalPuzzle, Vector3 positionOffset) {
-    foreach (var positionAndType in internalPuzzle.cubes) {
-      GameObject cube = (GameObject)Instantiate(cubePrefab, positionAndType.position + positionOffset, Quaternion.identity);
-      Util.ParentInstanceUnderEmpty(cube, "CubeGroup");
+  public void Build(GameObject cubePrefab, int width, int depth, int positionOffset) {
+    for (int z = 0; z > -depth; z--) {
+      for (int x = 0; x < width; x++) {
+        var position = new Vector3(x, 0f, z + positionOffset);
 
-      cube.GetComponent<CubeType>().CurrentType = positionAndType.type;
-      TypicalRotationNumber = internalPuzzle.typicalRotationsNeeded;
-
-      puzzleCubes.Add(cube);
+        GameObject cube = (GameObject)Instantiate(cubePrefab, position, Quaternion.identity);
+        Util.ParentInstanceUnderEmpty(cube, "CubeGroup");
+        puzzleCubes.Add(cube);
+      }
     }
   }
 
@@ -118,7 +118,16 @@ public class Puzzle : MonoBehaviour {
     }
   }
 
-  public void Activate() {
+  public void Activate(PuzzleLoader.InternalPuzzle puzzleToActivateAs) {
+    TypicalRotationNumber = puzzleToActivateAs.typicalRotationsNeeded;
+
+    for (int i = 0; i < puzzleToActivateAs.cubes.Count; i++) {
+      var internalCube = puzzleToActivateAs.cubes[i];
+      var puzzleCube = puzzleCubes[i];
+
+      puzzleCube.GetComponent<CubeType>().CurrentType = internalCube.type;
+    }
+
     active = true;
   }
 

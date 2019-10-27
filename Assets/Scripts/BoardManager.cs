@@ -14,16 +14,20 @@ public class BoardManager : MonoBehaviour {
   public FloorManager floorManager;
 
   private PuzzleLoader puzzleLoader;
+  PuzzleLoader.InternalPuzzle currentInternalPuzzle;
+
+  int currentWaveWidth;
+  int currentWaveDepth;
 
   void Awake() {
     floorManager = gameObject.AddComponent<FloorManager>();
     floorManager.FloorCubePrefab = FloorCubePrefab;
 
     puzzleLoader = new PuzzleLoader();
+    puzzleLoader.LoadAndParsePuzzles();
   }
 
   public void LoadStage(int width, int depth) {
-    // TODO: Have floor manager reset itself first
     floorManager.Reset();
 
     for (int i = 0; i < depth; i++) {
@@ -32,12 +36,14 @@ public class BoardManager : MonoBehaviour {
   }
 
   public void LoadWave(int numPuzzles, int width, int depth) {
-    for (int i = 0; i < numPuzzles; i++) {
-      var internalPuzzle = puzzleLoader.LoadPuzzle(width, depth);
-      var puzzle = gameObject.AddComponent<Puzzle>();
-      var positionOffset = new Vector3(0f, 0f, -(i * depth));
+    currentWaveWidth = width;
+    currentWaveDepth = depth;
 
-      puzzle.Build(CubePrefab, internalPuzzle, positionOffset);
+    for (int i = 0; i < numPuzzles; i++) {
+      var puzzle = gameObject.AddComponent<Puzzle>();
+      var positionOffset = -(i * depth);
+
+      puzzle.Build(CubePrefab, width, depth, positionOffset);
       puzzles.Push(puzzle);
     }
   }
@@ -92,12 +98,17 @@ public class BoardManager : MonoBehaviour {
     }
   }
 
-  public void ActivateNextPuzzle() {
+  public void ActivateNextPuzzle(bool replayingPreviousPuzzle) {
     if (puzzles.Count > 0) {
       CurrentPuzzle = puzzles.Pop();
 
       if (CurrentPuzzle != null) {
-        CurrentPuzzle.Activate();
+        if (replayingPreviousPuzzle) {
+          CurrentPuzzle.Activate(currentInternalPuzzle);
+        } else {
+          currentInternalPuzzle = puzzleLoader.LoadPuzzle(currentWaveWidth, currentWaveDepth);
+          CurrentPuzzle.Activate(currentInternalPuzzle);
+        }
       }
     }
   }

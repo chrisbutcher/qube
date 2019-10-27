@@ -16,9 +16,6 @@ public class GameManager : MonoBehaviour {
   // * [ ] As the puzzles get larger, you can drop more Qubes over the edge before you start losing rows off the grid
 
   // GETTING SQUISHED
-  // * [ ] If you do get squished, twom major things will happen.  Firstly, the puzzle will accelerate, denying you the chance to complete it.  Any remaining Qubes will be dropped off the edge, and
-  // *   they will count towards your allowed dropped Qube total, as measured by the Block Scale.  If this allowed number is exceeded, you will lose rows off the grid accordingly. 
-  // * [ ] When squished, even Forbidden Qubes will add to the Block Scale counter.
   // * [ ] Once squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again. This time, however, the over-the-block indicators that are present
   //   on the easiest play mode will be in effect for the duration of that puzzle, highlighting for you the positions of any marked or Advantage squares.If the puzzle in which you originally got squished
   //   was the last puzzle of the current wave, you will not have to repeat it(the new wave clears this effect).  Similarly, if you get squished again while repeating a puzzle, you will not have to do it a third time.
@@ -32,9 +29,6 @@ public class GameManager : MonoBehaviour {
 
   // Perf:
   // * [ ] Maybe disable floor cube colliders until they are close to end of floor, able to drop and be able to be interacted with?
-
-  // Bugs:
-  // * [ ] Fix TODOs with cube physics in Tumble.
 
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
 
@@ -92,7 +86,7 @@ public class GameManager : MonoBehaviour {
     player.name = "Player";
     Players.Add(player);
 
-    SetAndLoadStage(1);
+    SetAndLoadStage(1); // TODO
   }
 
   void SetAndLoadStage(int stageIndex) {
@@ -170,7 +164,8 @@ public class GameManager : MonoBehaviour {
   void HandleCubeFell(GameObject fallenCube) {
     var cubeType = fallenCube.GetComponent<CubeType>().CurrentType;
 
-    if (cubeType != CubeType.Type.Forbidden) {
+    // When squashhed, even forbidden cubes that fall off the end count towards filling up your block scale.
+    if (cubeType != CubeType.Type.Forbidden || PlayerSquashed) {
       CurrentPuzzlePlayerMadeMistakes = true;
 
       CurrentWaveBlockScaleUsed += 1;
@@ -248,7 +243,8 @@ public class GameManager : MonoBehaviour {
     CurrentPuzzlePlayerMadeMistakes = false;
     InPostPuzzlePause = false;
 
-    boardManager.ActivateNextPuzzle(); // activate it, to continue this wave
+    // TODO: Sometimes call this with true, i.e. when player is forced to play the previous puzzle again.
+    boardManager.ActivateNextPuzzle(false); // activate it, to continue this wave
   }
 
   public void DisablePlayerControlsAndWalkAnimation() {
