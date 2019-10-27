@@ -48,6 +48,7 @@ public class GameManager : MonoBehaviour {
   public int CurrentStageScore;
 
   public bool PlayerSquashed = false;
+  public float PlayerSquashedFor;
   int PlayerSquashedForNPuzzles = 0;
 
   const float PlayerStartingPosY = -0.5f;
@@ -83,6 +84,14 @@ public class GameManager : MonoBehaviour {
     Players.Add(player);
 
     SetAndLoadStage(1); // TODO
+  }
+
+  void Update() {
+    if (PlayerSquashed) {
+      PlayerSquashedFor += Time.deltaTime;
+    } else {
+      PlayerSquashedFor = 0f;
+    }
   }
 
   void SetAndLoadStage(int stageIndex) {
@@ -275,7 +284,7 @@ public class GameManager : MonoBehaviour {
   }
 
   public bool CameraFollowingPlayer() {
-    if (PlayerSquashed) {
+    if (PlayerSquashedFor > 2f) {
       return !CubesSpedUp();
     }
 
