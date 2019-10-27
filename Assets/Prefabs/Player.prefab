@@ -185,6 +185,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b52c6d56db8a46e4285b9b18290b81d8, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerFalling: 0
 --- !u!114 &-3250891403886276541
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -197,7 +198,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8f4617e4b330d5d4aafc63af439b5395, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Disabled: 0
 --- !u!1001 &4647402907671448997
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -209,6 +209,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: Male_Suit
+      objectReference: {fileID: 0}
+    - target: {fileID: 4017389275399418379, guid: ea2e95f692976644bab515696ef20921,
+        type: 3}
+      propertyPath: m_Name
+      value: BaseHuman (materials applied here)
       objectReference: {fileID: 0}
     - target: {fileID: -4216859302048453862, guid: ea2e95f692976644bab515696ef20921,
         type: 3}
