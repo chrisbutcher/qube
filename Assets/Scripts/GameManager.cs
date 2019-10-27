@@ -15,11 +15,6 @@ public class GameManager : MonoBehaviour {
   // BlOCK SCALE (bottom right)
   // * [ ] As the puzzles get larger, you can drop more Qubes over the edge before you start losing rows off the grid
 
-  // GETTING SQUISHED
-  // * [ ] Once squished, if there are any puzzles remaining in the current wave, you will be forced to do the same puzzle over again. This time, however, the over-the-block indicators that are present
-  //   on the easiest play mode will be in effect for the duration of that puzzle, highlighting for you the positions of any marked or Advantage squares.If the puzzle in which you originally got squished
-  //   was the last puzzle of the current wave, you will not have to repeat it(the new wave clears this effect).  Similarly, if you get squished again while repeating a puzzle, you will not have to do it a third time.
-
   // Stage bonuses:
   // After each stage: For every row remaining on grid - 1,000 points
   //                   up to maximum of: 27,000 (1st Stage)
@@ -53,6 +48,7 @@ public class GameManager : MonoBehaviour {
   public int CurrentStageScore;
 
   public bool PlayerSquashed = false;
+  int PlayerSquashedForNPuzzles = 0;
 
   const float PlayerStartingPosY = -0.5f;
 
@@ -112,7 +108,7 @@ public class GameManager : MonoBehaviour {
     camera.transform.position = playerRb.transform.position + Vector3.back * 3;
   }
 
-  public void RestartStageAfterDying(int playerIndex) {
+  public void RestartStageAfterGameOver(int playerIndex) {
     // TODO: Reset score, delete all current puzzles, reset all other relevant state.
 
     boardManager.RemoveAllPuzzles();
@@ -146,7 +142,7 @@ public class GameManager : MonoBehaviour {
     boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
     CurrentWaveBlockScaleUsed = 0;
 
-    StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
+    StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause, false));
   }
 
   void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
@@ -199,9 +195,14 @@ public class GameManager : MonoBehaviour {
     InPostPuzzlePause = true;
     yield return new WaitForSeconds(delayLength);
 
+    bool playerWasSquashed = PlayerSquashed;
+
     if (PlayerSquashed) {
       Players[0].GetComponent<PlayerSquashable>().UnSquashPlayer();
       PlayerSquashed = false;
+      PlayerSquashedForNPuzzles += 1;
+    } else {
+      PlayerSquashedForNPuzzles = 0;
     }
 
     Players[0].GetComponent<AdvantageMarkers>().ClearAllAdvantageMarkers();
@@ -223,8 +224,12 @@ public class GameManager : MonoBehaviour {
       boardManager.floorManager.Add(CurrentWave.Width, true);
     }
 
-    if (boardManager.CurrentWavePuzzleCount() > 0) { // If the current wave has an already loaded puzzle...
-      StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause));
+    // If the current wave has an already loaded puzzle...
+    if (boardManager.CurrentWavePuzzleCount() > 0) {
+      // Players only get one replay of a puzzle on a given wave of puzzles if they get squashed while playing it.
+      var playerSquashedOnceOnPuzzleAndAbleToRetry = playerWasSquashed && (PlayerSquashedForNPuzzles == 1);
+
+      StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause, playerSquashedOnceOnPuzzleAndAbleToRetry));
     } else {
       if (CurrentWaveIndex + 1 <= CurrentStage.Waves.Count) {
         CurrentWaveIndex += 1;
@@ -236,7 +241,7 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  IEnumerator ActivateNextPuzzleAfterDelay(float afterDelay) {
+  IEnumerator ActivateNextPuzzleAfterDelay(float afterDelay, bool playerSquashedOnceOnPuzzleAndAbleToRetry) {
     yield return new WaitForSeconds(afterDelay);
 
     cubeRotationMonitor.CubeScoredThisPuzzle = false;
@@ -244,7 +249,7 @@ public class GameManager : MonoBehaviour {
     InPostPuzzlePause = false;
 
     // TODO: Sometimes call this with true, i.e. when player is forced to play the previous puzzle again.
-    boardManager.ActivateNextPuzzle(false); // activate it, to continue this wave
+    boardManager.ActivateNextPuzzle(playerSquashedOnceOnPuzzleAndAbleToRetry);
   }
 
   public void DisablePlayerControlsAndWalkAnimation() {

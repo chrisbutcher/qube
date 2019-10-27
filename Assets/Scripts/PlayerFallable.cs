@@ -72,7 +72,7 @@ public class PlayerFallable : MonoBehaviour {
 
       playerRB.MoveRotation(Quaternion.LookRotation(Vector3.forward));
 
-      GameManager.instance.RestartStageAfterDying(0);
+      GameManager.instance.RestartStageAfterGameOver(0);
     }
   }
 }
