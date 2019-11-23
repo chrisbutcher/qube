@@ -32,10 +32,12 @@ public class CubeType : MonoBehaviour {
 
       switch (CurrentType) {
         case Type.Advantage:
-          materials[0].color = Color.green;
+          materials[0].SetColor("_albedo", Color.green);
+          // materials[0].color = Color.green;
           break;
         case Type.Forbidden:
-          materials[0].color = Color.black;
+          materials[0].SetColor("_albedo", Color.black);
+          // materials[0].color = Color.black;
           break;
         case Type.Normal:
           break;

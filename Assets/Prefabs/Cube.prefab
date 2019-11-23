@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: bfe528ecfd50b4d6ca18de0a24689c3d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  HasStartedToRoll: 0
   CurrentType: 0
 --- !u!114 &114955980905497602
 MonoBehaviour:
@@ -169,6 +170,7 @@ MonoBehaviour:
   DestroyedByPlayerOrByFalling: 0
   MarkedForDestruction: 0
   AnimatingDestruction: 0
+  MarkerTypeDestroyedBy: 0
 --- !u!114 &114466241179242566
 MonoBehaviour:
   m_ObjectHideFlags: 0

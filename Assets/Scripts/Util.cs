@@ -29,7 +29,7 @@ public class Util {
     var renderers = obj.GetComponentsInChildren<Renderer>();
     foreach (var r in renderers) {
       foreach (var m in r.materials) {
-        m.color = newColor;
+        m.SetColor("_albedo", newColor);
       }
     }
   }

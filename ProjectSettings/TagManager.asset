@@ -14,6 +14,7 @@ TagManager:
   - PlayerMarker
   - Floor Cube
   - UI-CurrentPuzzleStateQueue
+  - CubeGroup
   layers:
   - Default
   - TransparentFX
