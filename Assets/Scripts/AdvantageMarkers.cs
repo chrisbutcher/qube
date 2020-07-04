@@ -38,7 +38,7 @@ public class AdvantageMarkers : MonoBehaviour {
 
   void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
     if (scoredCube.GetComponent<CubeType>().CurrentType == CubeType.Type.Advantage) {
-      var advantageMarker = (GameObject)Instantiate(MarkerPrefab, scoredCube.transform.position, Quaternion.identity);
+      var advantageMarker = (GameObject)Instantiate(MarkerPrefab, scoredCube.transform.position + new Vector3(0f, 0.005f, 0f), Quaternion.identity);
       advantageMarker.GetComponent<MarkerType>().CurrentType = MarkerType.Type.AdvantageMarker;
       Util.ChangeColorOfGameObjectAndAllChildren(advantageMarker, Color.green); // TODO: Move this color setting logic to MarkerType
 

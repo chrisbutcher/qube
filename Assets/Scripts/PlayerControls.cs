@@ -12,11 +12,17 @@ public class PlayerControls : MonoBehaviour {
   }
 
   public bool isDetonatingPlayerMarker() {
+
+    // Debug.Log("Hi");
+
     if (Disabled) {
       return false;
     }
 
-    return Input.GetKeyDown(KeyCode.X);
+    // Debug.Log("Ho");
+
+    // return Input.GetKeyDown(KeyCode.X);
+    return Input.GetButtonDown("SetClearPlayerMarker");
   }
 
   public bool isDetonatingAdvantageMarkers() {
@@ -24,11 +30,16 @@ public class PlayerControls : MonoBehaviour {
       return false;
     }
 
-    return Input.GetKeyDown(KeyCode.Z);
+
+    // return Input.GetKeyDown(KeyCode.Z);
+    return Input.GetButtonDown("DetonateAdvantageZone");
   }
 
   public bool isSpeedingUpCubes() {
-    return Input.GetKey(KeyCode.LeftShift);
+    // "SpeedUpCubes"
+
+    // return Input.GetKey(KeyCode.LeftShift);
+    return Input.GetButton("SpeedUpCubes");
   }
 
   public Vector3 getPlayerMovementDirection() {
