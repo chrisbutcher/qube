@@ -28,6 +28,15 @@ public class Scoreboard : MonoBehaviour {
     // CurrentPuzzleStateQueue = GameObject.FindGameObjectWithTag("UI-CurrentPuzzleStateQueue").GetComponent<Text>();
   }
 
+  void Start() {
+    CurrentStage.text = "";
+    CurrentWave.text = "";
+    Score.text = "";
+    Turns.text = "";
+    BlockScale.text = "";
+    PostPuzzleAnnounce.text = "";
+  }
+
   void Update() {
     framesUntilUpdate -= 1;
 
@@ -40,7 +49,17 @@ public class Scoreboard : MonoBehaviour {
     // TODO: Update every few frames?
     CurrentStage.text = (GameManager.instance.CurrentStageIndex + 1).ToString();
     Score.text = $"Score: {GameManager.instance.CurrentStageScore}";
-    Turns.text = $"{GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().RotationsSinceFirstCubeDestroyed} / {GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().TypicalRotationNumber}";
+
+    var rotationsSinceFirstCubeDestroyed = GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().RotationsSinceFirstCubeDestroyed;
+    var typicalRotationNumber = GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().TypicalRotationNumber;
+
+    Turns.text = $"{rotationsSinceFirstCubeDestroyed} / {typicalRotationNumber}";
+
+    if (rotationsSinceFirstCubeDestroyed <= typicalRotationNumber) {
+      Turns.color = Color.cyan;
+    } else {
+      Turns.color = Color.red;
+    }
 
     // Block scale UI start (move to function?)
     var blockScaleAscii = "";

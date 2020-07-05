@@ -36,8 +36,6 @@ public class FloorStack : MonoBehaviour {
         return true;
     }
 
-    //Debug.Log($"Floor not below cube. OG position is: {vec}. Quantized was: {quantizedVec}");
-
     return false;
   }
 

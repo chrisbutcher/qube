@@ -31,20 +31,27 @@ public class PlayerMarker : MonoBehaviour {
 
         CurrentPlayerMarker.SetActive(true);
 
-        // TODO: Find any markers with `MarkerType>().CurrentType = MarkerType.Type.DestroyedMarker` and destroy them
-        // instantly if they overlap positionally with this new player marker
-        var existingPlayerMarkersArray = GameObject.FindObjectsOfType<MarkerType>();
-        var existingPlayerMarkers = new List<MarkerType>(existingPlayerMarkersArray);
-
-        foreach (var foo in existingPlayerMarkers) {
-          Debug.Log(foo.CurrentType);
-        }
-
-        CurrentPlayerMarker.transform.position = new Vector3(
+        var newCurrentPlayerMarkerPosition = new Vector3(
           quantizedPlayerPosition.x,
           DEFAULT_MARKER_HEIGHT,
           quantizedPlayerPosition.z
         );
+
+        var existingPlayerMarkers = GameObject.FindObjectsOfType<MarkerType>();
+
+        foreach (var existingPlayerMarker in existingPlayerMarkers) {
+          if (existingPlayerMarker.CurrentType.Equals(MarkerType.Type.DestroyedMarker)) {
+            var differenceBetweenDestroyedMarkerAndCurrentPlayerMarker = newCurrentPlayerMarkerPosition -
+              existingPlayerMarker.transform.position;
+
+            if (differenceBetweenDestroyedMarkerAndCurrentPlayerMarker == Vector3.zero) {
+              existingPlayerMarker.gameObject.SetActive(false);
+            }
+          }
+        }
+
+        CurrentPlayerMarker.transform.position = newCurrentPlayerMarkerPosition;
+
       } else {
         if (OnMarkerDetonation != null) {
           OnMarkerDetonation(CurrentPlayerMarker.transform.position, CurrentPlayerMarker.GetComponent<MarkerType>().CurrentType);

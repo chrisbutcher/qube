@@ -16,7 +16,12 @@ public class MarkerType : MonoBehaviour {
 
   public static void SpawnDestroyedMarkerAt(Vector3 spawnPosition) {
     var playerMarkers = new List<GameObject>(GameObject.FindGameObjectsWithTag("PlayerMarker"));
-    var exitingDetonatedMarkerAtThisPosition = playerMarkers.Exists(m => m.GetComponent<MarkerType>().CurrentType != MarkerType.Type.DestroyedMarker && m.transform.position == spawnPosition);
+
+    var exitingDetonatedMarkerAtThisPosition = playerMarkers.Exists(m =>
+      m.GetComponent<MarkerType>().CurrentType != MarkerType.Type.DestroyedMarker
+      && m.transform.position == spawnPosition
+    );
+
     if (exitingDetonatedMarkerAtThisPosition) {
       // Return early if there is already a detonated marker in this spot.
       return;

@@ -74,6 +74,7 @@ public class Destroyable : MonoBehaviour {
       this.gameObject.transform.SetParent(newParent);
     }
 
+    Destroy(newParent.gameObject);
 
     DestroyedByPlayerOrByFalling = true;
     OnCubeScored(this.gameObject, MarkerTypeDestroyedBy);
