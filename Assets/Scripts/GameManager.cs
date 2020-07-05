@@ -12,6 +12,8 @@ public class GameManager : MonoBehaviour {
 
   // TODO Gameplay:
   // * [ ] Game over
+  //   - Falling off the edge of the world is an instant Game over.
+  //   - You are reset to the beginning of the current stage, at the first wave.
   // * [ ] Calculate and show IQ: http://blog.airesoft.co.uk/2015/08/how-to-be-a-genius-intelligent-qubes-iq-algorithm/
 
   // BUGS: 
@@ -20,8 +22,8 @@ public class GameManager : MonoBehaviour {
   // Perf:
   // * [ ] Maybe disable floor cube colliders until they are close to end of floor, able to drop and be able to be interacted with?
 
-  // const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
-  const string STAGE_DEFINITIONS_FILENAME = "stage_definitions_alt.json";
+  const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
+  // const string STAGE_DEFINITIONS_FILENAME = "stage_definitions_alt.json";
 
   public static GameManager instance = null;
 
@@ -104,7 +106,7 @@ public class GameManager : MonoBehaviour {
     player.name = "Player";
     Players.Add(player);
 
-    SetAndLoadStage(0); // TODO
+    SetAndLoadStage(0);
   }
 
   void Update() {
@@ -147,6 +149,9 @@ public class GameManager : MonoBehaviour {
 
   public void RestartStageAfterGameOver(int playerIndex) {
     // TODO: Reset score, delete all current puzzles, reset all other relevant state.
+
+    var endOfStageText = string.Format("Game over. Restarting stage.");
+    scoreboard.ShowAnnounce(endOfStageText, 3f);
 
     boardManager.RemoveAllPuzzles();
     boardManager.RemoveFloor();

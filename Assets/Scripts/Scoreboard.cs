@@ -15,6 +15,9 @@ public class Scoreboard : MonoBehaviour {
   Text PostPuzzleAnnounce;
   float ShowAnnounceForNSeconds = 0f;
 
+  const int updateEveryNFrames = 15;
+  int framesUntilUpdate = updateEveryNFrames;
+
   void Awake() {
     CurrentStage = GameObject.FindGameObjectWithTag("UI-CurrentStage").GetComponent<Text>();
     CurrentWave = GameObject.FindGameObjectWithTag("UI-CurrentWave").GetComponent<Text>();
@@ -26,17 +29,46 @@ public class Scoreboard : MonoBehaviour {
   }
 
   void Update() {
-    // if (!GameManager.instance.isGameActive()) {
-    //   return;
-    // }
+    framesUntilUpdate -= 1;
+
+    if (framesUntilUpdate <= 0) {
+      framesUntilUpdate = updateEveryNFrames;
+    } else {
+      return;
+    }
 
     // TODO: Update every few frames?
     CurrentStage.text = (GameManager.instance.CurrentStageIndex + 1).ToString();
-    CurrentWave.text = $"Wave: {GameManager.instance.CurrentWaveIndex + 1}";
     Score.text = $"Score: {GameManager.instance.CurrentStageScore}";
     Turns.text = $"{GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().RotationsSinceFirstCubeDestroyed} / {GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().TypicalRotationNumber}";
-    BlockScale.text = $"{GameManager.instance.CurrentWaveBlockScaleUsed} / {GameManager.instance.CurrentWaveBlockScaleAvailable}";
-    // CurrentPuzzleStateQueue.text = GameManager.instance.CurrentPuzzleStateQueueStatus();
+
+    // Block scale UI start (move to function?)
+    var blockScaleAscii = "";
+    for (int i = 0; i < GameManager.instance.CurrentWaveBlockScaleAvailable - GameManager.instance.CurrentWaveBlockScaleUsed; i++) {
+      blockScaleAscii += "☐";
+    }
+
+    for (int i = 0; i < GameManager.instance.CurrentWaveBlockScaleUsed; i++) {
+      blockScaleAscii += "☒";
+    }
+
+    BlockScale.text = blockScaleAscii;
+    // Block scale UI end
+
+    // Wave UI ░ █
+    var waveCount = GameManager.instance.CurrentStage.Waves.Count;
+    var waveAscii = "";
+
+    for (int i = 0; i < GameManager.instance.CurrentWaveIndex + 1; i++) {
+      waveAscii += "█ ";
+    }
+
+    for (int i = 0; i < GameManager.instance.CurrentStage.Waves.Count - (GameManager.instance.CurrentWaveIndex + 1); i++) {
+      waveAscii += "░ ";
+    }
+
+    // CurrentWave.text = $"Wave: {GameManager.instance.CurrentWaveIndex + 1}";
+    CurrentWave.text = waveAscii;
 
     if (ShowAnnounceForNSeconds > 0f) {
       ShowAnnounceForNSeconds -= Time.deltaTime;

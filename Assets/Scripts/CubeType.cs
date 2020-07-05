@@ -19,7 +19,6 @@ public class CubeType : MonoBehaviour {
 
   void Start() {
     materials = GetComponent<Renderer>().materials;
-
   }
 
   void Update() {

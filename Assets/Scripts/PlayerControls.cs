@@ -41,7 +41,10 @@ public class PlayerControls : MonoBehaviour {
       return Vector3.zero;
     }
 
-    return new Vector3(Input.GetAxis("Horizontal"), 0f, Input.GetAxis("Vertical"));
+    var horizontalMotion = Input.GetAxis("HorizontalKeyboard") + Input.GetAxis("HorizontalDpad") + Input.GetAxis("HorizontalStick");
+    var verticalMotion = Input.GetAxis("VerticalKeyboard") + Input.GetAxis("VerticalDpad") + Input.GetAxis("VerticalStick");
+
+    return new Vector3(horizontalMotion, 0f, verticalMotion);
   }
 
   public void Enable() {
