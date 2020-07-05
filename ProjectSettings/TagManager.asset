@@ -16,7 +16,7 @@ TagManager:
   - UI-CurrentPuzzleStateQueue
   - CubeGroup
   - Camera
-  - SceneTransitioner
+  - StageTransition
   layers:
   - Default
   - TransparentFX

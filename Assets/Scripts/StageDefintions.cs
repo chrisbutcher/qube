@@ -17,6 +17,12 @@ public partial class Stage {
   [JsonProperty("puzzlesPerWave")]
   public int PuzzlesPerWave { get; set; }
 
+  [JsonProperty("maxEndStageBonus")]
+  public int MaxEndStageBonus { get; set; }
+
+  [JsonProperty("blockScaleSize")]
+  public int BlockScaleSize { get; set; }
+
   [JsonProperty("waves")]
   public List<Wave> Waves { get; set; }
 }

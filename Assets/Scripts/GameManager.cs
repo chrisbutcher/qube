@@ -10,18 +10,12 @@ public class GameManager : MonoBehaviour {
   // https://gamefaqs.gamespot.com/ps/197636-intelligent-qube/faqs/40016
   // https://www.youtube.com/watch?v=BZM9kTGFeko&t=101s
 
-  // GAMEPLAY TO IMPLEMENT:
-  // * [ ] You will also receive a bonus at the end of each stage, based on how many rows you have left on the playing field.
+  // TODO Gameplay:
+  // * [ ] Game over
+  // * [ ] Calculate and show IQ: http://blog.airesoft.co.uk/2015/08/how-to-be-a-genius-intelligent-qubes-iq-algorithm/
 
-  // BlOCK SCALE (bottom right)
-  // * [ ] As the puzzles get larger, you can drop more Qubes over the edge before you start losing rows off the grid
-
-  // Stage bonuses:
-  // After each stage: For every row remaining on grid - 1,000 points
-  //                   up to maximum of: 27,000 (1st Stage)
-  //                                     39,000 (3rd Stage)
-  //                                     40,000 (all other Stages)
-  //                   TODO: Implement per-stage row bonus maximums
+  // BUGS: 
+  // * [ ] When a large number of rows fall off at once, the floor that should crumble sometimes hangs around longer than expected.
 
   // Perf:
   // * [ ] Maybe disable floor cube colliders until they are close to end of floor, able to drop and be able to be interacted with?
@@ -47,10 +41,12 @@ public class GameManager : MonoBehaviour {
   public int CurrentWaveIndex = 0;
   public Wave CurrentWave;
 
-  public int CurrentWaveBlockScaleUsed = 0; // TODO: This meter resets for each wave of puzzles
+  public int CurrentWaveBlockScaleUsed = 0;
   public int CurrentWaveBlockScaleAvailable = 3; // TODO: Find out size of block scale per stage/wave.
 
   public bool CurrentPuzzlePlayerMadeMistakes = false; // Mistake == capturing a forbidden cube, or dropping a non-forbidden cube
+
+  public int TotalScore;
   public int CurrentStageScore;
 
   public bool PlayerSquashed = false;
@@ -72,6 +68,9 @@ public class GameManager : MonoBehaviour {
   }
 
   public void DeactivateGame() {
+    var player = Players[0];
+    player.GetComponent<PlayerMarker>().CurrentPlayerMarker.SetActive(false);
+
     this.GameActive = false;
   }
 
@@ -124,6 +123,8 @@ public class GameManager : MonoBehaviour {
     CurrentStageIndex = stageIndex;
 
     CurrentStage = stageDefinitions.Stages[CurrentStageIndex];
+    CurrentWaveBlockScaleAvailable = CurrentStage.BlockScaleSize;
+
     CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
 
     // NOTE: Floor depth = ((stage starting wave depth x stage puzzles per wave) * 2) + 3.
@@ -134,11 +135,13 @@ public class GameManager : MonoBehaviour {
 
     boardManager.LoadStage(CurrentWave.Width, stageInitialFloorDepth);
 
-    LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
+    LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth, GameConsts.StageLoadPuzzleActivationPause);
 
     // TODO: Attempting to smoothly set camera behind player when loading stage. WIP.
     var playerRb = Players[0].GetComponent<Rigidbody>();
     var camera = GameObject.FindGameObjectWithTag("Camera");
+
+    playerRb.rotation = Quaternion.Euler(0f, 0f, 0f);
     camera.transform.position = playerRb.transform.position + Vector3.back * 3;
   }
 
@@ -162,7 +165,7 @@ public class GameManager : MonoBehaviour {
     GetPlayerControls(playerIndex).Enable();
   }
 
-  void LoadWaveAndPerformSideEffects(int numPuzzles, int width, int depth) {
+  void LoadWaveAndPerformSideEffects(int numPuzzles, int width, int depth, float puzzleActivationDelay) {
     float playerDistanceBack = (numPuzzles * depth) + 2.5f;
     var playerPosition = new Vector3(1.5f, PlayerStartingPosY, -playerDistanceBack);
 
@@ -176,7 +179,7 @@ public class GameManager : MonoBehaviour {
     boardManager.LoadWave(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
     CurrentWaveBlockScaleUsed = 0;
 
-    StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause, false));
+    StartCoroutine(ActivateNextPuzzleAfterDelay(puzzleActivationDelay, false));
   }
 
   void HandleCubeScored(GameObject scoredCube, MarkerType.Type scoredByMarkerType) {
@@ -214,6 +217,10 @@ public class GameManager : MonoBehaviour {
   }
 
   void PossiblyLoadNextWaveOrStage(GameObject fallenOrDestroyedCube) {
+    if (!isGameActive()) {
+      return;
+    }
+
     var playerIsFalling = Players[0].GetComponent<PlayerFallable>().PlayerFalling;
 
     if (playerIsFalling) {
@@ -246,13 +253,13 @@ public class GameManager : MonoBehaviour {
       var justCompletedPuzzle = boardManager.CurrentPuzzleOrNextPuzzleUp();
       if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed < justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 10000;
-        scoreboard.ShowAnnounce("True Genius!!", GameConsts.PostPuzzleScoreTextDuration); // under TRN
+        scoreboard.ShowAnnounce("True Genius!! 10,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // under TRN
       } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed == justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 5000;
-        scoreboard.ShowAnnounce("Brilliant!!", GameConsts.PostPuzzleScoreTextDuration); // on TRN
+        scoreboard.ShowAnnounce("Brilliant!! 5,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // on TRN
       } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed > justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 1000;
-        scoreboard.ShowAnnounce("Perfect", GameConsts.PostPuzzleScoreTextDuration); // above TRN
+        scoreboard.ShowAnnounce("Perfect! 1,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // above TRN
       }
 
       boardManager.floorManager.Add(CurrentWave.Width, true);
@@ -268,11 +275,20 @@ public class GameManager : MonoBehaviour {
       if (CurrentWaveIndex + 1 < CurrentStage.Waves.Count) {
         CurrentWaveIndex += 1;
         CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
-        LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
+        LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth, GameConsts.PostWaveLoadPause);
       } else {
-        Debug.Log(string.Format("END OF STAGE {0}", CurrentStageIndex));
-        DeactivateGame();
+        yield return new WaitForSeconds(3f); // Give extra time for the gained floor row to be added to the world.
 
+        int bonusScore = Mathf.Min(boardManager.floorManager.FloorRowCount() * 1000, CurrentStage.MaxEndStageBonus);
+
+        TotalScore += CurrentStageScore;
+        TotalScore += bonusScore;
+
+        var endOfStageText = string.Format("Stage score: {0}\nStage bonus: {1}\nTotal game score: {2}", CurrentStageScore, bonusScore, TotalScore);
+        scoreboard.ShowAnnounce(endOfStageText, 5f);
+        yield return new WaitForSeconds(5f);
+
+        DeactivateGame();
         StartCoroutine(EndOfStageSummary(GameConsts.PostPuzzleScoreTextDuration));
       }
     }
@@ -292,10 +308,18 @@ public class GameManager : MonoBehaviour {
     if (CurrentStageIndex < stageDefinitions.Stages.Count - 1) {
       SetAndLoadStage(CurrentStageIndex + 1);
       yield return new WaitForSeconds(delayedBeforeFadingInAfterLoad);
+
+      CurrentStageScore = 0;
+
       stageTransition.GetComponentInChildren<Canvas>().GetComponent<Animator>().SetTrigger("FadeIn");
       ActivateGame();
     } else {
-      Debug.Log("END OF LAST STAGE");
+      scoreboard.ShowAnnounce("GAME OVER. ", 10f);
+      yield return new WaitForSeconds(10f);
+
+      TotalScore = 0;
+
+      SetAndLoadStage(0);
     }
   }
 

@@ -33,6 +33,10 @@ public class FloorManager : MonoBehaviour {
     }
   }
 
+  public int FloorRowCount() {
+    return floorStacks.Count;
+  }
+
   public void RemoveAllFloorStacks() {
     foreach (var floorStack in floorStacks) {
       floorStack.RemoveAllFloorCubes();
