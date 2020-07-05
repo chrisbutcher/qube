@@ -77,6 +77,10 @@ public class FloorManager : MonoBehaviour {
     floorStackParent.transform.position = initialPosition;
 
     while (elapsedTime < time) {
+      if (!GameManager.instance.isGameActive()) {
+        break;
+      }
+
       floorStackParent.transform.position = new Vector3(
         initialPosition.x,
         initialPosition.y,
@@ -87,8 +91,10 @@ public class FloorManager : MonoBehaviour {
       yield return null;
     }
 
-    // Compensate for some floating point innaccuracy that messes with Util.Vec3sEqualXandZ
-    floorStackParent.transform.position = targetPosition; // TODO: Not working??
+    if (GameManager.instance.isGameActive()) {
+      // Compensate for some floating point innaccuracy that messes with Util.Vec3sEqualXandZ
+      floorStackParent.transform.position = targetPosition; // TODO: Not working??
+    }
   }
 
   public void DropLast() {

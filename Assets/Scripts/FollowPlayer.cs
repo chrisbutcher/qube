@@ -47,6 +47,10 @@ public class FollowPlayer : MonoBehaviour { // TODO: Rename this script since it
   }
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     SetCameraDistanceAndLookZOffset();
 
     if (gameManager.CameraFollowingPlayer()) {

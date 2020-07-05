@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Dynamic;
 using System.IO;
 
@@ -25,17 +26,22 @@ public class GameManager : MonoBehaviour {
   // Perf:
   // * [ ] Maybe disable floor cube colliders until they are close to end of floor, able to drop and be able to be interacted with?
 
-  const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
+  // const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
+  const string STAGE_DEFINITIONS_FILENAME = "stage_definitions_alt.json";
 
   public static GameManager instance = null;
+
   public BoardManager boardManager;
   public CubeRotationMonitor cubeRotationMonitor;
   public Scoreboard scoreboard;
+
+  GameObject stageTransition = null;
 
   public GameObject PlayerPrefab;
   public List<GameObject> Players;
 
   StageDefinitions stageDefinitions;
+
   public int CurrentStageIndex = 0;
   public Stage CurrentStage;
   public int CurrentWaveIndex = 0;
@@ -54,6 +60,20 @@ public class GameManager : MonoBehaviour {
   const float PlayerStartingPosY = -0.5f;
 
   bool InPostPuzzlePause = false;
+
+  bool GameActive = false;
+
+  public bool isGameActive() {
+    return this.GameActive;
+  }
+
+  public void ActivateGame() {
+    this.GameActive = true;
+  }
+
+  public void DeactivateGame() {
+    this.GameActive = false;
+  }
 
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
@@ -76,6 +96,8 @@ public class GameManager : MonoBehaviour {
     cubeRotationMonitor = GetComponent<CubeRotationMonitor>();
     scoreboard = GameObject.FindGameObjectWithTag("UI").GetComponent<Scoreboard>();
     scoreboard.HideAnnounce();
+
+    stageTransition = GameObject.FindGameObjectWithTag("StageTransition");
   }
 
   void Start() {
@@ -83,10 +105,14 @@ public class GameManager : MonoBehaviour {
     player.name = "Player";
     Players.Add(player);
 
-    SetAndLoadStage(1); // TODO
+    SetAndLoadStage(0); // TODO
   }
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     if (PlayerSquashed) {
       PlayerSquashedFor += Time.deltaTime;
     } else {
@@ -107,13 +133,12 @@ public class GameManager : MonoBehaviour {
     var stageInitialFloorDepth = ((CurrentWave.Depth * CurrentStage.PuzzlesPerWave) * 2) + 3;
 
     boardManager.LoadStage(CurrentWave.Width, stageInitialFloorDepth);
-    // boardManager.LoadStage(CurrentWave.Width, 17);
 
     LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
 
     // TODO: Attempting to smoothly set camera behind player when loading stage. WIP.
     var playerRb = Players[0].GetComponent<Rigidbody>();
-    var camera = GameObject.FindGameObjectWithTag("MainCamera");
+    var camera = GameObject.FindGameObjectWithTag("Camera");
     camera.transform.position = playerRb.transform.position + Vector3.back * 3;
   }
 
@@ -138,7 +163,7 @@ public class GameManager : MonoBehaviour {
   }
 
   void LoadWaveAndPerformSideEffects(int numPuzzles, int width, int depth) {
-    float playerDistanceBack = (numPuzzles * depth) + 1.5f;
+    float playerDistanceBack = (numPuzzles * depth) + 2.5f;
     var playerPosition = new Vector3(1.5f, PlayerStartingPosY, -playerDistanceBack);
 
     var player = Players[0];
@@ -240,13 +265,37 @@ public class GameManager : MonoBehaviour {
 
       StartCoroutine(ActivateNextPuzzleAfterDelay(GameConsts.PostWaveLoadPause, playerSquashedOnceOnPuzzleAndAbleToRetry));
     } else {
-      if (CurrentWaveIndex + 1 <= CurrentStage.Waves.Count) {
+      if (CurrentWaveIndex + 1 < CurrentStage.Waves.Count) {
         CurrentWaveIndex += 1;
         CurrentWave = CurrentStage.Waves[CurrentWaveIndex];
         LoadWaveAndPerformSideEffects(CurrentStage.PuzzlesPerWave, CurrentWave.Width, CurrentWave.Depth);
       } else {
-        Debug.Log("END OF STAGE");
+        Debug.Log(string.Format("END OF STAGE {0}", CurrentStageIndex));
+        DeactivateGame();
+
+        StartCoroutine(EndOfStageSummary(GameConsts.PostPuzzleScoreTextDuration));
       }
+    }
+  }
+
+  IEnumerator EndOfStageSummary(float delay) {
+    yield return new WaitForSeconds(delay);
+
+    stageTransition.GetComponentInChildren<Canvas>().GetComponent<Animator>().SetTrigger("FadeOut");
+
+    StartCoroutine(FadeInNextStage(1.2f, 3f, 1f));
+  }
+
+  IEnumerator FadeInNextStage(float delayBeforeLoadingNextStage, float delayedBeforeFadingInAfterLoad, float delayBeforeActivatingGameAfterFadeIn) {
+    yield return new WaitForSeconds(delayBeforeLoadingNextStage);
+
+    if (CurrentStageIndex < stageDefinitions.Stages.Count - 1) {
+      SetAndLoadStage(CurrentStageIndex + 1);
+      yield return new WaitForSeconds(delayedBeforeFadingInAfterLoad);
+      stageTransition.GetComponentInChildren<Canvas>().GetComponent<Animator>().SetTrigger("FadeIn");
+      ActivateGame();
+    } else {
+      Debug.Log("END OF LAST STAGE");
     }
   }
 
@@ -314,7 +363,7 @@ public class GameManager : MonoBehaviour {
 
     if (File.Exists(filePath)) {
       var jsonString = File.ReadAllText(filePath);
-      stageDefinitions = StageDefinitions.FromJson(jsonString);
+      this.stageDefinitions = StageDefinitions.FromJson(jsonString);
     }
   }
 

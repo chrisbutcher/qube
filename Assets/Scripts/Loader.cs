@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class Loader : MonoBehaviour {
-
   public GameObject gameManager;
   public GameObject[] exampleGameObjects;
 
@@ -17,8 +16,6 @@ public class Loader : MonoBehaviour {
   }
 
   void Start() {
-  }
-
-  void Update() {
+    GameManager.instance.ActivateGame();
   }
 }

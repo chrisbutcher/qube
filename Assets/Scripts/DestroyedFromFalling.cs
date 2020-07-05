@@ -6,6 +6,10 @@ public class DestroyedFromFalling : MonoBehaviour {
   const float CubeDestroyedAtDistance = -30f;
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     if (transform.position.y <= CubeDestroyedAtDistance) {
       Destroy(this.gameObject);
     }

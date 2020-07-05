@@ -23,6 +23,10 @@ public class CubeType : MonoBehaviour {
   }
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     if (!HasStartedToRoll) {
       return;
     }

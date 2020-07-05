@@ -2,27 +2,12 @@
     "stages": [
         {
             "name": 1,
-            "puzzlesPerWave": 3,
+            "puzzlesPerWave": 1,
             "waves": [
                 {
                     "name": 1,
                     "width": 4,
                     "depth": 2
-                },
-                {
-                    "name": 2,
-                    "width": 4,
-                    "depth": 2
-                },
-                {
-                    "name": 3,
-                    "width": 4,
-                    "depth": 3
-                },
-                {
-                    "name": 4,
-                    "width": 4,
-                    "depth": 4
                 }
             ]
         },

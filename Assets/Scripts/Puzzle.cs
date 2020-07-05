@@ -59,6 +59,10 @@ public class Puzzle : MonoBehaviour {
 
   // TODO: Good candidate to switch to a Coroutine?
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     if (active) {
       if (sleepingFor > 0f) {
         sleepingFor -= Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();

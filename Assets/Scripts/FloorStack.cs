@@ -14,12 +14,6 @@ public class FloorStack : MonoBehaviour {
     ParentGameObject = new GameObject("FloorStack");
   }
 
-  void Start() {
-  }
-
-  void Update() {
-  }
-
   // TODO rename this Add, and let callers simply ask to have a new stack of floor cubes added (eventually animated)
   public void Build(GameObject floorCubePrefab, Vector3 position, int floorStackWidth) {
     for (int y = 0; y < FLOOR_STACK_HEIGHT; y++) {

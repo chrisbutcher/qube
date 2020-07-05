@@ -7,6 +7,10 @@ public class ConstantRotation : MonoBehaviour {
   public float RotationSpeed = 90f;
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     transform.RotateAround(transform.position, transform.up, Time.deltaTime * RotationSpeed);
   }
 }

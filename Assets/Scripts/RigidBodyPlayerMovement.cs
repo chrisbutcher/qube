@@ -23,6 +23,10 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
 
   // https://www.reddit.com/r/Unity3D/comments/1ee65w/having_wonky_collisions_rigidbodies_being_weird/
   void FixedUpdate() {
+    // if (!GameManager.instance.isGameActive()) {
+    //   return;
+    // }
+
     setQuantizedPlayerPosition();
 
     Vector3 directionVector = GameManager.instance.GetPlayerControls(0).getPlayerMovementDirection();

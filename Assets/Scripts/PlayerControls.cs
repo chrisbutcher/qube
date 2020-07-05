@@ -5,12 +5,6 @@ using UnityEngine;
 public class PlayerControls : MonoBehaviour {
   bool Disabled = false;
 
-  void Start() {
-  }
-
-  void Update() {
-  }
-
   public bool isDetonatingPlayerMarker() {
 
     // Debug.Log("Hi");

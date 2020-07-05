@@ -38,6 +38,10 @@ public class SoundManager : MonoBehaviour {
   }
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     cubeTumble.Update();
   }
 

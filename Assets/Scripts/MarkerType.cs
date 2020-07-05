@@ -30,6 +30,10 @@ public class MarkerType : MonoBehaviour {
   }
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     if (CurrentType is Type.DestroyedMarker && FloatDestroyInSeconds > 0f) {
       FloatDestroyInSeconds -= Time.deltaTime;
 

@@ -17,6 +17,10 @@ public class PlayerMarker : MonoBehaviour {
   }
 
   void Update() {
+    if (!GameManager.instance.isGameActive()) {
+      return;
+    }
+
     if (GameManager.instance.GetPlayerControls(0).isDetonatingPlayerMarker()) {
       if (!CurrentPlayerMarker.activeInHierarchy) {
         var quantizedPlayerPosition = GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
