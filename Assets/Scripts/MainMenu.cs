@@ -5,7 +5,12 @@ using UnityEngine.SceneManagement;
 
 public class MainMenu : MonoBehaviour {
   public void StartGame() {
-    Debug.Log("Clicked start game!");
+    GameObject.FindGameObjectWithTag("MainCamera").GetComponent<AudioSource>().Play();
+    StartCoroutine(LoadGame(2f));
+  }
+
+  IEnumerator LoadGame(float delay) {
+    yield return new WaitForSeconds(delay);
     SceneManager.LoadScene("Main");
   }
 
