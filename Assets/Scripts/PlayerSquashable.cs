@@ -42,6 +42,8 @@ public class PlayerSquashable : MonoBehaviour {
     preSquashScale = player.transform.localScale;
     preSquashPosition = player.transform.position;
 
+    GameManager.instance.GetSoundManager().PlaySquashed();
+
     while (elapsedTime < time) {
       player.transform.localScale = new Vector3(
         preSquashScale.x,

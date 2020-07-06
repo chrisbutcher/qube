@@ -17,6 +17,7 @@ TagManager:
   - CubeGroup
   - Camera
   - StageTransition
+  - PauseMenu
   layers:
   - Default
   - TransparentFX

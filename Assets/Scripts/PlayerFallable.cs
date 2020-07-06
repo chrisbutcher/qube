@@ -38,6 +38,8 @@ public class PlayerFallable : MonoBehaviour {
       if (hit.collider.tag == FloorCubeTag && cubeRB.useGravity == true) {
         PlayerFalling = true;
 
+        GameManager.instance.GetSoundManager().PlayFallingOffEdge();
+
         livingPlayerRBConstraints = playerRB.constraints;
 
         GameManager.instance.DisablePlayerControlsAndWalkAnimation();

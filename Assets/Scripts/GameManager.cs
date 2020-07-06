@@ -11,9 +11,6 @@ public class GameManager : MonoBehaviour {
   // https://www.youtube.com/watch?v=BZM9kTGFeko&t=101s
 
   // TODO Gameplay:
-  // * [ ] Game over
-  //   - Falling off the edge of the world is an instant Game over.
-  //   - You are reset to the beginning of the current stage, at the first wave.
   // * [ ] Calculate and show IQ: http://blog.airesoft.co.uk/2015/08/how-to-be-a-genius-intelligent-qubes-iq-algorithm/
 
   // BUGS: 
@@ -44,7 +41,7 @@ public class GameManager : MonoBehaviour {
   public Wave CurrentWave;
 
   public int CurrentWaveBlockScaleUsed = 0;
-  public int CurrentWaveBlockScaleAvailable = 3; // TODO: Find out size of block scale per stage/wave.
+  public int CurrentWaveBlockScaleAvailable = 3;
 
   public bool CurrentPuzzlePlayerMadeMistakes = false; // Mistake == capturing a forbidden cube, or dropping a non-forbidden cube
 
@@ -59,7 +56,8 @@ public class GameManager : MonoBehaviour {
 
   bool InPostPuzzlePause = false;
 
-  bool GameActive = false;
+  bool GameActive = false; // Used when pausing the world during stage transitions etc. Not the same as player pausing.
+  public bool PlayerPaused = false; // Player pressed pause.
 
   public bool isGameActive() {
     return this.GameActive;
@@ -70,9 +68,6 @@ public class GameManager : MonoBehaviour {
   }
 
   public void DeactivateGame() {
-    var player = Players[0];
-    player.GetComponent<PlayerMarker>().CurrentPlayerMarker.SetActive(false);
-
     this.GameActive = false;
   }
 
@@ -110,6 +105,20 @@ public class GameManager : MonoBehaviour {
   }
 
   void Update() {
+    if (GameManager.instance.GetPlayerControls(0).isPausing()) {
+      if (PlayerPaused) {
+        PlayerPaused = false;
+        ActivateGame();
+
+        GameObject.FindGameObjectWithTag("PauseMenu").GetComponent<Canvas>().enabled = false;
+      } else {
+        PlayerPaused = true;
+        DeactivateGame();
+
+        GameObject.FindGameObjectWithTag("PauseMenu").GetComponent<Canvas>().enabled = true;
+      }
+    }
+
     if (!GameManager.instance.isGameActive()) {
       return;
     }
@@ -147,9 +156,11 @@ public class GameManager : MonoBehaviour {
     camera.transform.position = playerRb.transform.position + Vector3.back * 3;
   }
 
-  public void RestartStageAfterGameOver(int playerIndex) {
-    // TODO: Reset score, delete all current puzzles, reset all other relevant state.
+  public SoundManager GetSoundManager() {
+    return GameObject.FindGameObjectWithTag("Camera").GetComponent<SoundManager>();
+  }
 
+  public void RestartStageAfterGameOver(int playerIndex) {
     var endOfStageText = string.Format("Game over. Restarting stage.");
     scoreboard.ShowAnnounce(endOfStageText, 3f);
 
@@ -259,12 +270,15 @@ public class GameManager : MonoBehaviour {
       if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed < justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 10000;
         scoreboard.ShowAnnounce("True Genius!! 10,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // under TRN
+        GameManager.instance.GetSoundManager().PlayGreatScore();
       } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed == justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 5000;
         scoreboard.ShowAnnounce("Brilliant!! 5,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // on TRN
+        GameManager.instance.GetSoundManager().PlayGreatScore();
       } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed > justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 1000;
         scoreboard.ShowAnnounce("Perfect! 1,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // above TRN
+        GameManager.instance.GetSoundManager().PlayGreatScore();
       }
 
       boardManager.floorManager.Add(CurrentWave.Width, true);
@@ -293,6 +307,8 @@ public class GameManager : MonoBehaviour {
         scoreboard.ShowAnnounce(endOfStageText, 5f);
         yield return new WaitForSeconds(5f);
 
+        var player = Players[0];
+        player.GetComponent<PlayerMarker>().CurrentPlayerMarker.SetActive(false);
         DeactivateGame();
         StartCoroutine(EndOfStageSummary(GameConsts.PostPuzzleScoreTextDuration));
       }

@@ -56,6 +56,8 @@ public class FloorStack : MonoBehaviour {
   }
 
   public void Drop() {
+    GameManager.instance.GetSoundManager().PlayFloorFallingApart();
+
     // TODO: Dry up this with Tumble#EnablePhysics
     foreach (var cube in cubes) {
       var rb = cube.GetComponent<Rigidbody>();

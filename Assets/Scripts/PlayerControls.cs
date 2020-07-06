@@ -13,6 +13,10 @@ public class PlayerControls : MonoBehaviour {
     return Input.GetButtonDown("SetClearPlayerMarker");
   }
 
+  public bool isPausing() {
+    return Input.GetButtonDown("Pause");
+  }
+
   public bool isDetonatingAdvantageMarkers() {
     if (Disabled) {
       return false;

@@ -29,6 +29,8 @@ public class PlayerMarker : MonoBehaviour {
           return;
         }
 
+        GameManager.instance.GetSoundManager().PlaySetPlayerMarker();
+
         CurrentPlayerMarker.SetActive(true);
 
         var newCurrentPlayerMarkerPosition = new Vector3(
@@ -56,6 +58,8 @@ public class PlayerMarker : MonoBehaviour {
         if (OnMarkerDetonation != null) {
           OnMarkerDetonation(CurrentPlayerMarker.transform.position, CurrentPlayerMarker.GetComponent<MarkerType>().CurrentType);
         }
+
+        GameManager.instance.GetSoundManager().PlayPlayerMarkerExplosion();
 
         CurrentPlayerMarker.SetActive(false);
 

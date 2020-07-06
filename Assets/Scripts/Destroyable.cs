@@ -50,6 +50,13 @@ public class Destroyable : MonoBehaviour {
 
     float initialYPos = newParent.position.y;
 
+    var random = Random.Range(0, 1);
+    if (random == 0) {
+      GameManager.instance.GetSoundManager().PlayQubeExlosion2();
+    } else {
+      GameManager.instance.GetSoundManager().PlayQubeExlosion3();
+    }
+
     while (elapsedTime < time) {
       newParent.localScale = new Vector3(
         1f,

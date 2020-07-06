@@ -48,9 +48,12 @@ public class Tumble : MonoBehaviour {
     OnCubeStartedRotating(this.gameObject);
 
     while (tumbleProgress < duration) {
-      var timeDelta = Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
-      tumbleProgress += timeDelta;
-      transform.RotateAround(pivot, rotationAxis, rotationSpeed * timeDelta);
+      if (GameManager.instance.isGameActive()) {
+        var timeDelta = Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
+        tumbleProgress += timeDelta;
+        transform.RotateAround(pivot, rotationAxis, rotationSpeed * timeDelta);
+      }
+
 
       yield return null;
     }

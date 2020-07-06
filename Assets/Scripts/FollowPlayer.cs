@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FollowPlayer : MonoBehaviour { // TODO: Rename this script since it doesn't only follow the player, it also zooms out to see the board
+public class FollowPlayer : MonoBehaviour {
   // ref https://www.youtube.com/watch?v=lnguV1v38z4
 
   public float DistanceAway;

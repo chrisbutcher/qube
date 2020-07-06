@@ -9,13 +9,11 @@ public class Scoreboard : MonoBehaviour {
   Text Score;
   Text Turns;
   Text BlockScale;
-
-  Text CurrentPuzzleStateQueue;
-
   Text PostPuzzleAnnounce;
-  float ShowAnnounceForNSeconds = 0f;
 
   const int updateEveryNFrames = 15;
+
+  float ShowAnnounceForNSeconds = 0f;
   int framesUntilUpdate = updateEveryNFrames;
 
   void Awake() {
@@ -25,7 +23,6 @@ public class Scoreboard : MonoBehaviour {
     Turns = GameObject.FindGameObjectWithTag("UI-Turns").GetComponent<Text>();
     BlockScale = GameObject.FindGameObjectWithTag("UI-BlockScale").GetComponent<Text>();
     PostPuzzleAnnounce = GameObject.FindGameObjectWithTag("UI-PostPuzzleAnnounce").GetComponent<Text>();
-    // CurrentPuzzleStateQueue = GameObject.FindGameObjectWithTag("UI-CurrentPuzzleStateQueue").GetComponent<Text>();
   }
 
   void Start() {
@@ -46,7 +43,6 @@ public class Scoreboard : MonoBehaviour {
       return;
     }
 
-    // TODO: Update every few frames?
     CurrentStage.text = (GameManager.instance.CurrentStageIndex + 1).ToString();
     Score.text = $"Score: {GameManager.instance.CurrentStageScore}";
 
@@ -86,7 +82,6 @@ public class Scoreboard : MonoBehaviour {
       waveAscii += "░ ";
     }
 
-    // CurrentWave.text = $"Wave: {GameManager.instance.CurrentWaveIndex + 1}";
     CurrentWave.text = waveAscii;
 
     if (ShowAnnounceForNSeconds > 0f) {

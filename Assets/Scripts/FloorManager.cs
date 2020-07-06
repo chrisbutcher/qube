@@ -81,17 +81,16 @@ public class FloorManager : MonoBehaviour {
     floorStackParent.transform.position = initialPosition;
 
     while (elapsedTime < time) {
-      if (!GameManager.instance.isGameActive()) {
-        break;
+      if (GameManager.instance.isGameActive() && !GameManager.instance.PlayerPaused) {
+        floorStackParent.transform.position = new Vector3(
+          initialPosition.x,
+          initialPosition.y,
+          Mathf.SmoothStep(initialPosition.z, targetPosition.z, (elapsedTime / time))
+        );
+
+        elapsedTime += Time.deltaTime;
       }
 
-      floorStackParent.transform.position = new Vector3(
-        initialPosition.x,
-        initialPosition.y,
-        Mathf.SmoothStep(initialPosition.z, targetPosition.z, (elapsedTime / time))
-      );
-
-      elapsedTime += Time.deltaTime;
       yield return null;
     }
 
