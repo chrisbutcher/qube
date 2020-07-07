@@ -15,6 +15,11 @@
       "request": "launch"
     },
     {
+      "name": "qube.exe",
+      "type": "unity",
+      "request": "launch"
+    },
+    {
       "name": "OSX Player",
       "type": "unity",
       "request": "launch"

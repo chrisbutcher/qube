@@ -22,11 +22,32 @@ public class FollowPlayer : MonoBehaviour {
   bool lastFrameCameraWasFollowingPlayer;
 
   void Awake() {
-    gameManager = GameManager.instance;
-    floorManager = gameManager.boardManager.floorManager;
+    // Debug.Log("In FollowPlayer.Awake");
+
+    // gameManager = GameManager.instance;
+
+    // Debug.Log("gameManager");
+    // Debug.Log(gameManager == null);
+
+    // Debug.Log("gameManager.boardManager");
+    // Debug.Log(gameManager.boardManager == null);
+
+    // floorManager = gameManager.boardManager.floorManager;
   }
 
   void Start() {
+    Debug.Log("In FollowPlayer.Awake");
+
+    gameManager = GameManager.instance;
+
+    Debug.Log("gameManager");
+    Debug.Log(gameManager == null);
+
+    Debug.Log("gameManager.boardManager");
+    Debug.Log(gameManager.boardManager == null);
+
+    floorManager = gameManager.boardManager.floorManager;
+
     playerToFollow = GameObject.FindWithTag("Player");
     follow = playerToFollow.transform.position;
     SetCameraDistanceAndLookZOffset();

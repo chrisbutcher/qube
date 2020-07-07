@@ -86,17 +86,31 @@ public class GameManager : MonoBehaviour {
   void Awake() {
     SingletonSetup();
 
+    Debug.Log("Assigning boardManager");
+    boardManager = GetComponent<BoardManager>();
+    Debug.Log("boardManager == null");
+    Debug.Log(boardManager == null);
+
+    // LoadStageDefinitions();
+
+    // boardManager = GetComponent<BoardManager>();
+    // cubeRotationMonitor = GetComponent<CubeRotationMonitor>();
+    // scoreboard = GameObject.FindGameObjectWithTag("UI").GetComponent<Scoreboard>();
+    // scoreboard.HideAnnounce();
+
+    // stageTransition = GameObject.FindGameObjectWithTag("StageTransition");
+  }
+
+  void Start() {
     LoadStageDefinitions();
 
-    boardManager = GetComponent<BoardManager>();
     cubeRotationMonitor = GetComponent<CubeRotationMonitor>();
     scoreboard = GameObject.FindGameObjectWithTag("UI").GetComponent<Scoreboard>();
     scoreboard.HideAnnounce();
 
     stageTransition = GameObject.FindGameObjectWithTag("StageTransition");
-  }
+    ///
 
-  void Start() {
     var player = (GameObject)Instantiate(PlayerPrefab, new Vector3(1.5f, PlayerStartingPosY, -7.5f), Quaternion.identity); // TODO: Do not hard code initial player position
     player.name = "Player";
     Players.Add(player);
@@ -413,6 +427,8 @@ public class GameManager : MonoBehaviour {
   }
 
   void SingletonSetup() {
+    Debug.Log("In GameManager.SingletonSetup");
+
     if (instance == null) {
       instance = this;
     } else if (instance != this) {

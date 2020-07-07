@@ -20,11 +20,21 @@ public class BoardManager : MonoBehaviour {
   int currentWaveDepth;
 
   void Awake() {
+    // Debug.Log("In BoardManager.Awake");
+
     floorManager = gameObject.AddComponent<FloorManager>();
     floorManager.FloorCubePrefab = FloorCubePrefab;
 
     puzzleLoader = new PuzzleLoader();
     puzzleLoader.LoadAndParsePuzzles();
+  }
+
+  void Start() {
+    // floorManager = gameObject.AddComponent<FloorManager>();
+    // floorManager.FloorCubePrefab = FloorCubePrefab;
+
+    // puzzleLoader = new PuzzleLoader();
+    // puzzleLoader.LoadAndParsePuzzles();
   }
 
   public void LoadStage(int width, int depth) {
