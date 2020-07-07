@@ -35,6 +35,12 @@ public class Scoreboard : MonoBehaviour {
   }
 
   void Update() {
+    if (ShowAnnounceForNSeconds > 0f) {
+      ShowAnnounceForNSeconds -= Time.deltaTime;
+    } else {
+      HideAnnounce();
+    }
+
     framesUntilUpdate -= 1;
 
     if (framesUntilUpdate <= 0) {
@@ -83,12 +89,6 @@ public class Scoreboard : MonoBehaviour {
     }
 
     CurrentWave.text = waveAscii;
-
-    if (ShowAnnounceForNSeconds > 0f) {
-      ShowAnnounceForNSeconds -= Time.deltaTime;
-    } else {
-      HideAnnounce();
-    }
   }
 
   public void ShowAnnounce(string text, float duration) {

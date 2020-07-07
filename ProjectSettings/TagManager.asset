@@ -18,6 +18,7 @@ TagManager:
   - Camera
   - StageTransition
   - PauseMenu
+  - MenuFader
   layers:
   - Default
   - TransparentFX

@@ -10,6 +10,8 @@ public class MainMenu : MonoBehaviour {
   }
 
   IEnumerator LoadGame(float delay) {
+    GameObject.FindGameObjectWithTag("MenuFader").GetComponent<Animator>().SetTrigger("Fade");
+
     yield return new WaitForSeconds(delay);
     SceneManager.LoadScene("Main");
   }
