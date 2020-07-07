@@ -21,31 +21,8 @@ public class FollowPlayer : MonoBehaviour {
   // so when floor cubes get added or drop off, we don't follow them.
   bool lastFrameCameraWasFollowingPlayer;
 
-  void Awake() {
-    // Debug.Log("In FollowPlayer.Awake");
-
-    // gameManager = GameManager.instance;
-
-    // Debug.Log("gameManager");
-    // Debug.Log(gameManager == null);
-
-    // Debug.Log("gameManager.boardManager");
-    // Debug.Log(gameManager.boardManager == null);
-
-    // floorManager = gameManager.boardManager.floorManager;
-  }
-
   void Start() {
-    Debug.Log("In FollowPlayer.Awake");
-
     gameManager = GameManager.instance;
-
-    Debug.Log("gameManager");
-    Debug.Log(gameManager == null);
-
-    Debug.Log("gameManager.boardManager");
-    Debug.Log(gameManager.boardManager == null);
-
     floorManager = gameManager.boardManager.floorManager;
 
     playerToFollow = GameObject.FindWithTag("Player");
