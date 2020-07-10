@@ -15,6 +15,13 @@ public class GameRulesPlayer : MonoBehaviour {
     StartCoroutine(PlayVideo());
   }
 
+  void OnEnable() {
+    videoPlayer = GetComponent<VideoPlayer>();
+    rawImage = GetComponent<RawImage>();
+
+    StartCoroutine(PlayVideo());
+  }
+
   IEnumerator PlayVideo() {
     videoPlayer.Prepare();
 

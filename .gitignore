@@ -36,3 +36,5 @@ sysinfo.txt
 # Builds
 *.apk
 *.unitypackage
+
+RawAssets/how-to-play-1.gif
