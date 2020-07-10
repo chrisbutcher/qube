@@ -1,0 +1,44 @@
+{
+  "4x2": [
+    {
+      "rows": [
+        {
+          "row": [
+            {
+              "type": "*"
+            },
+            {
+              "type": "*"
+            },
+            {
+              "type": "*"
+            },
+            {
+              "type": "*"
+            }
+          ]
+        },
+        {
+          "row": [
+            {
+              "type": "*"
+            },
+            {
+              "type": "*"
+            },
+            {
+              "type": "*"
+            },
+            {
+              "type": "*"
+            }
+          ]
+        }
+      ],
+      "width": "4",
+      "height": "2",
+      "typical_rotations_needed": "5",
+      "description": "4x2 puzzle 0011"
+    }
+  ]
+}

@@ -7,9 +7,11 @@ This is a clone of the classic Playstation 1 puzzle game
 
 Try it out in the browser, here.
 
-You can see the `Controls` and `Game rules` screens within the game, but here are the controls anyways.
-
 Or download it for PC, here.
+
+You can see the `Controls` and `Game rules` screens within the game, but here are the controls anyways:
+
+![image](GithubPages/controls-sm.jpg)
 
 # Find any bugs? Want to contribute?
 

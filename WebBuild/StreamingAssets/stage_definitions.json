@@ -1,0 +1,256 @@
+{
+    "stages": [
+        {
+            "name": 1,
+            "puzzlesPerWave": 3,
+            "maxEndStageBonus": 27000,
+            "blockScaleSize": 3,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 4,
+                    "depth": 2
+                },
+                {
+                    "name": 2,
+                    "width": 4,
+                    "depth": 2
+                },
+                {
+                    "name": 3,
+                    "width": 4,
+                    "depth": 3
+                },
+                {
+                    "name": 4,
+                    "width": 4,
+                    "depth": 4
+                }
+            ]
+        },
+        {
+            "name": 2,
+            "puzzlesPerWave": 3,
+            "maxEndStageBonus": 40000,
+            "blockScaleSize": 3,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 4,
+                    "depth": 5
+                },
+                {
+                    "name": 2,
+                    "width": 4,
+                    "depth": 5
+                },
+                {
+                    "name": 3,
+                    "width": 4,
+                    "depth": 6
+                },
+                {
+                    "name": 4,
+                    "width": 4,
+                    "depth": 6
+                }
+            ]
+        },
+        {
+            "name": 3,
+            "puzzlesPerWave": 3,
+            "maxEndStageBonus": 39000,
+            "blockScaleSize": 4,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 5,
+                    "depth": 4
+                },
+                {
+                    "name": 2,
+                    "width": 5,
+                    "depth": 5
+                },
+                {
+                    "name": 3,
+                    "width": 5,
+                    "depth": 6
+                },
+                {
+                    "name": 4,
+                    "width": 5,
+                    "depth": 6
+                }
+            ]
+        },
+        {
+            "name": 4,
+            "puzzlesPerWave": 2,
+            "maxEndStageBonus": 40000,
+            "blockScaleSize": 4,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 5,
+                    "depth": 7
+                },
+                {
+                    "name": 2,
+                    "width": 5,
+                    "depth": 7
+                },
+                {
+                    "name": 3,
+                    "width": 5,
+                    "depth": 8
+                },
+                {
+                    "name": 4,
+                    "width": 5,
+                    "depth": 8
+                }
+            ]
+        },
+        {
+            "name": 5,
+            "puzzlesPerWave": 3,
+            "maxEndStageBonus": 40000,
+            "blockScaleSize": 5,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 6,
+                    "depth": 6
+                },
+                {
+                    "name": 2,
+                    "width": 6,
+                    "depth": 6
+                },
+                {
+                    "name": 3,
+                    "width": 6,
+                    "depth": 7
+                },
+                {
+                    "name": 4,
+                    "width": 6,
+                    "depth": 7
+                }
+            ]
+        },
+        {
+            "name": 6,
+            "puzzlesPerWave": 2,
+            "maxEndStageBonus": 40000,
+            "blockScaleSize": 5,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 6,
+                    "depth": 8
+                },
+                {
+                    "name": 2,
+                    "width": 6,
+                    "depth": 8
+                },
+                {
+                    "name": 3,
+                    "width": 6,
+                    "depth": 9
+                },
+                {
+                    "name": 4,
+                    "width": 6,
+                    "depth": 9
+                }
+            ]
+        },
+        {
+            "name": 7,
+            "puzzlesPerWave": 3,
+            "maxEndStageBonus": 40000,
+            "blockScaleSize": 6,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 7,
+                    "depth": 7
+                },
+                {
+                    "name": 2,
+                    "width": 7,
+                    "depth": 7
+                },
+                {
+                    "name": 3,
+                    "width": 7,
+                    "depth": 8
+                },
+                {
+                    "name": 4,
+                    "width": 7,
+                    "depth": 8
+                }
+            ]
+        },
+        {
+            "name": 8,
+            "puzzlesPerWave": 2,
+            "maxEndStageBonus": 40000,
+            "blockScaleSize": 6,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 7,
+                    "depth": 8
+                },
+                {
+                    "name": 2,
+                    "width": 7,
+                    "depth": 9
+                },
+                {
+                    "name": 3,
+                    "width": 7,
+                    "depth": 9
+                },
+                {
+                    "name": 4,
+                    "width": 7,
+                    "depth": 9
+                }
+            ]
+        },
+        {
+            "name": 9,
+            "puzzlesPerWave": 1,
+            "maxEndStageBonus": 40000,
+            "blockScaleSize": 6,
+            "waves": [
+                {
+                    "name": 1,
+                    "width": 7,
+                    "depth": 9
+                },
+                {
+                    "name": 2,
+                    "width": 7,
+                    "depth": 9
+                },
+                {
+                    "name": 3,
+                    "width": 7,
+                    "depth": 9
+                },
+                {
+                    "name": 4,
+                    "width": 7,
+                    "depth": 9
+                }
+            ]
+        }
+    ]
+}
