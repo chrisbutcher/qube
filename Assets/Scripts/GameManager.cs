@@ -101,7 +101,7 @@ public class GameManager : MonoBehaviour {
     player.name = "Player";
     Players.Add(player);
 
-    SetAndLoadStage(0);
+    SetAndLoadStage(PersistentState.SelectedStage);
   }
 
   void Update() {

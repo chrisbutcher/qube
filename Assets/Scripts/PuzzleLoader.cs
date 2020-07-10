@@ -42,6 +42,8 @@ public class PuzzleLoader {
     var puzzlesOfSize = loadedPuzzles[key];
 
     var randomIndex = (int)Random.Range(0, puzzlesOfSize.Count);
+    // var randomIndex = 0; // NOTE: For testing a simple 4x2 puzzle
+
     var puzzle = puzzlesOfSize[randomIndex];
 
     return puzzle;

@@ -14,7 +14,7 @@ public class PlayerControls : MonoBehaviour {
   }
 
   public bool isPausing() {
-    return Input.GetButtonDown("Pause");
+    return Input.GetButtonDown("Pause") || Input.GetButtonDown("PauseAlt");
   }
 
   public bool isDetonatingAdvantageMarkers() {

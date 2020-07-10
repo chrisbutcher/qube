@@ -19,6 +19,7 @@ TagManager:
   - StageTransition
   - PauseMenu
   - MenuFader
+  - StageLoader
   layers:
   - Default
   - TransparentFX
