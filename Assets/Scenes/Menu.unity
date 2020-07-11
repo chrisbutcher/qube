@@ -595,7 +595,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 14.449}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: -42, y: -19}
+  m_AnchoredPosition: {x: -81, y: -20}
   m_SizeDelta: {x: 350.1, y: 391.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &241519920
@@ -979,7 +979,7 @@ GameObject:
   - component: {fileID: 546100843}
   m_Layer: 5
   m_Name: Quit
-  m_TagString: Untagged
+  m_TagString: HideableQuitButton
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1995,7 +1995,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 200, y: 6}
-  m_SizeDelta: {x: 263.33, y: 391.52}
+  m_SizeDelta: {x: 305.01, y: 391.52}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &945789468
 MonoBehaviour:
@@ -2029,8 +2029,8 @@ MonoBehaviour:
     m_HorizontalOverflow: 0
     m_VerticalOverflow: 0
     m_LineSpacing: 1
-  m_Text: Keep an eye on the allowed number of rotations to solve a puzzle, e.g.
-    "0/5" in this example.
+  m_Text: The fraction at the top shows how many cube rotations taken to solve the
+    current puzzle. A lower numerator is better.
 --- !u!222 &945789469
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -3505,7 +3505,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 139, y: 15}
+  m_AnchoredPosition: {x: 167.3, y: 15}
   m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!328 &1617403532
@@ -3515,7 +3515,7 @@ VideoPlayer:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1617403530}
-  m_Enabled: 1
+  m_Enabled: 0
   m_VideoClip: {fileID: 32900000, guid: 6875f379a5f0010449742c5b7a38f8f8, type: 3}
   m_TargetCameraAlpha: 1
   m_TargetCamera3DLayout: 0
@@ -3552,6 +3552,22 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e9b3443dade4e40a25c73e8e54d5fb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tutorialImages:
+  - {fileID: 2800000, guid: b8e49e468ada1dd41ba36fda17171c25, type: 3}
+  - {fileID: 2800000, guid: 45eedbd18bcbc8d4fba4684e818b7c75, type: 3}
+  - {fileID: 2800000, guid: 3c306270ebbbd6f48b0a4c1fca54ff4f, type: 3}
+  - {fileID: 2800000, guid: 8478f545b26740544976115c9e0ab702, type: 3}
+  - {fileID: 2800000, guid: 6a8ce206980fef841a297bb402123c20, type: 3}
+  - {fileID: 2800000, guid: 6ee20e9b07f85ca489ad9b2c653d3f24, type: 3}
+  - {fileID: 2800000, guid: 3fbb3c90e240f104db2f213483f25437, type: 3}
+  - {fileID: 2800000, guid: 044a9ca9b4ddc1943af9f9851f78b3e0, type: 3}
+  - {fileID: 2800000, guid: 24cec7e4471f6f4478916c97a576e998, type: 3}
+  - {fileID: 2800000, guid: 6fe31481af43fe446a6f7dc2d1822efe, type: 3}
+  - {fileID: 2800000, guid: e2dc63f16bbe7f54cb1883ed90019a3a, type: 3}
+  - {fileID: 2800000, guid: af3ddc56ef3a28a41957b66ddf23507a, type: 3}
+  - {fileID: 2800000, guid: de09a99ae98e69549949ff5ba61263f4, type: 3}
+  - {fileID: 2800000, guid: 9e123a0569f8aca489a1b7c6eb1df41b, type: 3}
+  - {fileID: 2800000, guid: 0d9599c19991ad54ab9bea62cc657e6b, type: 3}
 --- !u!114 &1617403534
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -3571,7 +3587,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Texture: {fileID: 0}
+  m_Texture: {fileID: 2800000, guid: b8e49e468ada1dd41ba36fda17171c25, type: 3}
   m_UVRect:
     serializedVersion: 2
     x: 0

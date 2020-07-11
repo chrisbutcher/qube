@@ -9,9 +9,11 @@ Try it out in the browser, here.
 
 Or download it for PC, here.
 
-You can see the `Controls` and `Game rules` screens within the game, but here are the controls anyways:
+You can see the `Controls` and `Game rules` screens within the game, but here is the gist anyways:
 
 ![image](GithubPages/controls-sm.jpg)
+
+![image](GithubPages/how-to-play-sm.jpg)
 
 # Find any bugs? Want to contribute?
 
