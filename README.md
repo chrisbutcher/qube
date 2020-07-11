@@ -5,15 +5,15 @@ This is a clone of the classic Playstation 1 puzzle game
 
 # How to play
 
-Try it out in the browser, here.
+Try it out in the browser, [here](https://chrisbutcher.github.io/qube/WebBuild/index.html).
 
 Or download it for PC, here.
 
 You can see the `Controls` and `Game rules` screens within the game, but here is the gist anyways:
 
-![image](GithubPages/controls-sm.jpg)
-
 ![image](GithubPages/how-to-play-sm.jpg)
+
+![image](GithubPages/controls-sm.jpg)
 
 # Find any bugs? Want to contribute?
 
