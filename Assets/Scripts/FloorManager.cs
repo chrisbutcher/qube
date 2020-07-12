@@ -27,7 +27,7 @@ public class FloorManager : MonoBehaviour {
     var cubeType = scoredCube.GetComponent<CubeType>().CurrentType;
 
     if (cubeType == CubeType.Type.Forbidden) {
-      GameManager.instance.CurrentPuzzlePlayerMadeMistakes = true;
+      GameManager.GameManagerInstance().CurrentPuzzlePlayerMadeMistakes = true;
 
       DropLast();
     }
@@ -81,7 +81,7 @@ public class FloorManager : MonoBehaviour {
     floorStackParent.transform.position = initialPosition;
 
     while (elapsedTime < time) {
-      if (GameManager.instance.isGameActive() && !GameManager.instance.PlayerPaused) {
+      if (GameManager.GameManagerInstance().isGameActive() && !GameManager.GameManagerInstance().PlayerPaused) {
         floorStackParent.transform.position = new Vector3(
           initialPosition.x,
           initialPosition.y,
@@ -94,7 +94,7 @@ public class FloorManager : MonoBehaviour {
       yield return null;
     }
 
-    if (GameManager.instance.isGameActive()) {
+    if (GameManager.GameManagerInstance().isGameActive()) {
       // Compensate for some floating point innaccuracy that messes with Util.Vec3sEqualXandZ
       floorStackParent.transform.position = targetPosition; // TODO: Not working??
     }

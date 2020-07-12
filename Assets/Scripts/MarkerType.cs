@@ -27,7 +27,7 @@ public class MarkerType : MonoBehaviour {
       return;
     }
 
-    var prefab = GameManager.instance.Players[0].GetComponent<PlayerMarker>().PlayerMarkerPrefab;
+    var prefab = GameManager.GameManagerInstance().Players[0].GetComponent<PlayerMarker>().PlayerMarkerPrefab;
     var destroyedPlayerMarker = (GameObject)Instantiate(prefab, spawnPosition, Quaternion.identity);
     destroyedPlayerMarker.GetComponent<MarkerType>().CurrentType = MarkerType.Type.DestroyedMarker;
     destroyedPlayerMarker.GetComponent<MarkerType>().FloatDestroyInSeconds = .5f;
@@ -35,7 +35,7 @@ public class MarkerType : MonoBehaviour {
   }
 
   void Update() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 

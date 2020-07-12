@@ -6,7 +6,7 @@ public class DestroyedFromFalling : MonoBehaviour {
   const float CubeDestroyedAtDistance = -30f;
 
   void Update() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 

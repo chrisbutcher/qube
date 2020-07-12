@@ -5,10 +5,14 @@ using UnityEngine.SceneManagement;
 
 public class PauseMenu : MonoBehaviour {
   public void ResumeGame() {
-    GameManager.instance.PlayerPaused = false;
-    GameManager.instance.ActivateGame();
+    GameManager.GameManagerInstance().PlayerPaused = false;
+    GameManager.GameManagerInstance().ActivateGame();
 
     GameObject.FindGameObjectWithTag("PauseMenu").GetComponent<Canvas>().enabled = false;
+  }
+
+  public void BackToMenu() {
+    SceneManager.LoadScene("Menu");
   }
 
   public void Quit() {

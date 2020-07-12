@@ -52,9 +52,9 @@ public class Destroyable : MonoBehaviour {
 
     var random = Random.Range(0, 1);
     if (random == 0) {
-      GameManager.instance.GetSoundManager().PlayQubeExlosion2();
+      GameManager.GameManagerInstance().GetSoundManager().PlayQubeExlosion2();
     } else {
-      GameManager.instance.GetSoundManager().PlayQubeExlosion3();
+      GameManager.GameManagerInstance().GetSoundManager().PlayQubeExlosion3();
     }
 
     while (elapsedTime < time) {
@@ -90,6 +90,6 @@ public class Destroyable : MonoBehaviour {
 
     Destroy(this.gameObject);
 
-    GameManager.instance.boardManager.CleanUpDestroyedCubes();
+    GameManager.GameManagerInstance().boardManager.CleanUpDestroyedCubes();
   }
 }

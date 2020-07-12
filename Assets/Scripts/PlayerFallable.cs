@@ -38,11 +38,11 @@ public class PlayerFallable : MonoBehaviour {
       if (hit.collider.tag == FloorCubeTag && cubeRB.useGravity == true) {
         PlayerFalling = true;
 
-        GameManager.instance.GetSoundManager().PlayFallingOffEdge();
+        GameManager.GameManagerInstance().GetSoundManager().PlayFallingOffEdge();
 
         livingPlayerRBConstraints = playerRB.constraints;
 
-        GameManager.instance.DisablePlayerControlsAndWalkAnimation();
+        GameManager.GameManagerInstance().DisablePlayerControlsAndWalkAnimation();
         playerAnimator.SetTrigger("Falling");
 
         // playerRB.detectCollisions = true;
@@ -74,7 +74,7 @@ public class PlayerFallable : MonoBehaviour {
 
       playerRB.MoveRotation(Quaternion.LookRotation(Vector3.forward));
 
-      GameManager.instance.RestartStageAfterGameOver(0);
+      GameManager.GameManagerInstance().RestartStageAfterGameOver(0);
     }
   }
 }

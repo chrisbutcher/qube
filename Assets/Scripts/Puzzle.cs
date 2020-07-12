@@ -59,13 +59,13 @@ public class Puzzle : MonoBehaviour {
 
   // TODO: Good candidate to switch to a Coroutine?
   void Update() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 
     if (active) {
       if (sleepingFor > 0f) {
-        sleepingFor -= Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
+        sleepingFor -= Time.deltaTime * GameManager.GameManagerInstance().TumbleSpeedMultiplier();
       } else {
         if (AllCubesStationary()) {
           if (OnMarkedCubesDestroy != null) {

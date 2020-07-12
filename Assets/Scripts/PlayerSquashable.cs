@@ -21,7 +21,7 @@ public class PlayerSquashable : MonoBehaviour {
     this.gameObject.GetComponent<RigidBodyPlayerMovement>().enabled = false;
     this.gameObject.GetComponent<CapsuleCollider>().enabled = false;
 
-    GameManager.instance.DisablePlayerControlsAndWalkAnimation();
+    GameManager.GameManagerInstance().DisablePlayerControlsAndWalkAnimation();
 
     StartCoroutine(AnimateSquash(this.gameObject));
   }
@@ -32,7 +32,7 @@ public class PlayerSquashable : MonoBehaviour {
 
     this.gameObject.GetComponent<RigidBodyPlayerMovement>().enabled = true;
     this.gameObject.GetComponent<CapsuleCollider>().enabled = true;
-    GameManager.instance.GetPlayerControls(0).Enable();
+    GameManager.GameManagerInstance().GetPlayerControls(0).Enable();
   }
 
   IEnumerator AnimateSquash(GameObject player) {
@@ -42,7 +42,7 @@ public class PlayerSquashable : MonoBehaviour {
     preSquashScale = player.transform.localScale;
     preSquashPosition = player.transform.position;
 
-    GameManager.instance.GetSoundManager().PlaySquashed();
+    GameManager.GameManagerInstance().GetSoundManager().PlaySquashed();
 
     while (elapsedTime < time) {
       player.transform.localScale = new Vector3(

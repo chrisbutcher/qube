@@ -16,6 +16,8 @@ file.close
 
 contents.downcase!
 
+# Santiziing and making input .txt file sane
+
 contents.gsub!('rotations: 76/', 'rotations: 6/7')
 contents.gsub!(
 	'6x8 puzzle 211000-110121-120111-100112-100111                  rotations: 12',

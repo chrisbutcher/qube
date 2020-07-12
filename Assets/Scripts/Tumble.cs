@@ -48,8 +48,8 @@ public class Tumble : MonoBehaviour {
     OnCubeStartedRotating(this.gameObject);
 
     while (tumbleProgress < duration) {
-      if (GameManager.instance.isGameActive()) {
-        var timeDelta = Time.deltaTime * GameManager.instance.TumbleSpeedMultiplier();
+      if (GameManager.GameManagerInstance().isGameActive()) {
+        var timeDelta = Time.deltaTime * GameManager.GameManagerInstance().TumbleSpeedMultiplier();
         tumbleProgress += timeDelta;
         transform.RotateAround(pivot, rotationAxis, rotationSpeed * timeDelta);
       }
@@ -92,10 +92,10 @@ public class Tumble : MonoBehaviour {
   }
 
   void StartFallingIfOffEdge() {
-    var playerFalling = GameManager.instance.Players[0].GetComponent<PlayerFallable>().PlayerFalling;
+    var playerFalling = GameManager.GameManagerInstance().Players[0].GetComponent<PlayerFallable>().PlayerFalling;
 
-    var playerFellFarAlready = GameManager.instance.Players[0].transform.position.y < -7f;
-    var floorIsBelowTumblingCube = GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(transform.position);
+    var playerFellFarAlready = GameManager.GameManagerInstance().Players[0].transform.position.y < -7f;
+    var floorIsBelowTumblingCube = GameManager.GameManagerInstance().boardManager.floorManager.IsFloorBelowVec3(transform.position);
 
     if (floorIsBelowTumblingCube == false) {
       isFalling = true;

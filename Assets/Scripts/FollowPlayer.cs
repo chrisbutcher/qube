@@ -22,7 +22,8 @@ public class FollowPlayer : MonoBehaviour {
   bool lastFrameCameraWasFollowingPlayer;
 
   void Start() {
-    gameManager = GameManager.instance;
+    gameManager = GameManager.GameManagerInstance();
+
     floorManager = gameManager.boardManager.floorManager;
 
     playerToFollow = GameObject.FindWithTag("Player");
@@ -45,7 +46,7 @@ public class FollowPlayer : MonoBehaviour {
   }
 
   void Update() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 
@@ -55,7 +56,7 @@ public class FollowPlayer : MonoBehaviour {
       follow = GameObject.FindWithTag("Player").transform.position;
       lastFrameCameraWasFollowingPlayer = true;
     } else {
-      var floorManager = GameManager.instance.boardManager.floorManager;
+      var floorManager = GameManager.GameManagerInstance().boardManager.floorManager;
 
       if (lastFrameCameraWasFollowingPlayer) {
         var cornerCubeVerticalOffset = (Vector3.up * 1); // TODO: Constantize

@@ -23,13 +23,13 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
 
   // https://www.reddit.com/r/Unity3D/comments/1ee65w/having_wonky_collisions_rigidbodies_being_weird/
   void FixedUpdate() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 
     setQuantizedPlayerPosition();
 
-    Vector3 directionVector = GameManager.instance.GetPlayerControls(0).getPlayerMovementDirection();
+    Vector3 directionVector = GameManager.GameManagerInstance().GetPlayerControls(0).getPlayerMovementDirection();
     Vector3 deltaMoveDirection = directionVector * Speed * Time.deltaTime;
 
     var playerPositionWithOffset = getPlayerPositionWithOffset();
@@ -40,11 +40,11 @@ public class RigidBodyPlayerMovement : MonoBehaviour {
     var moveDirectionZ = new Vector3(0f, deltaMoveDirection.y, deltaMoveDirection.z);
     var newPositionZ = playerPositionWithOffset + (moveDirectionZ);
 
-    if (!GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(newPositionX)) {
+    if (!GameManager.GameManagerInstance().boardManager.floorManager.IsFloorBelowVec3(newPositionX)) {
       deltaMoveDirection.x = 0f;
     }
 
-    if (!GameManager.instance.boardManager.floorManager.IsFloorBelowVec3(newPositionZ)) {
+    if (!GameManager.GameManagerInstance().boardManager.floorManager.IsFloorBelowVec3(newPositionZ)) {
       deltaMoveDirection.z = 0f;
     }
 

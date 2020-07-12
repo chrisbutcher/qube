@@ -49,11 +49,11 @@ public class Scoreboard : MonoBehaviour {
       return;
     }
 
-    CurrentStage.text = (GameManager.instance.CurrentStageIndex + 1).ToString();
-    Score.text = $"Score: {GameManager.instance.CurrentStageScore}";
+    CurrentStage.text = (GameManager.GameManagerInstance().CurrentStageIndex + 1).ToString();
+    Score.text = $"Score: {GameManager.GameManagerInstance().CurrentStageScore}";
 
-    var rotationsSinceFirstCubeDestroyed = GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().RotationsSinceFirstCubeDestroyed;
-    var typicalRotationNumber = GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp().TypicalRotationNumber;
+    var rotationsSinceFirstCubeDestroyed = GameManager.GameManagerInstance().boardManager.CurrentPuzzleOrNextPuzzleUp().RotationsSinceFirstCubeDestroyed;
+    var typicalRotationNumber = GameManager.GameManagerInstance().boardManager.CurrentPuzzleOrNextPuzzleUp().TypicalRotationNumber;
 
     Turns.text = $"{rotationsSinceFirstCubeDestroyed} / {typicalRotationNumber}";
 
@@ -65,11 +65,11 @@ public class Scoreboard : MonoBehaviour {
 
     // Block scale UI start (move to function?)
     var blockScaleAscii = "";
-    for (int i = 0; i < GameManager.instance.CurrentWaveBlockScaleAvailable - GameManager.instance.CurrentWaveBlockScaleUsed; i++) {
+    for (int i = 0; i < GameManager.GameManagerInstance().CurrentWaveBlockScaleAvailable - GameManager.GameManagerInstance().CurrentWaveBlockScaleUsed; i++) {
       blockScaleAscii += "☐";
     }
 
-    for (int i = 0; i < GameManager.instance.CurrentWaveBlockScaleUsed; i++) {
+    for (int i = 0; i < GameManager.GameManagerInstance().CurrentWaveBlockScaleUsed; i++) {
       blockScaleAscii += "☒";
     }
 
@@ -77,14 +77,14 @@ public class Scoreboard : MonoBehaviour {
     // Block scale UI end
 
     // Wave UI ░ █
-    var waveCount = GameManager.instance.CurrentStage.Waves.Count;
+    var waveCount = GameManager.GameManagerInstance().CurrentStage.Waves.Count;
     var waveAscii = "";
 
-    for (int i = 0; i < GameManager.instance.CurrentWaveIndex + 1; i++) {
+    for (int i = 0; i < GameManager.GameManagerInstance().CurrentWaveIndex + 1; i++) {
       waveAscii += "█ ";
     }
 
-    for (int i = 0; i < GameManager.instance.CurrentStage.Waves.Count - (GameManager.instance.CurrentWaveIndex + 1); i++) {
+    for (int i = 0; i < GameManager.GameManagerInstance().CurrentStage.Waves.Count - (GameManager.GameManagerInstance().CurrentWaveIndex + 1); i++) {
       waveAscii += "░ ";
     }
 

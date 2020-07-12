@@ -142,7 +142,7 @@ public class SoundManager : MonoBehaviour {
   }
 
   void Update() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 

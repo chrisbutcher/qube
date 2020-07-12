@@ -17,19 +17,19 @@ public class PlayerMarker : MonoBehaviour {
   }
 
   void Update() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 
-    if (GameManager.instance.GetPlayerControls(0).isDetonatingPlayerMarker()) {
+    if (GameManager.GameManagerInstance().GetPlayerControls(0).isDetonatingPlayerMarker()) {
       if (!CurrentPlayerMarker.activeInHierarchy) {
         var quantizedPlayerPosition = GetComponent<RigidBodyPlayerMovement>().QuantizedPlayerPosition;
 
-        if (GameManager.instance.Players[0].GetComponent<AdvantageMarkers>().HasAdvantageMarkerOnPosition(quantizedPlayerPosition)) {
+        if (GameManager.GameManagerInstance().Players[0].GetComponent<AdvantageMarkers>().HasAdvantageMarkerOnPosition(quantizedPlayerPosition)) {
           return;
         }
 
-        GameManager.instance.GetSoundManager().PlaySetPlayerMarker();
+        GameManager.GameManagerInstance().GetSoundManager().PlaySetPlayerMarker();
 
         CurrentPlayerMarker.SetActive(true);
 
@@ -59,7 +59,7 @@ public class PlayerMarker : MonoBehaviour {
           OnMarkerDetonation(CurrentPlayerMarker.transform.position, CurrentPlayerMarker.GetComponent<MarkerType>().CurrentType);
         }
 
-        GameManager.instance.GetSoundManager().PlayPlayerMarkerExplosion();
+        GameManager.GameManagerInstance().GetSoundManager().PlayPlayerMarkerExplosion();
 
         CurrentPlayerMarker.SetActive(false);
 

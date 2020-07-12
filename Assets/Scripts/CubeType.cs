@@ -22,7 +22,7 @@ public class CubeType : MonoBehaviour {
   }
 
   void Update() {
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 

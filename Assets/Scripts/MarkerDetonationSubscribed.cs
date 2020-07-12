@@ -20,7 +20,7 @@ public class MarkerDetonationSubscribed : MonoBehaviour {
     var positionDetonatedIsMovingTo = GetComponent<Tumble>().PositionMovingTo;
 
     // If the subscribed cube is in the current puzzle
-    if (GameManager.instance.boardManager.CubeIsInCurrentPuzzle(this.gameObject)) {
+    if (GameManager.GameManagerInstance().boardManager.CubeIsInCurrentPuzzle(this.gameObject)) {
       // And its destination position (defaults to current position) is the same as the detonated marker...
       if (Util.Vec3sEqualXandZ(positionDetonatedIsMovingTo, detonatedMarkerPosition)) {
         // ... mark it for destruction!

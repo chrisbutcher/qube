@@ -22,7 +22,7 @@ public class CubeRotationMonitor : MonoBehaviour {
     if (!CubeScoredThisPuzzle) {
       CubeScoredThisPuzzle = true;
 
-      var puzzle = GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp();
+      var puzzle = GameManager.GameManagerInstance().boardManager.CurrentPuzzleOrNextPuzzleUp();
       puzzle.RotationsSinceFirstCubeDestroyed += 1;
     }
   }
@@ -36,7 +36,7 @@ public class CubeRotationMonitor : MonoBehaviour {
     if (trackedEndOfRotation == false && CubeScoredThisPuzzle == true) {
       trackedEndOfRotation = true;
 
-      var puzzle = GameManager.instance.boardManager.CurrentPuzzleOrNextPuzzleUp();
+      var puzzle = GameManager.GameManagerInstance().boardManager.CurrentPuzzleOrNextPuzzleUp();
       if (puzzle.PuzzleContainsNonForbiddenCubes()) {
         puzzle.RotationsSinceFirstCubeDestroyed += 1; // Only count if remaining cubes are NOT all forbidden cubes
       }

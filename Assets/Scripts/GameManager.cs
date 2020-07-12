@@ -22,7 +22,7 @@ public class GameManager : MonoBehaviour {
   const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
   // const string STAGE_DEFINITIONS_FILENAME = "stage_definitions_alt.json";
 
-  public static GameManager instance = null;
+  // public static GameManager instance = null;
 
   public BoardManager boardManager;
   public CubeRotationMonitor cubeRotationMonitor;
@@ -71,6 +71,10 @@ public class GameManager : MonoBehaviour {
     this.GameActive = false;
   }
 
+  public static GameManager GameManagerInstance() {
+    return GameObject.FindGameObjectWithTag("Camera").GetComponent<GameManager>();
+  }
+
   void OnEnable() {
     Destroyable.OnCubeScored += HandleCubeScored;
     Tumble.OnCubeFell += HandleCubeFell;
@@ -84,7 +88,6 @@ public class GameManager : MonoBehaviour {
   }
 
   void Awake() {
-    SingletonSetup();
     boardManager = GetComponent<BoardManager>();
   }
 
@@ -102,10 +105,12 @@ public class GameManager : MonoBehaviour {
     Players.Add(player);
 
     SetAndLoadStage(PersistentState.SelectedStage);
+
+    ActivateGame();
   }
 
   void Update() {
-    if (GameManager.instance.GetPlayerControls(0).isPausing()) {
+    if (GameManager.GameManagerInstance().GetPlayerControls(0).isPausing()) {
       if (PlayerPaused) {
         PlayerPaused = false;
         ActivateGame();
@@ -119,7 +124,7 @@ public class GameManager : MonoBehaviour {
       }
     }
 
-    if (!GameManager.instance.isGameActive()) {
+    if (!GameManager.GameManagerInstance().isGameActive()) {
       return;
     }
 
@@ -270,15 +275,15 @@ public class GameManager : MonoBehaviour {
       if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed < justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 10000;
         scoreboard.ShowAnnounce("True Genius!! 10,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // under TRN
-        GameManager.instance.GetSoundManager().PlayGreatScore();
+        GameManager.GameManagerInstance().GetSoundManager().PlayGreatScore();
       } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed == justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 5000;
         scoreboard.ShowAnnounce("Brilliant!! 5,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // on TRN
-        GameManager.instance.GetSoundManager().PlayGreatScore();
+        GameManager.GameManagerInstance().GetSoundManager().PlayGreatScore();
       } else if (justCompletedPuzzle.RotationsSinceFirstCubeDestroyed > justCompletedPuzzle.TypicalRotationNumber) {
         CurrentStageScore += 1000;
         scoreboard.ShowAnnounce("Perfect! 1,000 bonus points", GameConsts.PostPuzzleScoreTextDuration); // above TRN
-        GameManager.instance.GetSoundManager().PlayGreatScore();
+        GameManager.GameManagerInstance().GetSoundManager().PlayGreatScore();
       }
 
       boardManager.floorManager.Add(CurrentWave.Width, true);
@@ -362,7 +367,7 @@ public class GameManager : MonoBehaviour {
     player.GetComponent<PlayerMarker>().CurrentPlayerMarker.SetActive(false);
     player.GetComponent<AdvantageMarkers>().ClearAllAdvantageMarkers();
 
-    GameManager.instance.GetPlayerControls(0).Disable();
+    GameManager.GameManagerInstance().GetPlayerControls(0).Disable();
 
     var playerAnimator = player.GetComponentInChildren<Animator>();
     playerAnimator.SetFloat("Speed", 0f);
@@ -400,7 +405,7 @@ public class GameManager : MonoBehaviour {
   bool CubesSpedUp() {
     var playerFalling = Players[0].GetComponent<PlayerFallable>().PlayerFalling;
 
-    return (GameManager.instance.GetPlayerControls(0).isSpeedingUpCubes() && playerFalling == false) || (PlayerSquashed && playerFalling == false);
+    return (GameManager.GameManagerInstance().GetPlayerControls(0).isSpeedingUpCubes() && playerFalling == false) || (PlayerSquashed && playerFalling == false);
   }
 
   void LoadStageDefinitions() {
@@ -412,12 +417,12 @@ public class GameManager : MonoBehaviour {
     }
   }
 
-  void SingletonSetup() {
-    if (instance == null) {
-      instance = this;
-    } else if (instance != this) {
-      Destroy(gameObject);
-    }
-    DontDestroyOnLoad(gameObject);
-  }
+  // void SingletonSetup() {
+  //   if (instance == null) {
+  //     instance = this;
+  //   } else if (instance != this) {
+  //     Destroy(gameObject);
+  //   }
+  //   DontDestroyOnLoad(gameObject);
+  // }
 }
