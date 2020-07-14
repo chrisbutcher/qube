@@ -14,6 +14,10 @@ public class StageSelect : MonoBehaviour {
 
     yield return new WaitForSeconds(delay);
 
+    while (PersistentState.puzzlesJSONString == null || PersistentState.puzzlesJSONString == null) {
+      yield return null;
+    }
+
     SceneManager.LoadScene("Main");
   }
 

@@ -28,9 +28,6 @@ public class PuzzleLoader {
     }
   }
 
-  const string FILENAME = "puzzles.json";
-  // const string FILENAME = "puzzles_test.json";
-
   private static Dictionary<string, List<InternalPuzzle>> loadedPuzzles = new Dictionary<string, List<InternalPuzzle>>();
 
   public InternalPuzzle LoadPuzzle(int width, int height) {
@@ -51,65 +48,60 @@ public class PuzzleLoader {
 
   // TODO: Rewrite/use https://app.quicktype.io/ instead of hand-rolled loader/parser
   public void LoadAndParsePuzzles() {
-    string filePath = Path.Combine(Application.streamingAssetsPath, FILENAME);
+    var jsonPuzzlesBySizes = (JObject)JObject.Parse(PersistentState.puzzlesJSONString);
 
-    if (File.Exists(filePath)) {
-      var fileContents = File.ReadAllText(filePath);
-      var jsonPuzzlesBySizes = (JObject)JObject.Parse(fileContents);
+    foreach (var jsonPuzzlesBySize in jsonPuzzlesBySizes) {
+      var sizeKey = jsonPuzzlesBySize.Key;
+      var jsonPuzzles = (JArray)jsonPuzzlesBySize.Value;
 
-      foreach (var jsonPuzzlesBySize in jsonPuzzlesBySizes) {
-        var sizeKey = jsonPuzzlesBySize.Key;
-        var jsonPuzzles = (JArray)jsonPuzzlesBySize.Value;
+      foreach (JObject jsonPuzzle in jsonPuzzles) {
+        List<InternalCube> cubes = null;
 
-        foreach (JObject jsonPuzzle in jsonPuzzles) {
-          List<InternalCube> cubes = null;
+        int typicalRotationsNeeded = int.Parse((string)jsonPuzzle["typical_rotations_needed"]);
+        int width = int.Parse((string)jsonPuzzle["width"]);
+        int height = int.Parse((string)jsonPuzzle["height"]);
 
-          int typicalRotationsNeeded = int.Parse((string)jsonPuzzle["typical_rotations_needed"]);
-          int width = int.Parse((string)jsonPuzzle["width"]);
-          int height = int.Parse((string)jsonPuzzle["height"]);
+        var jsonPuzzleRows = (JArray)jsonPuzzle["rows"];
 
-          var jsonPuzzleRows = (JArray)jsonPuzzle["rows"];
+        float puzzleDepth = 0f;
 
-          float puzzleDepth = 0f;
+        foreach (JObject puzzleRow in jsonPuzzleRows) {
+          var jsonCubes = (JArray)puzzleRow["row"];
 
-          foreach (JObject puzzleRow in jsonPuzzleRows) {
-            var jsonCubes = (JArray)puzzleRow["row"];
+          float puzzlePosition = 0f;
+          foreach (JObject jsonCube in jsonCubes) {
+            var jsonCubeType = (string)jsonCube["type"];
 
-            float puzzlePosition = 0f;
-            foreach (JObject jsonCube in jsonCubes) {
-              var jsonCubeType = (string)jsonCube["type"];
+            CubeType.Type type;
 
-              CubeType.Type type;
-
-              if (jsonCubeType == "*") {
-                type = CubeType.Type.Advantage;
-              } else if (jsonCubeType == "x") {
-                type = CubeType.Type.Forbidden;
-              } else {
-                type = CubeType.Type.Normal;
-              }
-
-              InternalCube cube = new InternalCube(new Vector3(puzzlePosition, 0f, -puzzleDepth), type);
-
-              if (cubes == null) {
-                cubes = new List<InternalCube>(width * height);
-              }
-              cubes.Add(cube);
-
-              puzzlePosition += 1;
+            if (jsonCubeType == "*") {
+              type = CubeType.Type.Advantage;
+            } else if (jsonCubeType == "x") {
+              type = CubeType.Type.Forbidden;
+            } else {
+              type = CubeType.Type.Normal;
             }
 
-            puzzleDepth += 1;
+            InternalCube cube = new InternalCube(new Vector3(puzzlePosition, 0f, -puzzleDepth), type);
+
+            if (cubes == null) {
+              cubes = new List<InternalCube>(width * height);
+            }
+            cubes.Add(cube);
+
+            puzzlePosition += 1;
           }
 
-          InternalPuzzle puzzle = new InternalPuzzle(cubes, typicalRotationsNeeded);
-
-          if (!loadedPuzzles.ContainsKey(sizeKey)) {
-            loadedPuzzles.Add(sizeKey, new List<InternalPuzzle>(jsonPuzzles.Count));
-          }
-
-          loadedPuzzles[sizeKey].Add(puzzle);
+          puzzleDepth += 1;
         }
+
+        InternalPuzzle puzzle = new InternalPuzzle(cubes, typicalRotationsNeeded);
+
+        if (!loadedPuzzles.ContainsKey(sizeKey)) {
+          loadedPuzzles.Add(sizeKey, new List<InternalPuzzle>(jsonPuzzles.Count));
+        }
+
+        loadedPuzzles[sizeKey].Add(puzzle);
       }
     }
   }

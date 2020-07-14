@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Dynamic;
 using System.IO;
+using UnityEngine.Networking;
 
 public class GameManager : MonoBehaviour {
   // TODO: Implement rest of gameplay! Reference:
@@ -19,11 +20,6 @@ public class GameManager : MonoBehaviour {
   // Perf:
   // * [ ] Maybe disable floor cube colliders until they are close to end of floor, able to drop and be able to be interacted with?
 
-  const string STAGE_DEFINITIONS_FILENAME = "stage_definitions.json";
-  // const string STAGE_DEFINITIONS_FILENAME = "stage_definitions_alt.json";
-
-  // public static GameManager instance = null;
-
   public BoardManager boardManager;
   public CubeRotationMonitor cubeRotationMonitor;
   public Scoreboard scoreboard;
@@ -33,7 +29,7 @@ public class GameManager : MonoBehaviour {
   public GameObject PlayerPrefab;
   public List<GameObject> Players;
 
-  StageDefinitions stageDefinitions;
+  public StageDefinitions stageDefinitions = null;
 
   public int CurrentStageIndex = 0;
   public Stage CurrentStage;
@@ -107,6 +103,8 @@ public class GameManager : MonoBehaviour {
     SetAndLoadStage(PersistentState.SelectedStage);
 
     ActivateGame();
+
+    stageTransition.GetComponentInChildren<Canvas>().GetComponent<Animator>().SetTrigger("FadeIn");
   }
 
   void Update() {
@@ -409,20 +407,6 @@ public class GameManager : MonoBehaviour {
   }
 
   void LoadStageDefinitions() {
-    string filePath = Path.Combine(Application.streamingAssetsPath, STAGE_DEFINITIONS_FILENAME);
-
-    if (File.Exists(filePath)) {
-      var jsonString = File.ReadAllText(filePath);
-      this.stageDefinitions = StageDefinitions.FromJson(jsonString);
-    }
+    this.stageDefinitions = PersistentState.stageDefinitions;
   }
-
-  // void SingletonSetup() {
-  //   if (instance == null) {
-  //     instance = this;
-  //   } else if (instance != this) {
-  //     Destroy(gameObject);
-  //   }
-  //   DontDestroyOnLoad(gameObject);
-  // }
 }
