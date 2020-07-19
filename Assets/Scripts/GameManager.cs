@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour {
 
   // BUGS: 
   // * [ ] When a large number of rows fall off at once, the floor that should crumble sometimes hangs around longer than expected.
+  // * [ ] UI font missing in web. Need to pack Arial font into game?
 
   // Perf:
   // * [ ] Maybe disable floor cube colliders until they are close to end of floor, able to drop and be able to be interacted with?

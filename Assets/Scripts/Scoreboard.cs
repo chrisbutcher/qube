@@ -66,11 +66,11 @@ public class Scoreboard : MonoBehaviour {
     // Block scale UI start (move to function?)
     var blockScaleAscii = "";
     for (int i = 0; i < GameManager.GameManagerInstance().CurrentWaveBlockScaleAvailable - GameManager.GameManagerInstance().CurrentWaveBlockScaleUsed; i++) {
-      blockScaleAscii += "☐";
+      blockScaleAscii += "[ ] ";
     }
 
     for (int i = 0; i < GameManager.GameManagerInstance().CurrentWaveBlockScaleUsed; i++) {
-      blockScaleAscii += "☒";
+      blockScaleAscii += "[x] ";
     }
 
     BlockScale.text = blockScaleAscii;

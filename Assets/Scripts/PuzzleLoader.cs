@@ -48,7 +48,9 @@ public class PuzzleLoader {
 
   // TODO: Rewrite/use https://app.quicktype.io/ instead of hand-rolled loader/parser
   public void LoadAndParsePuzzles() {
+    Debug.Log("Starting puzzles.json parse");
     var jsonPuzzlesBySizes = (JObject)JObject.Parse(PersistentState.puzzlesJSONString);
+    Debug.Log("Finished puzzles.json parse");
 
     foreach (var jsonPuzzlesBySize in jsonPuzzlesBySizes) {
       var sizeKey = jsonPuzzlesBySize.Key;

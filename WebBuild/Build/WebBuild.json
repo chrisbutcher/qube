@@ -1,7 +1,7 @@
 {
 "companyName": "Chris Butcher",
 "productName": "qube",
-"productVersion": "0.1",
+"productVersion": "1.0",
 "dataUrl": "WebBuild.data.unityweb",
 "wasmCodeUrl": "WebBuild.wasm.code.unityweb",
 "wasmFrameworkUrl": "WebBuild.wasm.framework.unityweb",
@@ -10,7 +10,7 @@
 "splashScreenStyle": "Dark",
 "backgroundColor": "#231F20",
 "cacheControl": {"default": "must-revalidate"},
-"developmentBuild": true,
+"developmentBuild": false,
 "multithreading": false,
 "unityVersion": "2019.4.2f1"
 }
